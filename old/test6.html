@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>test6</title>
+  <style>
+    .scroll-container {
+      display: flex;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch; /* Enable momentum scrolling on iOS */
+    }
+
+    .scroll-item {
+      flex: 0 0 auto;
+      width: calc(100% / 4); /* Default width: 4 items per row */
+      scroll-snap-align: start;
+      box-sizing: border-box;
+      padding: 10px;
+    }
+
+    .scroll-item img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    @media (max-width: 480px) {
+      .scroll-item {
+        width: 100%; /* 1 item per row */
+      }
+    }
+
+    @media (min-width: 481px) and (max-width: 900px) {
+      .scroll-item {
+        width: 50%; /* 2 items per row */
+      }
+    }
+
+    @media (min-width: 901px) and (max-width: 1360px) {
+      .scroll-item {
+        width: calc(100% / 3); /* 3 items per row */
+      }
+    }
+
+    @media (min-width: 1361px) {
+      .scroll-item {
+        width: calc(100% / 4); /* 4 items per row */
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="scroll-container">
+    <div class="scroll-item"><img src="img.jpg" alt="Image 1"></div>
+    <div class="scroll-item"><img src="img.jpg" alt="Image 2"></div>
+    <div class="scroll-item"><img src="img.jpg" alt="Image 3"></div>
+    <div class="scroll-item"><img src="img.jpg" alt="Image 4"></div>
+    <div class="scroll-item"><img src="img.jpg" alt="Image 5"></div>
+    <div class="scroll-item"><img src="img.jpg" alt="Image 6"></div>
+    <div class="scroll-item"><img src="img.jpg" alt="Image 7"></div>
+  </div>
+</body>
+</html>
