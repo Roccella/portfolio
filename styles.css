@@ -44,14 +44,14 @@ h1 span {
 }
 
 h2 {
-	font-size: 2rem;
+	font-size: 1.4rem;
     font-weight: 300;
     margin: 1.5rem 0 1rem 0;
 }
 
 h3 {
-	font-size: 1.6rem;
-    line-height: 2.2rem;
+	font-size: 1.4rem;
+    line-height: 2rem;
 	margin: 0.5rem 0;
     font-weight: 800;
 }
@@ -112,17 +112,22 @@ a {
 	background: linear-gradient(218deg, rgba(196,211,255,1) 0%, rgba(238,242,255,1) 100%); 
 	padding-top: 1rem;
 	padding-bottom: 1rem;
-	margin-top: 1.5rem;
-	margin-bottom: 2rem;
-}
-
-.featured-color.dark-mode {
-	background-color: #333;
+	margin-top: 2rem;
+	margin-bottom: 2.5rem;
 }
 
 .featured-color h2 {
 	margin-left: 1rem;
 	margin-right: 1rem;
+}
+
+.featured-color h3,
+.work h3 {
+	font-size: 1.8rem;
+}
+
+.featured-color p {
+	color: #666;
 }
 
 .featured ul {
@@ -253,6 +258,18 @@ section.work h2, section.work h3, section.work p {
 }
 
 @media (max-width: 640px) {
+	section.header, section.featured {
+		padding-left: 1rem;
+		padding-right: 1rem;
+	}
+	section.work h2, section.work h3, section.work p {
+		padding-left: 2rem;
+		padding-right: 2rem;
+	}
+	.scroll-list {
+		padding-left: 2rem;
+		padding-right: 2rem;
+	}
 	.scroll-list {
 		padding-left: 1rem;
 		padding-right: 1rem;
@@ -308,6 +325,10 @@ a.dark-mode {
 .header a.dark-mode {
 	background-color: #82aaff;
 	color: #121212;
+}
+
+.featured-color.dark-mode {
+	background-color: #333;
 }
 
 .scroll-item.dark-mode {
