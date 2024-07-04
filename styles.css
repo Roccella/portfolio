@@ -275,12 +275,12 @@ section.work h2, section.work h3, section.work p {
 
 @media (max-width: 640px) {
 	section.aboutme, section.featured {
-		padding-left: 0;
-		padding-right: 0;
-	}
-	section.work h2, section.work h3, section.work p {
 		padding-left: 1rem;
 		padding-right: 1rem;
+	}
+	section.work h2, section.work h3, section.work p {
+		padding-left: 2rem;
+		padding-right: 2rem;
 	}
 	.scroll-list {
 		padding-left: 2rem;
