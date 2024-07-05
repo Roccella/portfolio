@@ -249,7 +249,7 @@ section.work h2, section.work h3, section.work p {
 		width: calc(33.33% - 1.5rem);
 	}
 	.item-medium {
-		width: calc(90% - 1.5rem);
+		width: calc(75% - 1.5rem);
 	}
 }
 
@@ -272,12 +272,6 @@ section.work h2, section.work h3, section.work p {
 	}
 	.item-medium {
 		width: 90%;
-	}
-	.item-large video {
-		transform: rotate(90deg);
-		max-width: 170%;
-		position: relative;
-		left: -35%;
 	}
 }
 
