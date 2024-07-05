@@ -114,7 +114,7 @@ a {
 
 .aboutme.footer h2 {
 	font-size: 1.2rem;
-	margin: 0 1rem 1rem 1rem;
+	margin: 0 1rem 0.5rem 1rem;
 }
 
 .aboutme.footer h2 strong {
@@ -175,7 +175,7 @@ a {
 .scroll-container {
 	display: flex;
 	overflow-x: auto;
-	scroll-snap-type: x mandatory;
+	/* scroll-snap-type: x mandatory; */
 	-webkit-overflow-scrolling: touch;
 	position: relative;
 	margin: 1rem 0;
@@ -195,30 +195,26 @@ a {
 
 .scroll-item {
 	flex: 0 0 auto;
-	scroll-snap-align: center;
 	box-sizing: border-box;
-	position: relative;
 	overflow: hidden;
 	display: flex;
+	/* 	scroll-snap-align: center;
 	justify-content: center;
 	align-items: flex-start;
-	flex-direction: column;
+	flex-direction: column; */
+	align-items: normal;
 	padding: 0;
 	width: calc(25% - 1.5rem);
 	border: 1px solid #ddd;
 	border-radius: 8px;
 }
 
-.scroll-container-big .scroll-item {
-	width: calc(70% - 1.5rem);
-}
+
 
 .scroll-item img, .scroll-item video {
 	max-width: 100%;
 	max-height: 100%;
-	object-fit: contain;
 	border-radius: 8px;
-	flex: 0 0 auto;
 }
 
 section.aboutme, section.featured {
@@ -236,17 +232,34 @@ section.work h2, section.work h3, section.work p {
 	padding-right: 3rem;
 }
 
-@media (max-width: 1280px) {
-	.scroll-container-big .scroll-item {
-		width: 90%;
-	}
+.item-medium {
+	width: calc(60% - 1.5rem);
 }
+
+.item-large {
+	width: calc(85% - 1.5rem);
+	background-color: #111;
+}
+
+.item-large video {
+	position: relative;
+	top: -0.3rem;
+}
+
+/* @media (max-width: 1280px) {
+	.item-medium {
+		width: 95%;
+	}
+} */
 
 @media (max-width: 1220px) {
 	.featured li {
 		width: calc(50% - 3.2rem);
 	}
-	.scroll-item {
+	.item-small {
+		width: calc(33.33% - 1.5rem);
+	}
+	.item-medium {
 		width: calc(33.33% - 1.5rem);
 	}
 }
@@ -268,9 +281,12 @@ section.work h2, section.work h3, section.work p {
 	.scroll-item {
 		width: calc(49% - 1.5rem);
 	}
-	.scroll-container-big .scroll-item {
+	.item-medium {
 		width: 90%;
 	}
+	/* .item-large video {
+		transform: rotate(90deg);
+	} */
 }
 
 @media (max-width: 640px) {
@@ -316,11 +332,11 @@ section.work h2, section.work h3, section.work p {
 	}
 }
 
-@media (max-width: 440px) {
-    .scroll-item {
+/* @media (max-width: 440px) {
+    .item-small {
 		width: 90%;
 	}
-}
+} */
 
 /* Dark mode + media query */
 
