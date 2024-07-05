@@ -248,9 +248,9 @@ section.work h2, section.work h3, section.work p {
 	.item-small {
 		width: calc(33.33% - 1.5rem);
 	}
-	/* .item-medium {
-		width: calc(33.33% - 1.5rem);
-	} */
+	.item-medium {
+		width: calc(90% - 1.5rem);
+	}
 }
 
 @media (max-width: 1000px) {
@@ -282,6 +282,12 @@ section.work h2, section.work h3, section.work p {
 }
 
 @media (max-width: 640px) {
+	.item-large video {
+		transform: rotate(90deg);
+		max-width: 170%;
+		position: relative;
+		left: -35%;
+	}
 	.item-medium, .item-small {
 		width: 90%;
 	}
