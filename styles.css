@@ -267,7 +267,7 @@ section.work h2, section.work h3, section.work p {
 }
 
 @media (max-width: 820px) {
-	.scroll-item {
+	.item-small {
 		width: calc(49% - 1.5rem);
 	}
 	.item-medium {
