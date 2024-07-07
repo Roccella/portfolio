@@ -175,8 +175,8 @@ a {
 .scroll-container {
 	display: flex;
 	overflow-x: auto;
-	/* scroll-snap-type: x mandatory; */
-	-webkit-overflow-scrolling: touch;
+	/* scroll-snap-type: x mandatory;
+	-webkit-overflow-scrolling: touch; */
 	position: relative;
 	margin: 1rem 0;
 	scrollbar-width: none;
@@ -282,6 +282,12 @@ section.work h2, section.work h3, section.work p {
 		position: relative;
 		left: -35%;
 	}
+	/* .item-medium img {
+		transform: rotate(90deg);
+		max-width: 170%;
+		position: relative;
+		left: -35%;
+	} */
 	.item-medium, .item-small {
 		width: 90%;
 	}
@@ -289,6 +295,10 @@ section.work h2, section.work h3, section.work p {
 		width: calc(100% - 1.5rem);
 		align-items: center;
 	}
+	/* .scroll-item.item-medium {
+		width: calc(100% - 1.5rem);;
+		align-items: center;
+	} */
 	section.aboutme, section.featured {
 		padding-left: 1rem;
 		padding-right: 1rem;
