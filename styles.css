@@ -1,7 +1,7 @@
 /* Fonts */
 
 .noto-sans-<uniquifier> {
-	font-family: "Noto Sans", sans-serif, Arial;
+	font-family: "Noto Sans", sans-serif;
 	font-optical-sizing: auto;
 	font-weight: <weight>;
 	font-style: normal;
@@ -17,7 +17,7 @@ html {
 
 body {
 	font-family: Arial, Helvetica, sans-serif;
-	font-family: "Nunito Sans";
+	font-family: "Noto Sans";
 	padding: 0;
 	margin: 0;
 	overflow-x: hidden;
