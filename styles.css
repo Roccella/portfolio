@@ -123,33 +123,6 @@ a {
 	display: block;
 }
 
-.featured-color {
-	background: rgb(196,211,255);
-	background: linear-gradient(218deg, rgba(196,211,255,1) 0%, rgba(238,242,255,1) 100%); 
-	padding-top: 1rem;
-	padding-bottom: 1rem;
-	margin-top: 2rem;
-	margin-bottom: 2.5rem;
-}
-
-.featured-color img {
-	opacity: 0.5;
-}
-
-.featured-color h2 {
-	margin-left: 1rem;
-	margin-right: 1rem;
-}
-
-.featured-color h3,
-.work h3 {
-	font-size: 1.8rem;
-}
-
-.featured-color p {
-	color: #666;
-}
-
 .featured ul {
 	display: flex;
 	flex-wrap: wrap;
@@ -168,6 +141,33 @@ a {
 	width: 5rem;
 	height: auto;
 	opacity: 0.4;
+}
+
+.featured-color {
+	background: rgb(196,211,255);
+	background: linear-gradient(218deg, rgba(196,211,255,1) 0%, rgba(238,242,255,1) 100%); 
+	padding-top: 1rem;
+	padding-bottom: 1rem;
+	margin-top: 2rem;
+	margin-bottom: 2.5rem;
+}
+
+.featured-color img {
+	opacity: 0.45;
+}
+
+.featured-color h2 {
+	margin-left: 1rem;
+	margin-right: 1rem;
+}
+
+.featured-color h3,
+.work h3 {
+	font-size: 1.8rem;
+}
+
+.featured-color p {
+	color: #666;
 }
 
 .hidden {
