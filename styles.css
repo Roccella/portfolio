@@ -132,6 +132,10 @@ a {
 	margin-bottom: 2.5rem;
 }
 
+.featured-color img {
+	opacity: 0.5;
+}
+
 .featured-color h2 {
 	margin-left: 1rem;
 	margin-right: 1rem;
