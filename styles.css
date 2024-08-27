@@ -292,8 +292,11 @@ section.work h2, section.work h3, section.work p {
 		position: relative;
 		left: -35%;
 	} */
-	.item-medium, .item-small {
+	.item-small {
 		width: 90%;
+	}
+	.item-medium {
+		width: 200%;
 	}
 	.scroll-item.item-large {
 		width: calc(100% - 1.5rem);
