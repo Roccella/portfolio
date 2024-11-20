@@ -45,8 +45,8 @@ h1 strong {
 }
 
 h2 {
-	font-size: 1.4rem;
-    font-weight: 300;
+	font-size: 1.2rem;
+    font-weight: 400;
     margin: 1.5rem 0 1rem 0;
 }
 
@@ -186,6 +186,10 @@ a {
 	background-color: #eef2ff;
 	padding-top: 1.5rem;
 	padding-bottom: 0.25rem;
+}
+
+.work>ul>li:nth-child(even) p {
+	color: #666;
 }
 
 .work>ul>li:first-child {
