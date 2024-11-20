@@ -61,7 +61,7 @@ p {
 	font-size: 1.1rem;
 	font-weight: 500;
     line-height: 1.8rem;
-	margin: 0.5rem 0;
+	margin: 0.5rem 0 1rem 0;
 	color: #777;
 }
 
@@ -144,8 +144,8 @@ a {
 }
 
 .featured-color {
-	background: rgb(196,211,255);
-	background: linear-gradient(218deg, rgba(196,211,255,1) 0%, rgba(238,242,255,1) 100%); 
+	background: #eef2ff;
+	/* background: linear-gradient(218deg, rgba(196,211,255,1) 0%, rgba(238,242,255,1) 100%);  */
 	padding-top: 1rem;
 	padding-bottom: 1rem;
 	margin-top: 2rem;
@@ -168,6 +168,28 @@ a {
 
 .featured-color p {
 	color: #666;
+}
+
+.work {
+	padding-bottom: 2rem;
+}
+
+.work>ul>li {
+	text-align: top;
+}
+
+.work>ul>li:nth-child(odd) {
+	padding-top: 1.5rem;
+}
+
+.work>ul>li:nth-child(even) {
+	background-color: #eef2ff;
+	padding-top: 1.5rem;
+	padding-bottom: 0.25rem;
+}
+
+.work>ul>li:first-child {
+	padding-top: 0.25rem;
 }
 
 .hidden {
@@ -208,9 +230,10 @@ a {
 	flex-direction: column; */
 	align-items: normal;
 	padding: 0;
-	width: calc(25% - 1.5rem);
+	width: calc(28% - 1.5rem);
 	border: 1px solid #ddd;
 	border-radius: 8px;
+	background-color: #fff !important;
 }
 
 
@@ -229,6 +252,7 @@ section.aboutme, section.featured {
 section.work h2, section.work h3, section.work p {
 	padding-left: 3rem;
 	padding-right: 3rem;
+	width: 55%;
 }
 
 .scroll-list {
@@ -238,10 +262,17 @@ section.work h2, section.work h3, section.work p {
 
 .item-medium {
 	width: calc(60% - 1.5rem);
+	height: auto;
 }
 
 .item-large {
 	width: calc(85% - 1.5rem);
+	background-color: #111;
+	height: auto;
+}
+
+.item-full {
+	width: 100%;
 	background-color: #111;
 }
 
@@ -250,10 +281,10 @@ section.work h2, section.work h3, section.work p {
 		width: calc(50% - 3.2rem);
 	}
 	.item-small {
-		width: calc(33.33% - 1.5rem);
+		width: calc(33.33%);
 	}
 	.item-medium {
-		width: calc(75% - 1.5rem);
+		width: calc(75%);
 	}
 }
 
@@ -276,6 +307,9 @@ section.work h2, section.work h3, section.work p {
 	}
 	.item-medium {
 		width: 90%;
+	}
+	section.work h2, section.work h3, section.work p {
+		width: calc(90% - 1.5rem);
 	}
 }
 
