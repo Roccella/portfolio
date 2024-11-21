@@ -11,8 +11,8 @@
 /* Base */
 
 html {
-	background-color: #fafafa;
-	color: #333;
+	background-color: #121212;
+	color: #fff;
 }
 
 body {
@@ -53,20 +53,20 @@ h2 {
 h3 {
 	font-size: 1.4rem;
     line-height: 2rem;
-	margin: 0.5rem 0;
+	margin: 0.5rem 0 0.75rem 0;
     font-weight: 800;
 }
 
 p {
 	font-size: 1.1rem;
-	font-weight: 500;
+	font-weight: 400;
     line-height: 1.8rem;
 	margin: 0.5rem 0 1rem 0;
-	color: #777;
+	color: #ddd;
 }
 
 a {
-	color: #4169e1;
+	color: #84a9ff;
     font-weight: 600;
 }
 
@@ -82,12 +82,16 @@ a {
 .aboutme img {
 	width: 15rem;
 	margin: 1.5rem 1rem 1rem 1rem;
-	border: solid 1px #ddd;
+	border: solid 1px #333;
 	border-radius: 100rem;
 }
 
 .aboutme p {
-	margin: 1.3rem 1rem 1.5rem 1rem;
+	margin: 1.5rem 1rem 1.5rem 1rem;
+}
+
+.aboutme.footer p {
+	margin: 0.5rem 1rem 1.5rem 1rem;
 }
 
 .aboutme a {
@@ -137,23 +141,18 @@ a {
 }
 
 .featured img {
-	margin: 0 1.5rem 0.5rem 0;
+	margin: 0 1.5rem 0.75rem 0;
 	width: 5rem;
 	height: auto;
 	opacity: 0.4;
 }
 
 .featured-color {
-	background: #eef2ff;
-	/* background: linear-gradient(218deg, rgba(196,211,255,1) 0%, rgba(238,242,255,1) 100%);  */
+	background: #1a1f30;
 	padding-top: 1rem;
 	padding-bottom: 1rem;
 	margin-top: 2rem;
 	margin-bottom: 2.5rem;
-}
-
-.featured-color img {
-	opacity: 0.45;
 }
 
 .featured-color h2 {
@@ -164,10 +163,6 @@ a {
 .featured-color h3,
 .work h3 {
 	font-size: 1.8rem;
-}
-
-.featured-color p {
-	color: #666;
 }
 
 .work {
@@ -183,13 +178,9 @@ a {
 }
 
 .work>ul>li:nth-child(even) {
-	background-color: #eef2ff;
+	background-color: #1a1f30;
 	padding-top: 2.5rem;
 	padding-bottom: 0.25rem;
-}
-
-.work>ul>li:nth-child(even) p {
-	color: #666;
 }
 
 .work>ul>li:first-child {
@@ -208,7 +199,7 @@ a {
 	/* scroll-snap-type: x mandatory;
 	-webkit-overflow-scrolling: touch; */
 	position: relative;
-	margin: 1rem 0;
+	margin: 1.25rem 0;
 	scrollbar-width: none;
 	-ms-overflow-style: none;
 	margin-bottom: 3rem;
@@ -235,9 +226,9 @@ a {
 	align-items: normal;
 	padding: 0;
 	width: calc(28% - 1.5rem);
-	border: 1px solid #ddd;
+	border: 1px solid #333;
 	border-radius: 8px;
-	background-color: #fff !important;
+	background-color: #1e1e1e !important;
 }
 
 
@@ -271,13 +262,13 @@ section.work h2, section.work h3, section.work p {
 
 .item-large {
 	width: calc(85% - 1.5rem);
-	background-color: #111;
+	background-color: #1a1a1a;
 	height: auto;
 }
 
 .item-full {
 	width: 100%;
-	background-color: #111;
+	background-color: #1a1a1a;
 }
 
 @media (max-width: 1220px) {
