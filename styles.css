@@ -166,7 +166,7 @@ a {
 }
 
 .work {
-	padding-bottom: 2rem;
+	padding-bottom: 1rem;
 }
 
 .work>ul>li {
@@ -185,6 +185,12 @@ a {
 
 .work>ul>li:first-child {
 	padding-top: 0.25rem;
+}
+
+.map img {
+	padding-top: 1rem;
+	padding-bottom: 2rem;
+	width: 100%;
 }
 
 .hidden {
@@ -305,6 +311,11 @@ section.work h2, section.work h3, section.work p {
 	}
 	section.work h2, section.work h3, section.work p {
 		width: calc(90% - 1.5rem);
+	}
+	.map img {
+		width: 200%;
+		position: relative;
+		left: -50%;
 	}
 }
 
