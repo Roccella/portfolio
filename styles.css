@@ -325,6 +325,9 @@ section.work h2, section.work h3, section.work p {
 }
 
 @media (max-width: 640px) {
+	.item-full {
+		width: 90%;
+	}
 	.item-large video {
 		transform: rotate(90deg);
 		max-width: 170%;
