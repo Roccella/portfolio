@@ -317,6 +317,9 @@ section.work h2, section.work h3, section.work p {
 	section.work h2, section.work h3, section.work p {
 		width: calc(90% - 1.5rem);
 	}
+	.map {
+		overflow-x: hidden;
+	}
 	.map img {
 		width: 200%;
 		position: relative;
