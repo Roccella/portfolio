@@ -11,7 +11,7 @@
 /* Base */
 
 html {
-	background-color: #121212;
+	background-color: #181A1B;
 	color: #fff;
 }
 
@@ -46,7 +46,7 @@ h1 strong {
 
 h2 {
 	font-size: 1.2rem;
-    font-weight: 400;
+    font-weight: 800;
     margin: 1.5rem 0 1rem 0;
 }
 
@@ -155,7 +155,12 @@ a {
 	margin-bottom: 2.5rem;
 }
 
-.featured-color h2 {
+.featured h2 {
+	margin-bottom: 0;
+	font-weight: ;
+}
+.featured h2,
+.featured>p {
 	margin-left: 1rem;
 	margin-right: 1rem;
 }
@@ -216,7 +221,7 @@ a {
 	margin: 0;
 	display: flex;
 	height: auto;
-	gap: 1rem;
+	gap: 1.5rem;
 	padding: 0 1rem;
 }
 
