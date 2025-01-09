@@ -240,9 +240,17 @@ a {
 	border: 1px solid #333;
 	border-radius: 8px;
 	background-color: #1e1e1e !important;
+	margin-bottom: 2.2rem;
 }
 
-
+.scroll-item p {
+	font-size: 14px;
+	position: absolute;
+	bottom: 0px;
+	margin-left: -3rem;
+	margin-top: 0;
+	margin-bottom: 0;
+}
 
 .scroll-item img, .scroll-item video {
 	max-width: 100%;
@@ -396,6 +404,9 @@ section.work h2, section.work h3, section.work p {
 	}
 	.featured li {
 		flex-direction: row;
+	}
+	.scroll-item p {
+		margin-left: -2rem;
 	}
 }
 
