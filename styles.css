@@ -210,7 +210,7 @@ a {
 	/* scroll-snap-type: x mandatory;
 	-webkit-overflow-scrolling: touch; */
 	position: relative;
-	margin: 1.25rem 0;
+	margin: 2rem 0;
 	scrollbar-width: none;
 	-ms-overflow-style: none;
 	margin-bottom: 3rem;
@@ -221,7 +221,7 @@ a {
 	margin: 0;
 	display: flex;
 	height: auto;
-	gap: 1.5rem;
+	gap: 2rem;
 	padding: 0 1rem;
 }
 
