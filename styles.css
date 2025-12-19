@@ -87,11 +87,7 @@ a {
 }
 
 .aboutme p {
-	margin: 1.5rem 1rem 1.5rem 1rem;
-}
-
-.aboutme.footer p {
-	margin: 0.5rem 1rem 1.5rem 1rem;
+	margin: 1.5rem 1rem 1rem 1rem;
 }
 
 .aboutme a {
@@ -116,9 +112,14 @@ a {
 	padding: 0 0 3rem 0;
 }
 
+.aboutme.footer p {
+	margin: 0.5rem 1rem 1.5rem 1rem;
+}
+
 .aboutme.footer h2 {
 	font-size: 1.2rem;
-	margin: 0 1rem 0.5rem 1rem;
+	font-weight: 300;
+	margin: 0 1rem 1rem 1rem;
 }
 
 .aboutme.footer h2 strong {
@@ -236,10 +237,10 @@ a {
 	flex-direction: column; */
 	align-items: normal;
 	padding: 0;
-	height: 40rem;
+	height: 38rem;
 	width: auto;
 	border: 1px solid #333;
-	border-radius: 8px;
+	border-radius: 0.5rem;
 	background-color: #1e1e1e !important;
 	margin-bottom: 2.2rem;
 }
@@ -247,7 +248,7 @@ a {
 .scroll-item p {
 	font-size: 0.9rem;
 	position: absolute;
-	bottom: 0px;
+	bottom: 0;
 	margin-left: -3rem;
 	margin-top: 0.2rem;
 	margin-bottom: 0;
@@ -256,7 +257,7 @@ a {
 .scroll-item img, .scroll-item video {
 	max-width: 100%;
 	max-height: 100%;
-	border-radius: 8px;
+	border-radius: 0.5rem;
 }
 
 section.aboutme, section.featured {
@@ -325,10 +326,10 @@ section.work h2, section.work h3, section.work p {
 		padding-left: 2rem;
 		padding-right: 2rem;
 	}
-	.scroll-list {
+	/* .scroll-list {
 		padding-left: 1rem;
 		padding-right: 1rem;
-	}
+	} */
 	.aboutme {
 		flex-direction: column;
 		align-items: center;
@@ -340,7 +341,7 @@ section.work h2, section.work h3, section.work p {
 		padding-bottom: 0;
 	}
 	.featured ul {
-		gap: 1.5rem 0;
+		gap: 1rem 0;
 	}
 	.featured li {
 		width: 100%;
