@@ -41,5 +41,175 @@
 		<a class="cta" href="https://www.linkedin.com/in/roccella/" target="_blank">LinkedIn</a>
 	</main>
 
+	<section id="writing">
+		<h2>Writing</h2>
+		<div class="article-list">
+			<a class="article-card" href="#tudux">
+				<img src="media/tudux-desktop-mobile.png" alt="Tudux app shown on desktop and mobile" loading="lazy">
+				<h3>I built my own productivity app in 6 days with AI</h3>
+				<p class="card-desc">Designing and shipping a personal task management app prototype-first, with AI as the entire engineering team.</p>
+			</a>
+			<a class="article-card" href="#government">
+				<img src="media/argentina-miargentina-desktop-mobile.png" alt="Argentina.gob.ar desktop view and Mi Argentina mobile view" loading="lazy">
+				<h3>Four years building UX from scratch in Argentina's government</h3>
+				<p class="card-desc">Building a design culture, a team, and public services used by millions.</p>
+			</a>
+			<a class="article-card" href="#chatcrecer">
+				<img src="media/chatcrecer-screens.png" alt="Chat Crecer conversation screens" loading="lazy">
+				<h3>Designing a health chatbot for pregnant women through field research</h3>
+				<p class="card-desc">Field research led us from a mobile app brief to Facebook Messenger. The pilot increased prenatal checkups by 35%.</p>
+			</a>
+		</div>
+	</section>
+
+	<!-- Article: Tudux -->
+	<article id="tudux" class="article-view" hidden>
+		<a href="#" class="back-link" aria-label="Back to article list">Back</a>
+
+		<h2>I built my own productivity app in 6 days with AI</h2>
+		<p class="article-lead">I'm a product designer. I've spent 20 years leading products end-to-end, from strategy and research to technical decisions. Last week I shipped a fully working task management app to production, built entirely with Claude, with cloud sync across my laptop and phone.</p>
+		<p class="article-context"><em>Tudux is a personal task management app I designed and shipped prototype-first: days getting the feel right before any production code, with AI as my entire engineering team.</em></p>
+		<img src="media/tudux-desktop-mobile.png" alt="Tudux: desktop and mobile views" loading="lazy">
+		<hr>
+
+		<h3>Why I stopped looking for the right app</h3>
+		<p>Like a lot of people I know, I was using Google Calendar as my entire life management system. Having a single "home" app beats juggling three, even when it's not great at everything.</p>
+		<p>I tried Outlook, Trello, Google Tasks. Friends tried Notion, Todoist, TickTick, Things. We all bounced back to Calendar. The tools were either too rigid or too flexible, and none matched how we actually think about our days.</p>
+		<p><strong>How I organize my life reflects how my brain works.</strong> None of the apps I tried matched that.</p>
+		<p>There was always friction: interaction choices that don't match your mental model, visual decisions that feel slightly off. Because you use these apps every day, that friction compounds. So I decided to build my own.</p>
+
+		<h3>Getting the feel right first</h3>
+		<p>Many AI-built side projects I've seen start with architecture: database, API, deployment, and then add UI on top. I went the other way. <strong>I started with a static prototype and spent days just getting the feel right.</strong></p>
+		<p>Before any real code, I built an interactive HTML prototype and used it obsessively, testing whether the layout and interactions felt right, whether the whole thing felt like mine. Building a web app with cloud sync is a solved problem. I was more worried about building something that felt wrong and using it anyway.</p>
+		<p>Alex Kehr recently wrote about this, coining the term "Direct Design": what happens when you remove the translation layer between intent and reality. For 30 years, designers made pictures of products and handed them off to engineers. Direct Design skips that: the person with the vision builds the thing.</p>
+		<p>Vibe coding is throwing a prompt at an AI and hoping for the best. Direct Design requires you to hold the entire product in your head: user problem, interaction model, edge cases, feel.</p>
+		<p>You make every product decision yourself, in real time, with a working version in front of you. I was shaping an app.</p>
+		<p>This isn't a new idea, either. Designers have debated whether they should code since at least 2011. The pushback was always that coding constrains creative thinking, that it keeps you stuck in incremental improvements instead of big leaps.</p>
+		<p>That tension is still real. But AI changes the equation: you need to master the problem, and AI handles the code.</p>
+		<p>Only after the prototype felt right did I move to production: React, Cloudflare for hosting and sync, offline support so it works without internet. Having nailed the prototype made that port almost mechanical. On another project where I skipped that step, I spent more time rewriting than building.</p>
+
+		<h3>Working with AI as a product team of two</h3>
+		<p>Claude wrote 100% of the code. But I led the process the way a product lead would run a team. I defined the scope and what "good" looks like.</p>
+		<p>I pushed for unit tests, audits, security checks. I asked Claude to review the entire plan as if we were a full product team: what are we missing? What would a security engineer flag?</p>
+		<p>Claude made the technical decisions, and I set the process and quality bar. Infrastructure and deployment were always part of my product decisions, but I hadn't worked hands-on with current tools. Leading a product that needed them turned out to be the best way to get current.</p>
+		<p>A few things I learned about making this work:</p>
+		<p><strong>AI tends to converge toward solutions too quickly.</strong> I tried having Claude act as a UX researcher, interviewing me about my needs, but it wants to solve the problem rather than sit with it. A human researcher would keep you in the problem space longer, and you need to actively resist that pull toward premature closure.</p>
+		<p><strong>AI made product decisions richer.</strong> I studied several calendar and task apps to cherry-pick only the use cases that matched how I actually work. Take recurring events: Claude and I dissected how Outlook and Google Calendar handle them, then built custom logic from the best of both.</p>
+		<p>What happens when you move one instance? When a monthly event falls on the 31st in a short month? That kind of comparative depth is where AI felt most valuable.</p>
+		<p><strong>The "yes man" problem is real.</strong> Left unchecked, Claude will agree with everything you say. The fix: explicitly ask it to question your decisions and audit the work.</p>
+		<p><strong>Context management matters.</strong> Over 6 days of development, I learned that the quality of output depends heavily on how you structure your sessions and what documentation you maintain. There's a real skill curve to working with AI tools, and it pays off fast.</p>
+		<p><strong>Knowing a little is more useful than knowing nothing.</strong> I know HTML and CSS, enough to spot when generated markup has structural problems. That's what worried me: if I can catch these, how many issues am I missing in the parts I can't evaluate?</p>
+		<p>So I pushed hard for audits, especially for backend and security. Trust in AI output has to be earned through structure.</p>
+
+		<h3>The moment it clicked</h3>
+		<p>I had a system for marking tasks as "important" (highlighted in yellow). On a whim, I thought: what if important tasks could also be marked as "urgent," with text cycling through colors like a power-up in a video game?</p>
+		<video src="media/tudux-urgente.mp4" controls></video>
+		<p>I expected it to be silly. But it actually works. It grabs my attention in a way that a red dot or a bold label just doesn't.</p>
+		<p><strong>I could do it because it's my app.</strong> Nobody had to approve it. A direct line from idea to implementation.</p>
+
+		<h3>What this points to</h3>
+		<p>We've been chasing personalization since the early days of the internet: recommendation algorithms, customizable dashboards, theme settings. But these are surface-level.</p>
+		<p>I'd never been able to change how an app actually works. This time I chose which problems it would even solve.</p>
+		<p>Features built around my use cases, interactions that match how I think. That's a different kind of personalization.</p>
+		<p>I don't think that stays niche. Building a custom app in 6 days with AI is still early, and it still requires a lot of product thinking to get right.</p>
+		<p>The direction is clear: the cost of making software that fits one person is dropping fast, and "use this app like everyone else" may not stay the default for long.</p>
+		<p>I'm still thinking through what that means. But for now, the practical takeaway is simpler: if you're a designer frustrated with your tools, you might be closer to building your own than you think.</p>
+	</article>
+
+	<!-- Article: Government -->
+	<article id="government" class="article-view" hidden>
+		<a href="#" class="back-link" aria-label="Back to article list">Back</a>
+
+		<h2>Four years building UX from scratch in Argentina's government</h2>
+		<p class="article-lead">I joined Argentina's national government in 2015 as the UX coordinator. There was no UX team and no established way of doing research or maintaining a design system. My job was to build all of that while simultaneously redesigning how millions of citizens interact with public services online.</p>
+		<p class="article-context"><em>Between 2016 and 2020 I led the UX practice for Argentina's national government digital products. This is about building a design culture from scratch, and shipping public services used by millions.</em></p>
+		<img src="media/argentina-miargentina-desktop-mobile.png" alt="Argentina.gob.ar desktop view and Mi Argentina mobile view" loading="lazy">
+		<hr>
+
+		<p>I came from two years at Buenos Aires' city government, where I'd introduced UX practices for the first time: usability testing, content architecture, analytics review. I'd also built the city's web and mobile design systems. But national scale was different: more agencies, territorial diversity, and citizens with very different contexts depending on where they lived.</p>
+
+		<h3>To change the experience, change the culture</h3>
+		<p>A national agency for digital services had just been created with a clear goal: public digital services should work as well as private ones. I participated in the meetings that defined the area's vision. In those conversations I landed on a phrase that stuck: <strong>better services require better processes, which require a work culture on par with the best digital teams, public or private.</strong></p>
+		<p>I didn't invent anything new. It was the result of working through the vision with the undersecretary and other leaders. But that phrase became how we explained what we were trying to do, both internally and to other government agencies.</p>
+
+		<h3>Designing for citizens</h3>
+		<p>Before argentina.gob.ar, every ministry had a separate website with different designs and different ways of explaining services to people. The goal was one product for citizens, organized around what people actually need. That meant working with content teams, developers, and government officials to align expectations around shared components and templates.</p>
+		<p>Many projects with other agencies started as raw requests. There was often a drive to show innovation through technology, but without the expertise to translate that into something useful for citizens. My team and I would take those requests through research, define strategy, and propose MVPs.</p>
+		<p>A ministry asked us to build a panic button app. We knew it was a bad idea without real integration with security forces. What confirmed it was the ministry's own citizen contact area: the people running the phone lines for emergencies and guidance told us the same thing.</p>
+		<p>So instead of building an app that couldn't deliver on its promise, I proposed making the nationwide network of service centers accessible through an interactive map on argentina.gob.ar. Until then, citizens could only find those centers by calling the phone line. It helped people find help.</p>
+		<p>That project also pushed me to improve how areas within the same agency communicated about service design. The people closest to citizens (phone operators, front desk staff) often had the clearest picture of what was needed. Connecting that knowledge with the teams making product decisions became a recurring part of the job.</p>
+
+		<h3>Building the team</h3>
+		<p>The first months I did everything myself: user flows, wireframes, prototypes, even static HTML that kept being used long after. The first hires weren't UX professionals. Among them, a psychologist who had never worked in digital products, a graphic designer, and a web designer.</p>
+		<p>I taught them my process for planning research, conducting interviews, running usability tests. They observed first, then ran their own.</p>
+		<p><strong>The psychologist applied her clinical training to research in ways I couldn't have.</strong> She knew how to build rapport and read participants at a level that came from years of professional practice.</p>
+		<p>One of the graphic designers became a UX/UI designer and today leads a product design team at a bank. And another hire, a web designer, found her specialty in accessibility.</p>
+		<p>Six months in, I had 6 junior and semi-senior people. By year two, 12, including seniors. At that point I could start delegating: first small tasks, then entire projects.</p>
+
+		<h3>What scaled, and what survived</h3>
+		<p>Mi Argentina, the citizen profile platform, included a digital national ID with a QR code and auto-refresh for in-person validation. That pattern became the template for driver's licenses, vaccination cards, and other credentials from different agencies.</p>
+		<p>A designer on my team (the one who started as a graphic designer) defined the scalable components for Mi Argentina. I supervised that work and made sure it coordinated with the design system, which was also under my responsibility. When the pattern gained traction, it helped convince other agencies to publish their credentials using the same interaction logic.</p>
+		<p>After I left, the government changed, and the CSS and some templates changed with it. But the core UX and the component systems are still there. I still use Mi Argentina, argentina.gob.ar, and AFIP/ARCA's monotributo service regularly.</p>
+		<p>In some cases the current teams have added things I wouldn't have designed the same way. The components scale and handle new functionality without breaking the experience for citizens.</p>
+
+		<h3>What I took away</h3>
+		<p>Designing for a country felt different from designing for a market segment. I couldn't define a target user as a persona with specific behaviors. The same person approaches a tax service and a health program with completely different mental models. That pushed me to build research systems flexible enough for contexts I hadn't fully encountered yet.</p>
+		<p>Government was slow. Every decision depended on coordination between agencies with their own priorities and governance. I learned to find the spaces where good work was possible and push hard within them.</p>
+		<p>Building the team was the part that lasted. I hired for potential and taught the method, and we built the guidelines and component systems still in use today. That's what the motto meant in practice: getting the culture right is how we made lasting impact on digital services.</p>
+	</article>
+
+	<!-- Article: Chat Crecer -->
+	<article id="chatcrecer" class="article-view" hidden>
+		<a href="#" class="back-link" aria-label="Back to article list">Back</a>
+
+		<h2>Designing a health chatbot for pregnant women through field research</h2>
+		<p class="article-lead">While leading UX for Argentina's national government digital products, I ran the research and conversational design for Chat Crecer, a Ministry of Health project aimed at connecting pregnant women with prenatal care. The original brief asked for a mobile app or an email campaign. Field research led us to Facebook Messenger.</p>
+		<p class="article-context"><em>As part of my role heading UX for Argentina's national government digital products (2015-2020), I led Chat Crecer from field research through prototyping and national launch. The pilot increased prenatal checkups by 35% and won a Webby Award in 2019.</em></p>
+		<img src="media/chatcrecer-screens.png" alt="Chat Crecer conversation screens" loading="lazy">
+		<hr>
+
+		<h3>The brief said app or email</h3>
+		<p>The Ministry of Health wanted to connect pregnant women with prenatal care. My team and I spent months doing field research before committing to a direction, interviewing pregnant women and health workers at public health centers and hospitals across Buenos Aires province.</p>
+		<p>Many women had limited phone storage and expensive mobile data, so an app wasn't realistic. Email barely existed in this population. But everyone had Facebook, and they used it daily through Messenger.</p>
+		<p>We proposed building the experience inside Facebook Messenger. They didn't need to download anything or create an account, and it ran on data they were already paying for. The Ministry accepted.</p>
+
+		<h3>Designing the conversation</h3>
+		<p>The core of Chat Crecer was a flow I designed and prototyped. The chatbot asked each mother for her due date, then guided her into scheduling an appointment at her local health center for prenatal checkups.</p>
+		<p>Proactive notifications followed up after each appointment, checking whether she had gone and scheduling the next one. That cycle is what drove the health outcomes. Beyond the structured flows, the chatbot recognized many queries in natural language, so women could ask questions in their own words about pregnancy, symptoms, or available services.</p>
+		<p>Combining features in a single chat thread was the harder design challenge. Menus, content delivery, the scheduling sequence, and reminders each worked in isolation but competed for attention when combined. There are no separate screens in a chat to orient the user, so we had to design around that constraint.</p>
+		<p>The content required an interdisciplinary team. Medical information had to be accurate and sound natural coming from a chatbot.</p>
+		<p>We worked with doctors who reviewed every piece of content, and social scientists (psychologists, sociologists, anthropologists) who helped us understand how pregnancy was talked about in these communities. I designed how all of that became conversation flows inside Messenger.</p>
+
+		<h3>Taking the design to the field</h3>
+		<p>We ran the pilot in Pilar, a district in the outskirts of Buenos Aires. Ten digital literacy workers went to health centers and recruited participants in person, showing pregnant women how to start a conversation with Chat Crecer on their phones.</p>
+		<p>In-person recruitment was deliberate. We couldn't expect women in this population to find a chatbot through digital channels. The literacy workers bridged the physical health system and the digital experience.</p>
+		<p>Connectivity was worse than expected. We designed the bot to handle dropped conversations gracefully, and printed physical materials at health centers so women could find the chat again without needing to save a link.</p>
+
+		<h3>What it achieved, and what it taught me</h3>
+		<p>Over 3,000 women were contacted in the Pilar pilot. Around 800 became active users, and one in three who tried the chatbot continued using it.</p>
+		<p>Users attended 1.2 more prenatal checkups on average compared to the control group, a 35% increase. In NPS surveys across 288 interviews, the score was 77.78, with 78% rating the experience 9 or 10.</p>
+		<p>Chat Crecer won a Webby Award in 2019 in the Health category and launched nationally through the Ministry of Health. The project ended when the next government decided not to renew the chatbot provider's contract.</p>
+		<p>The project taught me a different kind of interaction design, where the decisions are about sequence, timing, and tone. This kind of chatbot has to build rapport with each message. Getting that right meant deeply understanding the people using it, and that's what months of field research gave us.</p>
+	</article>
+
+	<script>
+		function route() {
+			var hash = location.hash.slice(1);
+			var articles = document.querySelectorAll('.article-view');
+			var list = document.getElementById('writing');
+			if (hash && document.getElementById(hash) && document.getElementById(hash).classList.contains('article-view')) {
+				list.hidden = true;
+				articles.forEach(function(a) { a.hidden = true; });
+				document.getElementById(hash).hidden = false;
+				window.scrollTo(0, 0);
+			} else {
+				list.hidden = false;
+				articles.forEach(function(a) { a.hidden = true; });
+			}
+		}
+		window.addEventListener('hashchange', route);
+		window.addEventListener('DOMContentLoaded', route);
+	</script>
+
 </body>
 </html>
