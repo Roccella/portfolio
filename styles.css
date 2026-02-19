@@ -222,8 +222,8 @@ hr {
 	font-family: "Inter", Arial, Helvetica, sans-serif;
 	font-size: 1.3rem;
 	font-weight: 600;
-	padding: 8px 16px;
-	margin-top: 14px;
+	padding: 8px 24px;
+	margin-top: 12px;
 	margin-bottom: 0;
 	line-height: 1.4;
 }
@@ -231,7 +231,7 @@ hr {
 .card-desc {
 	font-size: 0.95rem;
 	color: #999;
-	padding: 0 16px;
+	padding: 0 24px;
 	margin-bottom: 8px;
 	line-height: 1.5;
 }
@@ -289,7 +289,7 @@ hr {
 	font-size: 1.05rem;
 	line-height: 1.75;
 	color: #ccc;
-	margin-bottom: 20px;
+	margin-bottom: 24px;
 	text-wrap: pretty;
 }
 
