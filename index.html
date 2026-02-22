@@ -98,13 +98,12 @@
 
 				<h3>Why I stopped looking for the right app</h3>
 				<p>Like a lot of people I know, I was using Google Calendar as my entire life management system. Having a single "home" app beats juggling three, even when it's not great at everything.</p>
-				<p>I tried Outlook, Trello, Google Tasks. Friends tried Notion, Todoist, TickTick, Things. We all bounced back to Calendar. The tools were either too rigid or too flexible, and none matched how we actually think about our days.</p>
-				<p><strong>How I organize my life reflects how my brain works.</strong> None of the apps I tried matched that.</p>
+				<p>I tried Outlook, Trello, Google Tasks. Friends tried Notion, Todoist, TickTick, Things. We all bounced back to Calendar. The tools were either too rigid or too flexible. How I organize my life reflects how my brain works, and none of those apps matched that.</p>
 				<p>There was always friction: interaction choices that don't match your mental model, visual decisions that feel slightly off. Because you use these apps every day, that friction compounds. So I decided to build my own.</p>
 
 				<h3>Getting the feel right first</h3>
 				<p>Many AI-built side projects I've seen start with architecture: database, API, deployment, and then add UI on top. I went the other way. <strong>I started with a static prototype and spent days just getting the feel right.</strong></p>
-				<p>Before any real code, I built an interactive HTML prototype and used it obsessively, testing whether the layout and interactions felt right, whether the whole thing felt like mine. Building a web app with cloud sync is a solved problem. I was more worried about building something that felt wrong and using it anyway.</p>
+				<p>Before any real code, I built an interactive HTML prototype and used it obsessively. I needed to know if the layout and interactions felt right, if the whole thing felt like mine. Building a web app with cloud sync is a solved problem. I was more worried about building something that felt wrong and using it anyway.</p>
 				<p>Alex Kehr recently wrote about this, coining the term "Direct Design": what happens when you remove the translation layer between intent and reality. For 30 years, designers made pictures of products and handed them off to engineers. Direct Design skips that: the person with the vision builds the thing.</p>
 				<p>Vibe coding is throwing a prompt at an AI and hoping for the best. Direct Design requires you to hold the entire product in your head: user problem, interaction model, edge cases, feel.</p>
 				<p>You make every product decision yourself, in real time, with a working version in front of you. I was shaping an app.</p>
@@ -131,9 +130,7 @@
 				<p><strong>I could do it because it's my app.</strong> Nobody had to approve it. A direct line from idea to implementation.</p>
 
 				<h3>What this points to</h3>
-				<p>We've been chasing personalization since the early days of the internet: recommendation algorithms, customizable dashboards, theme settings. But these are surface-level.</p>
-				<p>I'd never been able to change how an app actually works. This time I chose which problems it would even solve.</p>
-				<p>Features built around my use cases, interactions that match how I think. That's a different kind of personalization.</p>
+				<p>Until now, personalization meant recommendation algorithms, customizable dashboards, theme settings. I'd never been able to change how an app actually works, or choose which problems it would even solve.</p>
 				<p>I don't think that stays niche. Building a custom app in 6 days with AI is still early, and it still requires a lot of product thinking to get right.</p>
 				<p>The direction is clear: the cost of making software that fits one person is dropping fast, and "use this app like everyone else" may not stay the default for long.</p>
 				<p>I'm still thinking through what that means. But for now, the practical takeaway is simpler: if you're a designer frustrated with your tools, you might be closer to building your own than you think.</p>
@@ -207,7 +204,7 @@
 
 				<h3>Designing the conversation</h3>
 				<p>The core of Chat Crecer was a flow I designed and prototyped. The chatbot asked each mother for her due date, then guided her into scheduling an appointment at her local health center for prenatal checkups.</p>
-				<p>Proactive notifications followed up after each appointment, checking whether she had gone and scheduling the next one. That cycle is what drove the health outcomes. Beyond the structured flows, the chatbot recognized many queries in natural language, so women could ask questions in their own words about pregnancy, symptoms, or available services.</p>
+				<p>Proactive notifications followed up after each appointment, checking whether she had gone and scheduling the next one. That cycle is what drove the health outcomes. Beyond the structured flows, the chatbot recognized many queries in natural language. Women could ask about pregnancy, symptoms, or available services in their own words.</p>
 				<p>Combining features in a single chat thread was the harder design challenge. Menus, content delivery, the scheduling sequence, and reminders each worked in isolation but competed for attention when combined. There are no separate screens in a chat to orient the user, so we had to design around that constraint.</p>
 				<p>The content required an interdisciplinary team. Medical information had to be accurate and sound natural coming from a chatbot.</p>
 				<p>We worked with doctors who reviewed every piece of content, and social scientists (psychologists, sociologists, anthropologists) who helped us understand how pregnancy was talked about in these communities. I designed how all of that became conversation flows inside Messenger.</p>
