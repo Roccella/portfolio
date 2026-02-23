@@ -15,7 +15,7 @@ Single-page vanilla portfolio (HTML + CSS + JS, no build step). Hosted on GitHub
 Articles come from `../blog-articles/` drafts. The editorial voice and formatting rules live there:
 
 - **`../blog-articles/article-guidelines.md`** — structure, media rules, formatting (including video behavior: autoplay loop muted playsinline)
-- **`~/.claude/editorial-guide.md`** — voice, tone, conciseness
+- **Skill `writing-voice`** (`~/.claude/skills/writing-voice/SKILL.md`) — voice, tone, conciseness
 
 When adding or updating an article in the portfolio, follow those guidelines.
 
