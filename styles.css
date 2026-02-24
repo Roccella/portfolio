@@ -71,6 +71,10 @@ body {
 	text-decoration: none;
 }
 
+.sidebar-link:visited {
+	color: #4169e1;
+}
+
 .sidebar-link:hover {
 	text-decoration: underline;
 }
@@ -294,6 +298,24 @@ hr {
 	color: #ccc;
 	margin-bottom: 24px;
 	text-wrap: pretty;
+}
+
+/* Body text links */
+
+.content-view a,
+.bio a {
+	color: #4169e1;
+	text-decoration: none;
+}
+
+.content-view a:visited,
+.bio a:visited {
+	color: #4169e1;
+}
+
+.content-view a:hover,
+.bio a:hover {
+	text-decoration: underline;
 }
 
 /* Prev / Next */
