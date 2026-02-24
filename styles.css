@@ -71,10 +71,6 @@ body {
 	text-decoration: none;
 }
 
-.sidebar-link:visited {
-	color: #4169e1;
-}
-
 .sidebar-link:hover {
 	text-decoration: underline;
 }
@@ -300,21 +296,18 @@ hr {
 	text-wrap: pretty;
 }
 
-/* Body text links */
+/* Inline links in article text */
 
-.content-view a,
-.bio a {
-	color: #4169e1;
+.content-view p a {
+	color: #6b8cff;
 	text-decoration: none;
 }
 
-.content-view a:visited,
-.bio a:visited {
-	color: #4169e1;
+.content-view p a:visited {
+	color: #6b8cff;
 }
 
-.content-view a:hover,
-.bio a:hover {
+.content-view p a:hover {
 	text-decoration: underline;
 }
 
