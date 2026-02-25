@@ -92,36 +92,33 @@
 				<a href="#" class="back-link" aria-label="Back to about">&larr; Back</a>
 
 				<h2>I had to build a product end-to-end with AI to figure out how to actually work with it</h2>
-				<p class="article-lead">I'm a product designer with 20 years of experience in strategy, research, and technical decisions. A few weeks ago I shipped a task management app built entirely with Claude: cloud sync, offline support, about 6 days of building. The process ended up producing more than just the app.</p>
+				<p class="article-lead">I'm a product designer with 20 years of experience in strategy, research, and technical decisions. A few weeks ago I shipped a task management app built entirely with Claude: cloud sync, offline support, about 6 days of building.</p>
 				<p class="article-context"><em>Tudux is a personal task management app I designed and built with AI. The process produced both the app and a collaboration framework I now use across projects.</em></p>
 				<img src="media/tudux-desktop-mobile.png" alt="Tudux: desktop and mobile views" loading="lazy">
 
 				<h3>Why I stopped looking for the right app</h3>
 				<p>Like a lot of people I know, I was using Google Calendar as my entire life management system. Having a single "home" app beats juggling three, even when it's not great at everything.</p>
-				<p>I tried Outlook, Trello, Google Tasks. People around me went through Notion, Todoist, TickTick, Things. We all bounced back to Calendar. The tools were either too rigid or too flexible. How I organize my life reflects how my brain works, and none of those apps matched that.</p>
-				<p>There was always friction: interaction choices that don't match your mental model, visual decisions that feel slightly off. Because you use these apps every day, that friction compounds. So I decided to build my own.</p>
+				<p>I tried Outlook, Trello, Google Tasks. People around me went through Notion, Todoist, TickTick, Things. We all bounced back to Calendar. Some locked me into one way of working. Others gave me so many options that organizing them was its own task. How I organize my life reflects how my brain works, and none of those apps matched that.</p>
+				<p>There was always friction: interaction choices that didn't match my mental model, visual decisions that felt slightly off. I use these apps every day, and that friction compounds. So I decided to build my own.</p>
 
 				<h3>Getting the feel right first</h3>
-				<p>Many AI-built side projects start with architecture: database, API, deployment, then add UI on top. I went the other way. <strong>I started with a static prototype and spent days getting the feel right.</strong></p>
+				<p>The typical approach I'd seen was starting with architecture: database, API, deployment, then adding UI on top. I went the other way. <strong>I started with a static prototype and spent days getting the feel right.</strong></p>
 				<p>Before any real code, I built an interactive HTML prototype and lived with it for a few days. I needed to know if the whole thing felt like mine. Building a web app with cloud sync is a solved problem. I was more worried about building something that felt wrong and using it anyway.</p>
-				<p><a href="https://x.com/alexkehr/status/2021667248608584183" target="_blank" rel="noopener noreferrer">Alex Kehr</a> coined the term "Direct Design": removing the translation layer between intent and reality. For 30 years, designers made pictures of products and handed them off to engineers. Direct Design skips that: the person with the vision builds the thing.</p>
-				<p>Direct Design is different from vibe coding, which is throwing a prompt at an AI and hoping for the best. It requires holding the entire product in your head and making every decision yourself, in real time.</p>
+				<p><a href="https://x.com/alexkehr/status/2021667248608584183" target="_blank" rel="noopener noreferrer">Alex Kehr</a> coined the term "Direct Design": the person with the vision builds the thing, instead of making mockups for someone else to build. That's what this was. I had to hold the entire product in my head and make every decision in real time.</p>
 				<p>Once the prototype felt right, I moved to production: React, Cloudflare for hosting and sync, offline support. Having nailed the prototype made that port almost mechanical.</p>
 
 				<h3>Working with AI as a product team of two</h3>
 				<p>Claude wrote 100% of the code. I led the process the way a product lead runs a team: defined the scope, set the quality bar, pushed for tests, and asked for security reviews.</p>
 				<p>Claude made the technical decisions, and I set the direction. Infrastructure and deployment had always been part of my product work, but I hadn't built with current tools directly. Leading a product that needed them turned out to be the best way to learn.</p>
 				<p>A few things I learned about making this work:</p>
-				<p><strong>AI kept converging toward solutions too quickly.</strong> I tried having Claude act as a UX researcher, but it wants to solve the problem rather than sit with it. You need to actively resist that pull toward premature closure.</p>
+				<p><strong>AI kept converging toward solutions too quickly.</strong> I tried having Claude act as a UX researcher, but it wants to solve the problem rather than sit with it. I had to actively resist that pull toward premature closure.</p>
 				<p><strong>AI made my product decisions richer.</strong> I studied several calendar and task apps to cherry-pick use cases that matched how I actually work. Recurring events were a good example: Claude and I dissected how Outlook and Google Calendar handle them, then built custom logic from the best of both. That kind of comparative depth is where AI felt most valuable.</p>
-				<p><strong>The "yes man" problem showed up constantly.</strong> Left unchecked, Claude agrees with everything you say. The fix: explicitly ask it to question your decisions and audit the work. I pushed hard for audits, especially for backend and security. I know enough HTML and CSS to spot frontend problems, but for everything else, audits were my safety net.</p>
-				<p><strong>Context management turned out to matter most.</strong> I started writing rules for how AI should approach the project: voice, quality standards, domain knowledge. It wasn't planned, but without them, output quality drifted between sessions.</p>
+				<p><strong>I couldn't audit the backend myself.</strong> I know enough HTML and CSS to spot frontend problems, but for everything else I had to set up a different dynamic. I explicitly asked Claude to question my decisions and pushed hard for audits, especially for backend and security.</p>
+				<p><strong>Context management turned out to matter most.</strong> I started writing rules for how AI should approach the project: when to run tests, how to handle sync between databases, security audit criteria, UI standards. Without them, output quality drifted between sessions.</p>
 
 				<h3>What the process produced</h3>
-				<p>I've been using Tudux every day since I shipped it. That's how iteration has been going: bugs show up during real use and I fix them in the same session, if an idea strikes I can try it immediately, things that don't stick get simplified. No backlog, approval process, or sprint planning. Each session picks up where the last one left off.</p>
-				<p>It was the first complete product I built with AI. But I didn't expect the second output: over the course of building, I ended up creating a structured way to collaborate with AI.</p>
-				<p>If I'd had it from the start, the build would have been smoother. But I couldn't have written it without going through the process. I needed a real project to find out where things break.</p>
-				<p>Tudux was worth building as a product, and the collaboration method it produced is something I'll keep refining.</p>
+				<p>I've been using Tudux every day since I shipped it. That's how iteration has been going: bugs show up during real use and I fix them in the same session, if an idea strikes I can try it immediately. Things that don't stick get simplified over time. No backlog, approval process, or sprint planning.</p>
+				<p>It was the first complete product I built with AI. But I didn't expect the second output: over the course of building, I ended up creating a structured way to collaborate with AI. I couldn't have written it without going through the process. I needed a real project to find out where things break, and the collaboration framework that came out of it is already part of how I start new projects.</p>
 
 				<nav class="prev-next">
 					<a href="#">&larr; About</a>
