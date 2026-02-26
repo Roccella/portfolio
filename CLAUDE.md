@@ -31,6 +31,14 @@ All values are defined as CSS variables in `:root` at the top of `styles.css`. N
 
 **Border radius:** `4px` (media/images) | `8px` (cards, buttons) | `9999px` (avatars)
 
+## Router
+
+The SPA router uses `hashchange` + `window.scrollTo(0, 0)` to switch views. Gotcha: `hashchange` doesn't fire when clicking a link whose hash is already active. Without intervention, the browser processes the `href` as a native anchor and scrolls to the element with that id.
+
+Fix: a `click` event listener intercepts all internal `href="#..."` links, calls `preventDefault()`, and either updates the hash (triggering `hashchange`) or calls `scrollTo(0, 0)` directly if the target is already the active view.
+
+Never remove or bypass this click handler without replacing this behavior.
+
 ## Adding an Article
 
 1. Add nav item in sidebar with `data-target` matching the section id
