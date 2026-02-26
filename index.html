@@ -238,6 +238,22 @@
 			window.scrollTo(0, 0);
 		}
 
+		document.addEventListener('click', function(e) {
+			var link = e.target.closest('a[href]');
+			if (!link) return;
+			var href = link.getAttribute('href');
+			if (!href || !href.startsWith('#')) return;
+			var target = href === '#' ? 'about' : href.slice(1);
+			if (views.indexOf(target) === -1) return;
+			e.preventDefault();
+			var currentHash = location.hash === '' || location.hash === '#' ? 'about' : location.hash.slice(1);
+			if (currentHash === target) {
+				window.scrollTo(0, 0);
+			} else {
+				location.hash = target === 'about' ? '' : target;
+			}
+		});
+
 		window.addEventListener('hashchange', route);
 		window.addEventListener('DOMContentLoaded', route);
 	</script>
