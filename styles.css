@@ -70,14 +70,14 @@ body {
 }
 
 .sidebar-name {
-	font-family: "Inter", Arial, Helvetica, sans-serif;
+	font-family: "Plus Jakarta Sans", Arial, Helvetica, sans-serif;
 	font-size: 1rem;
 	font-weight: 700;
 	margin-bottom: 4px;
 }
 
 .sidebar-headline {
-	font-family: "Inter", Arial, Helvetica, sans-serif;
+	font-family: "Source Serif 4", Georgia, "Times New Roman", serif;
 	font-size: 0.875rem;
 	font-weight: 400;
 	color: var(--text-muted);
@@ -86,7 +86,7 @@ body {
 }
 
 .sidebar-link {
-	font-family: "Inter", Arial, Helvetica, sans-serif;
+	font-family: "Plus Jakarta Sans", Arial, Helvetica, sans-serif;
 	font-size: 0.875rem;
 	color: var(--accent);
 	text-decoration: none;
@@ -103,7 +103,7 @@ body {
 }
 
 .nav-item {
-	font-family: "Inter", Arial, Helvetica, sans-serif;
+	font-family: "Plus Jakarta Sans", Arial, Helvetica, sans-serif;
 	font-size: 0.875rem;
 	font-weight: 400;
 	color: var(--text-muted);
@@ -158,7 +158,7 @@ body {
 }
 
 h1 {
-	font-family: "Inter", Arial, Helvetica, sans-serif;
+	font-family: "Plus Jakarta Sans", Arial, Helvetica, sans-serif;
 	font-size: 2rem;
 	font-weight: 700;
 	line-height: 1.25;
@@ -166,7 +166,7 @@ h1 {
 }
 
 .headline {
-	font-family: "Inter", Arial, Helvetica, sans-serif;
+	font-family: "Source Serif 4", Georgia, "Times New Roman", serif;
 	font-size: 1rem;
 	font-weight: 400;
 	color: var(--text-muted);
@@ -190,7 +190,7 @@ hr {
 }
 
 .cta {
-	font-family: "Inter", Arial, Helvetica, sans-serif;
+	font-family: "Plus Jakarta Sans", Arial, Helvetica, sans-serif;
 	display: inline-block;
 	margin-top: 16px;
 	padding: 12px 32px;
@@ -260,7 +260,7 @@ hr {
 }
 
 .article-card h3 {
-	font-family: "Inter", Arial, Helvetica, sans-serif;
+	font-family: "Plus Jakarta Sans", Arial, Helvetica, sans-serif;
 	font-size: 1.5rem;
 	font-weight: 600;
 	padding: 8px 24px;
@@ -280,7 +280,7 @@ hr {
 /* Article content */
 
 .content-view h2 {
-	font-family: "Inter", Arial, Helvetica, sans-serif;
+	font-family: "Plus Jakarta Sans", Arial, Helvetica, sans-serif;
 	font-size: 1.5rem;
 	font-weight: 700;
 	margin-bottom: 16px;
@@ -288,7 +288,7 @@ hr {
 }
 
 .content-view > h3 {
-	font-family: "Inter", Arial, Helvetica, sans-serif;
+	font-family: "Plus Jakarta Sans", Arial, Helvetica, sans-serif;
 	font-size: 1.125rem;
 	font-weight: 600;
 	line-height: 1.4;
@@ -363,7 +363,7 @@ hr {
 }
 
 .prev-next a {
-	font-family: "Inter", Arial, Helvetica, sans-serif;
+	font-family: "Plus Jakarta Sans", Arial, Helvetica, sans-serif;
 	font-size: 0.875rem;
 	color: var(--text-muted);
 	text-decoration: none;
@@ -395,7 +395,7 @@ hr {
 	}
 
 	.back-link {
-		font-family: "Inter", Arial, Helvetica, sans-serif;
+		font-family: "Plus Jakarta Sans", Arial, Helvetica, sans-serif;
 		font-size: 0.875rem;
 		color: var(--text-muted);
 		text-decoration: none;
