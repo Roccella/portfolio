@@ -23,6 +23,8 @@ When adding or updating an article in the portfolio, follow those guidelines.
 
 All values are defined as CSS variables in `:root` at the top of `styles.css`. Never hardcode colors - always use the tokens.
 
+**Fonts:** Plus Jakarta Sans (headings, nav, buttons, UI) | Source Serif 4 (body text, headline, bio)
+
 **Color tokens:** `--bg` | `--text` | `--text-secondary` | `--text-muted` | `--border` | `--border-hover` | `--accent` | `--accent-hover` | `--accent-active` | `--link-inline`
 
 **Type scale:** `0.875rem` (nav, small labels) | `0.9rem` (secondary/context text) | `1rem` (body) | `1.125rem` (h3) | `1.5rem` (h2, card titles) | `2rem` (h1)
