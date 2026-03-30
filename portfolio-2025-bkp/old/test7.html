@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>test7</title>
+	<style>
+		/* Body styles */
+		body {
+			padding: 1rem 0; 
+			margin: 0; /* Remove default margin */
+			overflow-x: hidden; /* Hide horizontal scrollbar */
+		}
+
+		/* Scroll container styles */
+		.scroll-container {
+			display: flex;
+			overflow-x: auto; /* Enable horizontal scrolling */
+			scroll-snap-type: x mandatory;
+			-webkit-overflow-scrolling: touch; /* Enable momentum scrolling on iOS */
+			position: relative; /* Added to allow absolute positioning */
+			margin-bottom: 1rem; /* Margin below scroll container */
+			scrollbar-width: none; /* Firefox */
+			-ms-overflow-style: none; /* Internet Explorer and Edge */
+		}
+
+		.scroll-list {
+			list-style-type: none;
+			padding: 0;
+			margin: 0;
+			display: flex;
+			height: auto; /* Automatically adjust height based on content */
+			gap: 1rem; /* Spacing between scroll items */
+			padding-left: 1rem; /* Offset for body padding */
+		}
+
+		.scroll-item {
+			flex: 0 0 auto;
+			width: calc(25% - 1rem); /* Default width: 4 items per row */
+			scroll-snap-align: center;
+			box-sizing: border-box;
+			position: relative; /* Added for absolute positioning */
+			overflow: hidden; /* Added to hide overflow */
+			display: flex; /* Ensure flex behavior */
+			justify-content: center; /* Center content horizontally */
+			align-items: flex-start; /* Align items to the top */
+			border: 1px solid #ddd; /* Border width */
+			border-radius: 8px; /* Border radius for images and videos */
+			background-color: #fff; /* Background color for scroll items */
+			padding: 0; /* Remove padding from scroll item */
+		}
+
+		.scroll-item img,
+		.scroll-item video {
+			max-width: 100%;
+			max-height: 100%;
+			object-fit: contain; /* Ensure images/videos fit within container */
+			border-radius: 8px; /* Border radius for images and videos */
+		}
+
+		@media (max-width: 440px) {
+			.scroll-item {
+				width: 90%; /* 1 item per row */
+			}
+		}
+
+		@media (min-width: 441px) and (max-width: 820px) {
+			.scroll-item {
+				width: calc(49% - 1.5rem); /* 2 items per row */
+			}
+		}
+
+		@media (min-width: 821px) and (max-width: 1220px) {
+			.scroll-item {
+				width: calc(33.33% - 1.5rem); /* 3 items per row */
+			}
+		}
+
+		@media (min-width: 1221px) {
+			.scroll-item {
+				width: calc(25% - 1.5rem); /* 4 items per row */
+			}
+		}
+	</style>
+</head>
+<body>
+	<!-- First scroll container -->
+	<div class="scroll-container">
+		<ul class="scroll-list">
+			<li class="scroll-item">
+				<video controls>
+					<source src="video.mp4" type="video/mp4">
+				</video>
+			</li>
+			<li class="scroll-item"><img src="img.jpg" alt="Image 1"></li>
+			<li class="scroll-item"><img src="img.jpg" alt="Image 2"></li>
+			<li class="scroll-item"><img src="img.jpg" alt="Image 3"></li>
+			<li class="scroll-item"><img src="img.jpg" alt="Image 4"></li>
+			<li class="scroll-item"><img src="img.jpg" alt="Image 5"></li>
+			<li class="scroll-item"><img src="img.jpg" alt="Image 6"></li>
+			<li class="scroll-item"><img src="img.jpg" alt="Image 7"></li>
+		</ul>
+	</div>
+
+	<!-- Second scroll container (copy) -->
+	<div class="scroll-container">
+		<ul class="scroll-list">
+			<li class="scroll-item">
+				<video controls>
+					<source src="video.mp4" type="video/mp4">
+				</video>
+			</li>
+			<li class="scroll-item"><img src="img.jpg" alt="Image 1"></li>
+			<li class="scroll-item"><img src="img.jpg" alt="Image 2"></li>
+			<li class="scroll-item"><img src="img.jpg" alt="Image 3"></li>
+			<li class="scroll-item"><img src="img.jpg" alt="Image 4"></li>
+			<li class="scroll-item"><img src="img.jpg" alt="Image 5"></li>
+			<li class="scroll-item"><img src="img.jpg" alt="Image 6"></li>
+			<li class="scroll-item"><img src="img.jpg" alt="Image 7"></li>
+		</ul>
+	</div>
+</body>
+</html>

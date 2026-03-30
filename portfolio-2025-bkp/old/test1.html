@@ -1,0 +1,146 @@
+<html>
+<head>
+    <title>test2</title>
+    <script src=" https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js "></script>
+    <link href=" https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css " rel="stylesheet">
+</head>
+<body>
+
+    <section class="header">
+        <img src="linkedin-avatar.jpg" alt="">
+        <h1>Pablo Roccella <br>
+        <span>Product Designer</span></h1>
+        <p><a href="#">Contact me on Linkedin</a></p>
+    </section>
+
+
+    <section>
+        <h2>Experience summary</h2>
+        <ul>
+            <li>
+                <h3>20 years working on digital design</h3>
+                <p>Brand, web, mobile</p>
+            </li>
+            <li>
+                <h3>10 years doing product design</h3>
+                <p>UX/UI, research, strategy, services</p>
+            </li>
+            <li>
+                <h3>Working on different industries</h3>
+                <p>Corporate, government, finance, advertising</p>
+            </li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>Design process</h2>
+        <ul>
+            <li>
+                <h3>Research</h3>
+                <p>Users, business, market, trends</p>
+            </li>
+            <li>
+                <h3>Design</h3>
+                <p>User journeys, flowcharts, screens, prototypes, design systems</p>
+            </li>
+            <li>
+                <h3>Test</h3>
+                <p>Usability tests, A/B testing, KPI measuring</p>
+            </li>
+            <li>
+                <h3>Define</h3>
+                <p>Developers hands-off, new prototypes and tests</p>
+            </li>
+        </ul>
+    </section>
+
+    <section>
+
+        <h2>Work</h2>
+
+        <section id="image-carousel" class="splide" aria-label="Splunk Show images and videos">
+            <h3>Splunk Show</h3>
+            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ipsa saepe reiciendis totam accusantium. Soluta ratione consectetur temporibus.</p>
+            <div class="splide__track">
+                <ul class="splide__list">
+                    <li class="splide__slide">
+                        <img src="img3.jpg" alt="">
+                    </li>
+                    <li class="splide__slide">
+                        <img src="img3.jpg" alt="">
+                    </li>
+                    <li class="splide__slide">
+                        <img src="img3.jpg" alt="">
+                    </li>
+                    <li class="splide__slide">
+                        <img src="img3.jpg" alt="">
+                    </li>
+                    <li class="splide__slide">
+                        <img src="img3.jpg" alt="">
+                    </li>
+                    <li class="splide__slide">
+                        <video width="auto" height="100%" controls>
+                            <source src="video1.mp4" type="video/mp4">
+                        </video> 
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+
+
+
+    </section>
+
+    <style>
+        .splide__slide {
+            text-align: center;
+            background-color: #eee;
+            border: solid 1px #ddd;
+            border-radius: 8px;
+            vertical-align: center;
+        }
+        .splide__slide img,
+        .splide__slide video {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            display: block;
+        }
+        .header img {
+            width: 15rem;
+            border-radius: 100rem;
+        }
+    </style>
+    <script>
+
+
+
+        new Splide( '#image-carousel' ).mount();
+
+        var splide = new Splide( '.splide', {
+            perPage: 3,
+            gap: '1rem',
+            padding: '3rem',
+            autoHeight: true,
+            breakpoints: {
+                1080: {
+                perPage: 2,
+                },
+                580: {
+                perPage: 1,
+                },
+            },
+        } );
+
+        
+        splide.mount();
+        
+
+
+        
+    </script>
+</body>
+
+
+</html>
