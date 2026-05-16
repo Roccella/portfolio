@@ -29,9 +29,15 @@ When adding or updating an article in the portfolio, follow those guidelines.
 
 All values are defined as CSS variables in `:root` at the top of `styles.css`. Never hardcode colors - always use the tokens.
 
-**Color tokens:** `--bg` | `--text` | `--text-secondary` | `--text-muted` | `--border` | `--border-hover` | `--accent` | `--accent-hover` | `--accent-active` | `--link-inline`
+**Font family:** `"Geist"` everywhere, system sans fallback. Body weight `400` (Geist `300` is too thin on dark bg).
 
-**Type scale:** `0.875rem` (nav, small labels) | `0.9rem` (secondary/context text) | `1rem` (body) | `1.125rem` (h3) | `1.5rem` (h2, card titles) | `2rem` (h1)
+**Color tokens:** `--bg` | `--text` | `--text-secondary` | `--text-muted` | `--border` | `--border-hover` | `--accent` | `--accent-hover` | `--accent-active` | `--link`
+
+**Color usage:** `--accent` for fills (button bg, decorative left-border on active nav). `--link` for text-as-link (inline links in article paragraphs). Never use `--accent` as text color, fails AA contrast on dark bg.
+
+**Type scale:** `0.875rem` (nav, small labels, secondary text) | `1rem` (body) | `1.125rem` (h3 in articles) | `1.5rem` (h2, card titles) | `2rem` (h1)
+
+**Line-height scale:** `1.2` (display, h1) | `1.3` (heading, h2/h3) | `1.4` (UI text, labels) | `1.6` (reading, paragraphs)
 
 **Spacing scale:** 4 | 8 | 12 | 16 | 24 | 32 | 48 | 64px
 
