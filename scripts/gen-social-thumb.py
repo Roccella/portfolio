@@ -8,9 +8,12 @@ Layout reverse-engineered from the original committed thumb:
 - Name: bold sans, white, cap-height 62, baseline y=314, left x=426
 - Headline: serif, white, total ink height ~34, cap-top y=361, left x=426
 
-Fonts fall back to macOS system fonts (Arial Bold / Georgia), the closest
-match to the original. Edit NAME / HEADLINE and re-run when the positioning
-text changes; keep in sync with profile.md.
+WARNING: the live committed social-thumb.png is hand-made with Geist (by
+Pablo, in a design tool), NOT produced by this script. This script only
+renders an Arial Bold / Georgia approximation, because Geist is not installed
+as a system font. Do NOT run it to "regenerate" the live thumb: it would
+overwrite the Geist version with the fallback. Use it as a quick draft only,
+then redo the final in Geist. Keep NAME / HEADLINE in sync with profile.md.
 """
 from PIL import Image, ImageDraw, ImageFont
 
