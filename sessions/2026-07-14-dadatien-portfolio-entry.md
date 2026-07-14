@@ -20,6 +20,10 @@
 - `social-thumb.png` untouched (hand-made in Geist; do not regenerate via script).
 - PENDING "Sync new blog article" item is a standing rule, left in place.
 
+## Hero update (same day)
+
+Pablo swapped the hero/cover for a better-composed, taller capture. Re-optimized to 1800x1108 (~1.3MB) and re-synced `media/dadatien-store-desktop-mobile.png`. Second commit + push to prod.
+
 ## Result
 
 Committed and pushed to `origin/main` (GitHub Pages prod).
