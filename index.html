@@ -48,6 +48,7 @@
 			<a class="sidebar-link" href="https://www.linkedin.com/in/roccella/" target="_blank">LinkedIn</a>
 			<nav class="sidebar-nav">
 				<a href="#" class="nav-item" data-target="about">About me</a>
+				<a href="#dadatien" class="nav-item" data-target="dadatien">Dadatién: the personal-store SaaS I designed and built with AI</a>
 				<a href="#agentrules" class="nav-item" data-target="agentrules">My current framework for working with multiple AI coding agents</a>
 				<a href="#tudux" class="nav-item" data-target="tudux">Building my first end-to-end AI-developed cross-platform product</a>
 				<a href="#government" class="nav-item" data-target="government">Five years building UX from scratch in Argentina's government</a>
@@ -73,6 +74,11 @@
 				<p class="bio">Before this, 20 years across government, finance, health, and tech: leading Argentina's national digital services end-to-end, designing the banking experience for senior citizens at Banco Macro, building design systems at scale, and creating one of the first health-focused conversational experiences for the Argentine Ministry of Health.</p>
 				<a class="cta" href="https://www.linkedin.com/in/roccella/" target="_blank">LinkedIn</a>
 				<div class="article-list">
+					<a class="article-card" href="#dadatien">
+						<img src="media/dadatien-store-desktop-mobile.png" alt="Dadatién store shown on desktop and mobile" loading="lazy">
+						<h3>Dadatién: the personal-store SaaS I designed and built with AI</h3>
+						<p class="card-desc">A personal-store SaaS for selling with your own link, designed and built end to end with AI, from the product down to the infrastructure.</p>
+					</a>
 					<a class="article-card" href="#agentrules">
 						<img src="media/agent-rules-cover.png" alt="Agent rules framework architecture diagram" loading="lazy">
 						<h3>My current framework for working with multiple AI coding agents</h3>
@@ -96,9 +102,59 @@
 				</div>
 				<nav class="prev-next">
 					<span></span>
-					<a href="#agentrules">My current framework for working with multiple AI coding agents &rarr;</a>
+					<a href="#dadatien">Dadatién: the personal-store SaaS I designed and built with AI &rarr;</a>
 				</nav>
 			</section>
+
+			<!-- Article: Dadatién -->
+			<article id="dadatien" class="content-view" hidden>
+				<a href="#" class="back-link" aria-label="Back to about">&larr; Back</a>
+
+				<h2>Dadatién: the personal-store SaaS I designed and built with AI</h2>
+				<p class="article-lead">I had a few pieces of music gear to sell. In Argentina that means Facebook Marketplace, Mercado Libre, or scattering photos across a couple of social feeds and hoping the right person scrolls by. I've used all three, and I think each one serves the platform more than the person selling.</p>
+				<p class="article-context"><em>I designed and built Dadatién end to end with AI coding agents. It's the most complex thing I've built this way, and the one where I've managed the most areas myself: code, design, business, and infrastructure.</em></p>
+				<img src="media/dadatien-store-desktop-mobile.png" alt="Dadatién store, buyer view, desktop and mobile side by side" loading="lazy">
+				<p>So I built my own. Dadatién is a personal store with your own link, where you show your products with photos and videos and share it wherever you want. <a href="https://dadatien.ar" target="_blank" rel="noopener noreferrer">dadatien.ar</a></p>
+
+				<h3>What I wanted</h3>
+				<p>Marketplaces solve a different problem than mine. Mercado Libre runs logistics and payments; it's a full commercial machine. Facebook Marketplace is free and lives inside a social network, but it puts a login wall and ads between the buyer and the product.</p>
+				<p>When I sold things myself, the listings ended up scattered across a few feeds, with a handful of links to keep track of and nothing in one place. I wanted a single place for the products and their prices, public and easy to share, and quick and clean to browse.</p>
+				<p>It's a single-page app, so the catalog loads once and moving between products is instant, and each product still has its own shareable URL. The store carries the seller's identity and keeps Dadatién in the background, because it's their shop.</p>
+				<video autoplay loop muted playsinline>
+					<source src="media/dadatien-store.webm" type="video/webm">
+				</video>
+
+				<h3>Built for sellers, myself included</h3>
+				<p>Both <a href="#tudux">Tudux</a> (a previous app I built with AI) and Dadatién came out of personal needs, and in each one I'm the user. Wanting the best UX for myself is why every detail has to work as well as it can.</p>
+				<p>I can add one product after another without waiting for uploads to finish. With the details and photos ready ahead of time, a whole catalog goes up in a few minutes. And I control every part: the order of the photos and videos, what shows in the store and what stays hidden, whether a single product or the whole store is public.</p>
+				<video autoplay loop muted playsinline>
+					<source src="media/dadatien-admin.webm" type="video/webm">
+				</video>
+
+				<h3>A design system that lives inside the product</h3>
+				<p>I've built design systems before, but the idea this time was different. I wanted the system inside the platform itself, not off in a separate tool: the exact same components the product runs on, laid out in one place where I could look them over. What I see there is what actually ships.</p>
+				<p>From my super-admin account there's a UI system section. It shows the real components, the pages, and their content the way they appear in the product. All of it in one place: colors, type, and spacing as tokens; every page with its texts; the flows between screens as diagrams; and a set of checks that flags anything that has drifted. Nothing there is editable. I look things over and ask the coding agent for changes, and it makes them directly in the platform's code.</p>
+				<p>The main rule is to reuse what the system already has. When there's a component or token for something, the agent uses it instead of building a new one that does the same job. Hand-rolling is fine when something is genuinely new, as long as it gets folded back into the system instead of staying outside it. That keeps the code clean and the system coherent as the product grows.</p>
+				<p>The vision was always this, and getting it to work took a long time. It's at a solid point now, with room to get better. I'm taking the idea further in newer projects, toward laying flows out on a canvas closer to a design tool, always on the product's real front-end.</p>
+				<img src="media/dadatien-ui-system.png" alt="Dadatién UI system: real components and tokens laid out for inspection" loading="lazy">
+
+				<h3>Built to run itself</h3>
+				<p>I wanted this to hold up as a small internet business that mostly pays for itself, so I spent real time on the economics and the infrastructure.</p>
+				<p>I wanted a free plan people can use for as long as they want, not a trial that locks after a few days. A lot of solo-developer SaaS run the countdown trial, and it's a bad experience. So I subsidize the free plan on purpose, and I worked out what each store costs me to run and how many paying ones cover each jump in infrastructure. These are numbers to test in practice, not facts yet, but the model tells me which signals to watch as more people come in.</p>
+				<p>The other decision was to not lock into any provider. Storage, video, payments, and email are each behind an adapter. I can swap the video host without touching the rest of the platform. When I moved the image storage to Cloudflare, it followed a migration path I'd documented when I built the infrastructure, so it went smoothly and nothing else had to change.</p>
+				<p>The same super-admin account is where I flip the switches I want to keep manual rather than through the agent, like moving registration between invite-only and open. It's also where I watch the metrics and the funnel from visit to contact.</p>
+				<img src="media/dadatien-platform-config.png" alt="Dadatién super-admin: platform configuration with the operational feature flags" loading="lazy">
+
+				<h3>It took a few pivots to get simple</h3>
+				<p>The first version of this idea was almost the opposite of what shipped. I started out wanting to score buyers with AI, to avoid scams when selling. I simplified that into a contact book to track who I was dealing with and what I'd sold. Then I simplified again, and what survived was the plainest version of all: a personal store, a catalog to share that puts people in contact.</p>
+				<p>I wanted to treat this one as a real product and a real business, partly as a case study and partly because I found selling used things online genuinely frustrating and nobody had approached it the way I wanted. UX in a product matters to me more than almost anything, and this was a way to prove that end to end.</p>
+				<p>I use Dadatién myself and see how it behaves in real use. After all those pivots the core is settled and it holds up: no critical bugs, and enough guardrails to let other people use it. Beyond that, it's a matter of watching how it goes and adjusting as it scales: the product, the way I work with the coding agents, and the definitions underneath, both business and product. It's live at <a href="https://dadatien.ar" target="_blank" rel="noopener noreferrer">dadatien.ar</a>, in invite-only beta for now and opening to the public soon.</p>
+
+				<nav class="prev-next">
+					<a href="#">&larr; About</a>
+					<a href="#agentrules">My current framework for working with multiple AI coding agents &rarr;</a>
+				</nav>
+			</article>
 
 			<!-- Article: Agent Rules -->
 			<article id="agentrules" class="content-view" hidden>
@@ -139,7 +195,7 @@
 				<p>I'd recommend treating your agent configuration as its own project. Build your own rules and skills for control and to learn how agents actually work. Some people prefer downloading complex pre-made setups, and that's valid too. Working with agents is new enough that nobody has the definitive answer. Mine is personal and curated, and that's the point.</p>
 
 				<nav class="prev-next">
-					<a href="#">&larr; About</a>
+					<a href="#dadatien">&larr; Dadatién: the personal-store SaaS I designed and built with AI</a>
 					<a href="#tudux">Building my first end-to-end AI-developed cross-platform product &rarr;</a>
 				</nav>
 			</article>
@@ -272,7 +328,7 @@
 	</div>
 
 	<script>
-		var views = ['about', 'agentrules', 'tudux', 'government', 'chatcrecer'];
+		var views = ['about', 'dadatien', 'agentrules', 'tudux', 'government', 'chatcrecer'];
 
 		function route() {
 			var hash = location.hash.slice(1);
