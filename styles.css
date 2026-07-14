@@ -334,6 +334,10 @@ hr {
 	margin-bottom: 8px;
 }
 
+.content-view > img + h2 {
+	margin-top: 24px;
+}
+
 .content-view video {
 	width: 100%;
 	border-radius: 4px;
