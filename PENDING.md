@@ -1,5 +1,7 @@
 # portfolio - Pendientes
 
+<!-- pending-lint: over140=1 deep=0 -->
+
 ## Pendientes
 
 - Sync: cuando se publique un artículo nuevo en blog-articles, sincronizarlo acá (HTML + media) y pushear.

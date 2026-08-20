@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+python3 "$(git rev-parse --show-toplevel)/scripts/pending-lint.py" . || exit 1
