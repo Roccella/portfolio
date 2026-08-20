@@ -26,6 +26,11 @@ Three measurements, all mechanical:
      one `## NNN` in BACKLOG.md, both ways. A repo with no BACKLOG.md is reported
      as unmigrated and the check is skipped, which is how a repo crosses over.
 
+     One section is exempt: `## Notas` (or `## Notes`) holds what the reader
+     needs while scanning and what no item owns — a deadline somebody else set,
+     an expiry, a number to quote back. It routes nowhere, so its bullets carry
+     no id. The cap and the nesting limit still apply to them.
+
      Ids are picked at random from 001-999 rather than counted up: "the next free
      number" has to read the file to find the maximum, and that read is the race
      between two sessions. Uniqueness is enforced here, so a collision fails a
@@ -73,17 +78,30 @@ HEADING_RE = re.compile(r"^##\s+([0-9]{3})\b", re.MULTILINE)
 # wording; anything else in an empty section is a real item.
 PLACEHOLDERS = {"- Sin pendientes.", "- No pending items."}
 
+# A `## Notas` section holds what the reader needs while scanning and what no
+# item owns: a deadline somebody else set, a credential's expiry, a number to
+# quote back. It routes nowhere, so its bullets carry no id and pair with
+# nothing. Everything else still applies to them — the 140-char cap, the nesting
+# limit — because the failure this exempts is "a fact has no home", not "this
+# line is too long to bother trimming". Named sections rather than a per-section
+# marker: a marker anyone can write is a way out of the pairing, and the pairing
+# is the format.
+NOTES_SECTIONS = {"notas", "notes"}
+
 
 def blocks(text):
-    """Yield (kind, first_line_no, text, depth) for each bullet and paragraph.
+    """Yield (kind, first_line_no, text, depth, section) per bullet and paragraph.
 
     A bullet runs from its marker to the next marker, blank line or heading, so a
     wrapped bullet is measured whole rather than per physical line. `depth` is the
     bullet's nesting level, 0 for top level, and None for a paragraph. Indent is
     read as a stack of widths, so 2-space and 4-space files both come out right.
+    `section` is the nearest preceding `##` heading, lowercased and stripped, or
+    "" above the first one; only the pairing check reads it.
     """
     lines = text.splitlines()
-    buf, start, kind, depth = [], 0, None, None
+    buf, start, kind, depth, held = [], 0, None, None, ""
+    section = ""
     fenced = False
     commented = False
     stack = []
@@ -94,7 +112,7 @@ def blocks(text):
         if buf and kind:
             joined = " ".join(l.strip() for l in buf).strip()
             if joined:
-                out = (kind, start + 1, joined, depth)
+                out = (kind, start + 1, joined, depth, held)
         buf, kind, depth = [], None, None
         return out
 
@@ -127,6 +145,11 @@ def blocks(text):
             out = flush()
             if out:
                 yield out
+            if is_heading:
+                # Only `##` names a section; `###` and deeper sit inside the one
+                # already open, so they must not clear it.
+                if re.match(r"^##(?!#)", stripped):
+                    section = stripped.lstrip("#").strip().lower()
             if not stripped or is_heading:
                 stack = []
             continue
@@ -139,12 +162,12 @@ def blocks(text):
                 stack.pop()
             if not stack or stack[-1] < indent:
                 stack.append(indent)
-            buf, start, kind, depth = [stripped], i, "bullet", len(stack) - 1
+            buf, start, kind, depth, held = [stripped], i, "bullet", len(stack) - 1, section
             continue
         if kind:
             buf.append(stripped)
         else:
-            buf, start, kind, depth = [stripped], i, "paragraph", None
+            buf, start, kind, depth, held = [stripped], i, "paragraph", None, section
 
     out = flush()
     if out:
@@ -155,7 +178,7 @@ def long_blocks(text):
     """Every bullet or paragraph over PROSE_LIMIT, as (lineno, kind, length, head)."""
     return [
         (lineno, kind, len(body), body[:70])
-        for kind, lineno, body, _ in blocks(text)
+        for kind, lineno, body, _, _section in blocks(text)
         if len(body) > PROSE_LIMIT
     ]
 
@@ -164,7 +187,7 @@ def deep_blocks(text):
     """Every bullet nested past MAX_DEPTH, as (lineno, depth, head)."""
     return [
         (lineno, depth, body[:70])
-        for kind, lineno, body, depth in blocks(text)
+        for kind, lineno, body, depth, _section in blocks(text)
         if kind == "bullet" and depth is not None and depth > MAX_DEPTH
     ]
 
@@ -173,11 +196,13 @@ def pending_ids(text):
     """(ids, unkeyed) over top-level bullets: the ids found, and the ones missing.
 
     `unkeyed` is (lineno, head) per top-level bullet with no `**[id]**` opener.
-    Placeholders are neither.
+    Placeholders and anything under a NOTES_SECTIONS heading are neither.
     """
     ids, unkeyed = [], []
-    for kind, lineno, body, depth in blocks(text):
+    for kind, lineno, body, depth, section in blocks(text):
         if kind != "bullet" or depth != 0 or body in PLACEHOLDERS:
+            continue
+        if section in NOTES_SECTIONS:
             continue
         found = ID_RE.match(body)
         if found:
@@ -414,6 +439,18 @@ PAIRING_TEST_CASES = [
     ("duplicate heading fails", "- **[042]** x\n", "# B\n\n## 042 - a\n\nd\n\n## 042 - a\n\nd\n", True),
     ("the empty-section placeholder needs no id", "- Sin pendientes.\n", "# B\n", False),
     ("a sub-bullet needs no id", "- **[042]** x\n  - detail\n", "# B\n\n## 042 - a\n\nd\n", False),
+    ("a Notas bullet needs no id",
+     "\n## Notas\n\n- Entrega el 17/09/2026.\n", "# B\n", False),
+    ("Notes is the same section under its English name",
+     "\n## Notes\n\n- Due 17/09/2026.\n", "# B\n", False),
+    ("a `###` inside Notas does not reopen pairing",
+     "\n## Notas\n\n### Fechas\n\n- Entrega el 17/09/2026.\n", "# B\n", False),
+    ("the exemption ends at the next `##`",
+     "\n## Notas\n\n- a note\n\n## Tema\n\n- plain bullet\n", "# B\n", True),
+    ("a Notas bullet still obeys the cap",
+     "\n## Notas\n\n- " + "x" * 200 + "\n", "# B\n", True),
+    ("an entry whose bullet moved to Notas is orphaned",
+     "\n## Notas\n\n- **[042]** x\n", "# B\n\n## 042 - a\n\nd\n", True),
 ]
 
 
@@ -429,7 +466,7 @@ def self_test():
             bad.append(f"  {label}: expected {'reject' if should_fail else 'accept'}, got the opposite")
 
     for label, text, expected in DEPTH_TEST_CASES:
-        got = max([d for k, _, _, d in blocks(text) if k == "bullet" and d is not None] or [0])
+        got = max([d for k, _, _, d, _s in blocks(text) if k == "bullet" and d is not None] or [0])
         if got != expected:
             bad.append(f"  {label}: expected max depth {expected}, got {got}")
 
