@@ -37,6 +37,13 @@ Three measurements, all mechanical:
      commit instead of drifting. A freed id may be reused, but not one still
      visible in the last year of `git log`, or the history conflates two items.
 
+  4. In-flight mirroring, not ratcheted. `## En curso` (or `## In flight`) is the
+     one section a bullet can carry its id into without a matching `## NNN` in
+     BACKLOG.md, because that entry was deleted in the commit that moved the item
+     to QUEUE.md. Every bullet there must instead name a live QUEUE.md row's `ID`
+     slug in its text, and every row's slug must be named by exactly one such
+     bullet, checked both ways so the two files cannot drift apart in silence.
+
 There is deliberately no cap on how many items PENDING.md may hold. The count of
 open items is information about the work, not a defect, and the ratchet this file
 used to keep on it turned "I opened a new theme" into a failing build.
@@ -87,6 +94,18 @@ PLACEHOLDERS = {"- Sin pendientes.", "- No pending items."}
 # marker: a marker anyone can write is a way out of the pairing, and the pairing
 # is the format.
 NOTES_SECTIONS = {"notas", "notes"}
+
+# `## En curso` is the one place PENDING.md names work that lives in QUEUE.md.
+# Its bullets keep their id and carry no BACKLOG.md entry, because the entry
+# was deleted in the commit that added the row. It is not a second home for
+# the spec -- the spec is the row -- it is the index staying true about what
+# is running. The pairing is against the queue instead of the backlog, and it
+# is checked in both directions so it cannot drift in silence.
+INFLIGHT_SECTIONS = {"en curso", "in flight"}
+
+# `  - **ID**: some-slug`: a QUEUE.md row's own id, checked against the
+# `## En curso` bullets that are supposed to mirror it.
+QUEUE_ID_RE = re.compile(r"^\s*-\s+\*\*ID\*\*:\s*(\S.*)$", re.MULTILINE)
 
 
 def blocks(text):
@@ -196,13 +215,15 @@ def pending_ids(text):
     """(ids, unkeyed) over top-level bullets: the ids found, and the ones missing.
 
     `unkeyed` is (lineno, head) per top-level bullet with no `**[id]**` opener.
-    Placeholders and anything under a NOTES_SECTIONS heading are neither.
+    Placeholders and anything under a NOTES_SECTIONS or INFLIGHT_SECTIONS
+    heading are neither: an in-flight bullet's detail lives in the QUEUE.md
+    row, not in BACKLOG.md, so it is checked by check_inflight instead.
     """
     ids, unkeyed = [], []
     for kind, lineno, body, depth, section in blocks(text):
         if kind != "bullet" or depth != 0 or body in PLACEHOLDERS:
             continue
-        if section in NOTES_SECTIONS:
+        if section in NOTES_SECTIONS or section in INFLIGHT_SECTIONS:
             continue
         found = ID_RE.match(body)
         if found:
@@ -215,6 +236,24 @@ def pending_ids(text):
 def backlog_ids(text):
     """Every `## id` heading in BACKLOG.md, in order."""
     return HEADING_RE.findall(text)
+
+
+def inflight_bullets(text):
+    """(id_or_None, lineno, body) per top-level bullet under an INFLIGHT_SECTIONS heading."""
+    out = []
+    for kind, lineno, body, depth, section in blocks(text):
+        if kind != "bullet" or depth != 0 or body in PLACEHOLDERS:
+            continue
+        if section not in INFLIGHT_SECTIONS:
+            continue
+        found = ID_RE.match(body)
+        out.append((found.group(1) if found else None, lineno, body))
+    return out
+
+
+def queue_row_ids(text):
+    """Every row `ID` in a QUEUE.md, as a list of slugs. A template placeholder is not one."""
+    return [m for m in QUEUE_ID_RE.findall(text) if not (m.startswith("[") and m.endswith("]"))]
 
 
 def check_pairing(name, pending_text, backlog_path, failures, notices):
@@ -253,6 +292,54 @@ def check_pairing(name, pending_text, backlog_path, failures, notices):
             f"{name}/BACKLOG.md: `## {b}` has no bullet in PENDING.md. "
             f"Delete it, or the item was closed on one side only"
         )
+
+
+def check_inflight(name, pending_text, backlog_text, queue_path, failures, notices):
+    rows = queue_row_ids(open(queue_path, encoding="utf-8").read()) if os.path.exists(queue_path) else []
+    bullets = inflight_bullets(pending_text)
+
+    if rows and not bullets:
+        failures.append(
+            f"{name}/PENDING.md: QUEUE.md has {len(rows)} row(s) and no "
+            f"`## En curso` section mirrors them"
+        )
+        return
+
+    back = set(backlog_ids(backlog_text))
+    by_slug = {}
+    for pid, lineno, body in bullets:
+        if pid is None:
+            failures.append(
+                f"{name}/PENDING.md:{lineno}: `## En curso` bullet has no `**[NNN]**` id: {body[:70]}..."
+            )
+            continue
+        if pid in back:
+            failures.append(
+                f"{name}/PENDING.md:{lineno}: `[{pid}]` still has `## {pid}` in BACKLOG.md, but the "
+                f"entry is deleted in the commit that adds the row, so the item has two homes"
+            )
+        if len(re.findall(r"\*\*\[" + re.escape(pid) + r"\]\*\*", pending_text)) > 1:
+            failures.append(
+                f"{name}/PENDING.md:{lineno}: id `{pid}` also appears elsewhere in PENDING.md"
+            )
+        found_row = next((r for r in rows if r in body), None)
+        if found_row is None:
+            failures.append(
+                f"{name}/PENDING.md:{lineno}: `## En curso` bullet names no QUEUE.md row id, "
+                f"so it is not in flight -- it belongs in a theme section with its BACKLOG.md entry"
+            )
+            continue
+        by_slug.setdefault(found_row, []).append(lineno)
+
+    for row in rows:
+        linenos = by_slug.get(row, [])
+        if not linenos:
+            failures.append(f"{name}/PENDING.md: QUEUE.md row `{row}` has no `## En curso` bullet")
+        elif len(linenos) > 1:
+            failures.append(
+                f"{name}/PENDING.md: QUEUE.md row `{row}` is named by more than one `## En curso` "
+                f"bullet, at lines {', '.join(str(l) for l in linenos)}"
+            )
 
 
 def check(repo_root, failures, notices):
@@ -312,7 +399,10 @@ def check(repo_root, failures, notices):
             f"(baseline {deep_cap})"
         )
 
-    check_pairing(name, text, os.path.join(repo_root, "BACKLOG.md"), failures, notices)
+    backlog_path = os.path.join(repo_root, "BACKLOG.md")
+    check_pairing(name, text, backlog_path, failures, notices)
+    backlog_text = open(backlog_path, encoding="utf-8").read() if os.path.exists(backlog_path) else ""
+    check_inflight(name, text, backlog_text, os.path.join(repo_root, "QUEUE.md"), failures, notices)
 
 
 def ratchet(repo_root):
@@ -453,6 +543,42 @@ PAIRING_TEST_CASES = [
      "\n## Notas\n\n- **[042]** x\n", "# B\n\n## 042 - a\n\nd\n", True),
 ]
 
+# (label, pending_body, backlog_text, queue_text_or_None, expect_failure)
+QUEUE_TEST_CASES = [
+    ("a queue row mirrored by an En curso bullet passes",
+     "\n## En curso\n\n- **[042]** doing the thing (some-slug)\n", "# B\n",
+     "# Q\n\n## P0\n\n- [ ] thing\n  - **ID**: some-slug\n  - **Origin**: x\n  - **Acceptance**: `true`\n",
+     False),
+    ("a queue row with no En curso section fails",
+     "\n## T\n\n- Sin pendientes.\n", "# B\n",
+     "# Q\n\n## P0\n\n- [ ] thing\n  - **ID**: some-slug\n  - **Origin**: x\n  - **Acceptance**: `true`\n",
+     True),
+    ("an En curso bullet whose id still has a BACKLOG.md heading fails",
+     "\n## En curso\n\n- **[042]** doing the thing (some-slug)\n", "# B\n\n## 042 - a\n\nd\n",
+     "# Q\n\n## P0\n\n- [ ] thing\n  - **ID**: some-slug\n  - **Origin**: x\n  - **Acceptance**: `true`\n",
+     True),
+    ("an En curso bullet naming no row slug fails",
+     "\n## En curso\n\n- **[042]** doing something unrelated\n", "# B\n",
+     "# Q\n\n## P0\n\n- [ ] thing\n  - **ID**: some-slug\n  - **Origin**: x\n  - **Acceptance**: `true`\n",
+     True),
+    ("an En curso bullet with no **[NNN]** id fails",
+     "\n## En curso\n\n- doing the thing (some-slug)\n", "# B\n",
+     "# Q\n\n## P0\n\n- [ ] thing\n  - **ID**: some-slug\n  - **Origin**: x\n  - **Acceptance**: `true`\n",
+     True),
+    ("two En curso bullets naming the same row slug fail",
+     "\n## En curso\n\n- **[042]** doing the thing (some-slug)\n"
+     "- **[043]** also doing the thing (some-slug)\n", "# B\n",
+     "# Q\n\n## P0\n\n- [ ] thing\n  - **ID**: some-slug\n  - **Origin**: x\n  - **Acceptance**: `true`\n",
+     True),
+    ("an empty queue and no En curso section passes",
+     "\n## T\n\n- Sin pendientes.\n", "# B\n", None, False),
+    ("an En curso bullet whose id is reused by a theme-section bullet fails",
+     "\n## T\n\n- **[042]** other item\n\n## En curso\n\n- **[042]** doing the thing (some-slug)\n",
+     "# B\n\n## 042 - a\n\nd\n",
+     "# Q\n\n## P0\n\n- [ ] thing\n  - **ID**: some-slug\n  - **Origin**: x\n  - **Acceptance**: `true`\n",
+     True),
+]
+
 
 def self_test():
     import tempfile
@@ -470,13 +596,16 @@ def self_test():
         if got != expected:
             bad.append(f"  {label}: expected max depth {expected}, got {got}")
 
-    def run(pending, backlog=None):
+    def run(pending, backlog=None, queue=None):
         with tempfile.TemporaryDirectory() as d:
             with open(os.path.join(d, "PENDING.md"), "w", encoding="utf-8") as fh:
                 fh.write(pending)
             if backlog is not None:
                 with open(os.path.join(d, "BACKLOG.md"), "w", encoding="utf-8") as fh:
                     fh.write(backlog)
+            if queue is not None:
+                with open(os.path.join(d, "QUEUE.md"), "w", encoding="utf-8") as fh:
+                    fh.write(queue)
             failures, notices = [], []
             check(d, failures, notices)
             return failures
@@ -503,8 +632,15 @@ def self_test():
         if got != should_fail:
             bad.append(f"  {label}: expected {'reject' if should_fail else 'accept'}, got the opposite")
 
+    for label, body, backlog, queue, should_fail in QUEUE_TEST_CASES:
+        head = "# P\n\n<!-- pending-lint: over140=0 deep=0 -->\n\n"
+        got = bool(run(head + body, backlog, queue))
+        if got != should_fail:
+            bad.append(f"  {label}: expected {'reject' if should_fail else 'accept'}, got the opposite")
+
     total = (len(SELF_TEST_CASES) + len(COMMENT_TEST_CASES) + len(DEPTH_TEST_CASES)
-             + len(MARKER_TEST_CASES) + len(RATCHET_TEST_CASES) + len(PAIRING_TEST_CASES))
+             + len(MARKER_TEST_CASES) + len(RATCHET_TEST_CASES) + len(PAIRING_TEST_CASES)
+             + len(QUEUE_TEST_CASES))
     if bad:
         print("pending-lint self-test FAILED:")
         print("\n".join(bad))
