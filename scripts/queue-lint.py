@@ -13,21 +13,26 @@ as "these acceptances are good".
 
 Two substantive rules here. The first is the origin floor:
 
-    Every row names where it came from -- its `BACKLOG.md` entry, or the
-    session doc that decided it -- and the entry or doc it names exists.
+    Every row names the session doc it was dispatched from -- the heading its
+    entry was cut into, or the doc itself -- and that heading exists.
 
 `prose-to-spec` used to read a bullet and never the prose behind it, and that
-prose can veto everything the row does: `BACKLOG.md` § *042 - audit-de-lo-ya-
-construido* says the output is checks in `scripts/checks.sh` and never a
-findings doc. The field does not prove the veto was honoured; nothing does.
+prose can veto everything the row does: the entry behind `042 - audit-de-lo-ya-
+construido` said the output is checks in `scripts/checks.sh` and never a
+findings doc, and no title carries that on its own. Which is why the entry is
+cut rather than deleted when the item moves -- the veto has to survive the move
+or the field points at nothing. The field does not prove the veto was honoured;
+nothing does.
 It proves the entry was opened, because the row cannot be written without
 naming it, and it is what lets a refusal go back to the item it came from.
 
-`PENDING.md` is deliberately not an origin. Its bullets carry one clause each
-and no paragraph to veto with, and the bullet is deleted in the commit that
-adds the row -- so a row pointing there points at something that is gone by
-the time anyone follows it. A repo with no `BACKLOG.md` yet names the session
-doc instead (`rules/project-docs.md` § *QUEUE.md*).
+Neither file of the pending pair is an origin, and both are refused for the
+same reason: the commit that adds the row empties them of the item. The bullet
+becomes an `## En curso` line, which carries one clause and no paragraph to
+veto with, and the entry is cut out of `BACKLOG.md` and pasted, verbatim and
+under its own heading, into the session doc that dispatched the row. That doc
+is what `Origin` names, and a row the session decided itself names it bare
+(`rules/project-docs.md` § *QUEUE.md*).
 
 The second is the self-certification floor:
 
@@ -53,6 +58,17 @@ BACKTICKED = re.compile(r"^`([^`]+)`$")
 
 # `BACKLOG.md` § *042 - slug*, or a bare `sessions/2026-01-01-theme.md`.
 ORIGIN = re.compile(r"^`([^`]+)`(?:\s+§\s+\*(.+)\*)?$")
+
+# Two files a row cannot point at, both for the same reason: the commit that
+# adds the row empties them of the item. The bullet becomes an `## En curso`
+# line and the entry is cut into the dispatching session doc, which is what
+# `Origin` names instead (`rules/project-docs.md`, section "QUEUE.md").
+DEAD_ON_ARRIVAL = {
+    "BACKLOG.md": "Origin names `BACKLOG.md`, and the entry it points at is deleted "
+    "by the commit that adds this row. Name the session doc the entry was cut into",
+    "PENDING.md": "Origin names `PENDING.md`, which carries one clause per item and no "
+    "paragraph to veto the row with, and whose bullet this commit rewrites",
+}
 HEADING = re.compile(r"^#{2,3}\s+(.+?)\s*$")
 
 # `test -f PATH`, `[ -f PATH ]`, with an optional leading `!`.
@@ -107,12 +123,13 @@ def discover_origins(root):
     """{path: {heading titles}} for every file a row is allowed to name.
 
     Read from disk, so `lint()` stays pure: `main()` passes the result in and
-    the self-test passes fixtures of its own. `PENDING.md` is absent on
-    purpose; see the origin floor in this file's docstring.
+    the self-test passes fixtures of its own. Only `sessions/` is here, and
+    `PENDING.md` and `BACKLOG.md` are absent on purpose; see the origin floor
+    in this file's docstring and `DEAD_ON_ARRIVAL` above.
     """
     origins = {}
     sessions = sorted(str(p.relative_to(root)) for p in (root / "sessions").glob("*.md"))
-    for path in ["BACKLOG.md", *sessions]:
+    for path in sessions:
         try:
             text = (root / path).read_text(encoding="utf-8")
         except FileNotFoundError:
@@ -134,8 +151,8 @@ def lint(text, origins=None, root=None):
         origin = fields.get("Origin")
         if not origin:
             errors.append(
-                f"{where}\n    no Origin. Name the item's entry "
-                f"(`BACKLOG.md` § *NNN - slug*) or the session doc that decided the row"
+                f"{where}\n    no Origin. Name the session doc this row was "
+                f"dispatched from (`sessions/<date>-<theme>.md` § *NNN - slug*)"
             )
         else:
             match = ORIGIN.match(origin)
@@ -145,7 +162,9 @@ def lint(text, origins=None, root=None):
                 )
             elif origins is not None:
                 where_from, section = match.group(1), match.group(2)
-                if where_from not in origins:
+                if where_from in DEAD_ON_ARRIVAL:
+                    errors.append(f"{where}\n    {DEAD_ON_ARRIVAL[where_from]}")
+                elif where_from not in origins:
                     errors.append(f"{where}\n    Origin names no file: '{where_from}'")
                 elif section and section not in origins[where_from]:
                     errors.append(
@@ -190,10 +209,11 @@ def lint(text, origins=None, root=None):
 
 
 ORIGINS = {
-    "BACKLOG.md": {"042 - audit-de-lo-ya-construido"},
-    "sessions/2026-01-01-theme.md": {"Plan"},
+    "sessions/2026-01-01-theme.md": {"Plan", "042 - audit-de-lo-ya-construido"},
 }
-ORIGIN_LINE = "  - **Origin**: `BACKLOG.md` § *042 - audit-de-lo-ya-construido*\n"
+ORIGIN_LINE = (
+    "  - **Origin**: `sessions/2026-01-01-theme.md` § *042 - audit-de-lo-ya-construido*\n"
+)
 
 # (name, queue text, expected substring, origins passed to lint)
 FIXTURES = [
@@ -220,9 +240,17 @@ FIXTURES = [
     (
         "Origin names a section that does not exist",
         "- [ ] A row\n  - **ID**: a-row\n"
-        "  - **Origin**: `BACKLOG.md` § *A section nobody wrote*\n"
+        "  - **Origin**: `sessions/2026-01-01-theme.md` § *A section nobody wrote*\n"
         "  - **Acceptance**: `npm test`\n",
         "Origin names no section",
+        ORIGINS,
+    ),
+    (
+        "BACKLOG.md is not an origin, however real its section was when drafted",
+        "- [ ] A row\n  - **ID**: a-row\n"
+        "  - **Origin**: `BACKLOG.md` § *042 - audit-de-lo-ya-construido*\n"
+        "  - **Acceptance**: `npm test`\n",
+        "the entry it points at is deleted",
         ORIGINS,
     ),
     (
@@ -230,14 +258,14 @@ FIXTURES = [
         "- [ ] A row\n  - **ID**: a-row\n"
         "  - **Origin**: `PENDING.md` § *Pendientes*\n"
         "  - **Acceptance**: `npm test`\n",
-        "Origin names no file",
+        "carries one clause per item",
         ORIGINS,
     ),
     (
         "a bare PENDING.md is not an origin either",
         "- [ ] A row\n  - **ID**: a-row\n  - **Origin**: `PENDING.md`\n"
         "  - **Acceptance**: `npm test`\n",
-        "Origin names no file",
+        "carries one clause per item",
         ORIGINS,
     ),
     (
@@ -317,10 +345,11 @@ def self_test():
     if lint(CLEAN, ORIGINS):
         failures.append(f"clean fixture rejected: {lint(CLEAN, ORIGINS)}")
     found = discover_origins(Path(__file__).resolve().parent.parent)
-    if "BACKLOG.md" not in found:
-        failures.append("discover_origins() found no BACKLOG.md; main() would resolve nothing")
-    if "PENDING.md" in found:
-        failures.append("discover_origins() offers PENDING.md as an origin; it is not one")
+    if not any(k.startswith("sessions/") for k in found):
+        failures.append("discover_origins() found no session doc; main() would resolve nothing")
+    for name in DEAD_ON_ARRIVAL:
+        if name in found:
+            failures.append(f"discover_origins() offers {name} as an origin; it is not one")
 
     for failure in failures:
         print(failure)
