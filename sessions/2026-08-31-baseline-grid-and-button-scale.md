@@ -76,6 +76,8 @@ New allowed set, replacing `{1.2, 1.3, 1.4, 1.6}`:
 
 11. **The gap above the mobile button, in two passes.** Pablo read 32px as too much, and the first correction to 24px was still too much; it sits at 16px, the value `.sidebar-headline` already used, so the two breakpoints space the identity block identically. The gap belonged to the headline's `margin-bottom` and not to the button's `margin-top`, because adjacent margins collapse and the larger one wins: lowering only the button would have changed nothing. Each gap now has one owner — the headline owns the 16px down to the button, `.cta` owns the 32px down to the rule. `.mobile-header` went 372px to 356px and stayed on the grid.
 
+12. **Item 318 broke a script and the session almost shipped it.** `scripts/gen-social-thumb.py` held an absolute `AVATAR` path to `media/2026-avatar.png`, one of the 9 files `1707eff` deleted, so the next run would have failed on its first open. Found only while checking a memory note that still named the PNG, which is to say: the check that caught it was not part of deleting the files. Repointed to the webp in `1a5dc3d`. The grep run before the deletion covered `index.html`, `resume.html` and `styles.css`, and a deletion sweep has to cover `scripts/` too.
+
 ## Findings not acted on
 
 - `resume.html` carries its own `<style>` block and still loads Inter and Source Serif from `fonts.googleapis.com`. The previous session removed that origin from `index.html` and this one did not touch `resume.html`, so the site still has a page that reaches Google for fonts.
@@ -87,7 +89,7 @@ Achieved: both halves of **204** and all of **318**. 53 block-level text boxes w
 
 Pablo reviewed the rendered pages at every step and approved them: the grid and the button sizes first, then the single LinkedIn button, then the 16px above it. Item **204** and item **318** both close.
 
-Pushed to `origin/main` on his OK, which is the branch GitHub Pages serves. Everything in this session is live, including the WebP conversion and the self-hosted Geist from `2026-08-31-markup-and-performance-pass.md`, which had been sitting unpushed.
+Pushed to `origin/main` on his OK, which is the branch GitHub Pages serves, and the live `styles.css` was confirmed to carry the new scale rather than trusting the push's exit code. Everything in this session is live, including the WebP conversion and the self-hosted Geist from `2026-08-31-markup-and-performance-pass.md`, which had been sitting unpushed.
 
 Next: item **745**, `resume.html` still loading Inter and Source Serif from `fonts.googleapis.com`, the last third-party origin on the site. Its open question first: whether that page should share `styles.css` and the Geist face at all, or stay a separate document with its own serif.
 
