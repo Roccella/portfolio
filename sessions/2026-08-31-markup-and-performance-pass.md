@@ -99,10 +99,42 @@ Converted every PNG to WebP in a scratch directory at `-q 82`, resized to 1200px
 
 ## Execution
 
-_Pending._
+All five planned steps landed, plus a sixth the review added.
+
+**1. Media** (`a0a61a6`). Nine PNGs converted to WebP with `cwebp -q 82`, content images resized to 1200px and the avatar to 256px. 6.513.375 down to 393.896 bytes. `index.html` and the local `resume.html` repointed; the PNGs stay in the tree until Pablo checks the rendered pages, tracked as item **318** in `../hub-career/PENDING.md`. `social-thumb.png` stays PNG because it is the Open Graph image and scrapers are unreliable with WebP.
+
+**2. Geist self-hosted** (`a0a61a6`). `fonts/geist-latin-var.woff2`, 29.288 bytes, declared with `font-display: swap` and preloaded. The two `preconnect` and the render-blocking Google Fonts stylesheet came out. Verified in Chrome: the woff2 is now the second request, ahead of `styles.css`. All five non-ASCII characters across both pages (`·`, `á`, `é`, `ñ`, `ó`) sit inside the latin subset, so no `latin-ext` is needed.
+
+**3. `index.html` markup** (`a0a61a6`). The sidebar identity became the desktop `<h1>`; the `h1` display rule was scoped to `.mobile-header h1` so `.sidebar-name` keeps its own 1rem size. Both navs and the article grid became `ul`/`li` with `aria-label`, the router now sets `aria-current="page"`, the two empty `<span>` spacers came out and prev/next position themselves by class instead of `:last-child`. Every image got `width`, `height` and `decoding="async"`, and `.content-view > img` got `height: auto` so the new attributes do not squash it. `rel="noopener noreferrer"` on the two `target="_blank"` that lacked it.
+
+**4. `--font-sans`** (`a0a61a6`). Replaces 13 literal copies of the Geist stack. This is what was left of 519.
+
+**5. 519 rewritten** (`hub-career` `04e1dea`). Deleted, and replaced by items **204** (baseline grid plus button scale) and **318** (delete the orphan PNGs).
+
+**6. `/review-ui`**, which the plan scheduled last and which produced two fixes of its own.
+
+## Findings from /review-ui
+
+Measured in the browser, not read off the CSS.
+
+- **Contrast** (`f023043`). `.cta` and `.sidebar-link` painted `var(--text)`, an oklch off-white, on `var(--accent)` #4169e1: **4.438:1**, under AA's 4.5:1. Pure white on the same blue is **4.847:1**, so a new `--on-accent` token fixes it without touching the palette. Note for the record: `2026-05-16-typography-and-rhythm-audit.md` claims "~7.5:1 AAA" for this button. That number was never measured.
+- **Target size**. `.prev-next a` was 19,6px tall, under WCAG 2.2 AA's 24x24. `.prev-next` padding-top went 24 to 16 and the link took `padding: 8px 0`, which keeps the border-to-text gap at exactly 24px, puts both values on the spacing scale, and brings the link to 55,2px. Verified: no non-inline focusable is under 24px now.
+- **Focus rings**. `.article-card` used `--accent` (3,87:1) while `.cta` and `.sidebar-link` used `--text` (17:1), and `.nav-item`, `.prev-next a` and `.sidebar-identity` had no rule at all. All unified on `--text`, verified by tabbing.
+- **Two primary buttons to the same URL** on About. Pablo decided to keep both: the sidebar disappears below 900px, so the body CTA is the only one left on mobile.
+- **No style check existed.** No `package.json`, no stylelint, no CI. `scripts/css-lint.py` now runs in `githooks/pre-commit` alongside the two that were there.
+
+## What the browser reports after the changes
+
+Clean: tab order follows visual order, every image has real `alt`, no hand-rolled ARIA, exactly one visible `<h1>` at both desktop and mobile widths with an `H1 H2 H3` outline, and vertical rhythm unchanged from the May audit.
+
+One bug was introduced and caught in the same pass: wrapping the nav anchors in `<li>` un-blockified them, since they had been flex items, and the padding broke the text wrap. `.nav-item { display: block }` restored it.
 
 ## Result
 
-_Pending._
+Achieved: items 1 through 6 above. The first-load payload of the About view drops from about 757.000 bytes to about 57.000, and the third-party origins go from three to one, the one being the Google Analytics that Pablo chose to keep.
 
-Next: step 1, convert the media.
+Pending, and it is Pablo's to run: looking at the rendered pages locally before anything is pushed. Nothing in this session left the machine. Once he confirms, item **318** deletes the orphan PNGs.
+
+Next: item 204, the baseline grid pass across the two columns together with the visual size of the buttons.
+
+Agent: Claude Code (Opus 5, 1M) | 2026-08-31
