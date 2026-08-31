@@ -70,7 +70,7 @@ In pixels on a 4px grid, never a ratio: no ratio times a size in the type scale 
 
 **Border radius:** `4px` (media/images) | `8px` (cards, buttons) | `9999px` (avatars)
 
-**Button heights:** `.sidebar-link` 44px | `.cta` 56px. Set by `line-height` plus vertical padding, never by `height`, and both are `display: block; width: fit-content` so no line box adds leading the height does not account for.
+**Button heights:** `.sidebar-link` 44px in the sidebar, on desktop | `.cta` 56px in `.mobile-header`, under the headline, on mobile. One LinkedIn button per breakpoint and never both: the About view had a second one until 2026-08-31. Set by `line-height` plus vertical padding, never by `height`, and both are `display: block; width: fit-content` so no line box adds leading the height does not account for.
 
 ## Router
 
