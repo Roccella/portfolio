@@ -1,5 +1,6 @@
 /* === Design tokens ===
    Colors:     --bg | --text | --text-secondary | --text-muted | --border | --border-hover
+               --on-accent (texto sobre --accent; el blanco puro es lo que pasa AA)
                --accent | --accent-hover | --accent-active | --link
    Type scale: 0.875rem | 1rem | 1.125rem | 1.5rem | 2rem
    Line-height: 1.2 (display) | 1.3 (heading) | 1.4 (ui) | 1.6 (reading)
@@ -30,6 +31,8 @@
 	--accent-hover: #3357c2;
 	--accent-active: #24429d;
 	--link: #6b8cff;
+
+	--on-accent: #fff;
 
 	--font-sans: "Geist", -apple-system, BlinkMacSystemFont, Arial, sans-serif;
 }
@@ -106,7 +109,7 @@ body {
 	display: inline-block;
 	padding: 8px 16px;
 	background-color: var(--accent);
-	color: var(--text);
+	color: var(--on-accent);
 	border-radius: 8px;
 	font-size: 0.875rem;
 	font-weight: 600;
@@ -233,7 +236,7 @@ hr {
 	margin-top: 16px;
 	padding: 12px 32px;
 	background-color: var(--accent);
-	color: var(--text);
+	color: var(--on-accent);
 	text-decoration: none;
 	border-radius: 8px;
 	font-size: 1rem;
