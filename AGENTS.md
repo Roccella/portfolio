@@ -8,7 +8,7 @@
 
 ## Descripción
 
-Single-page vanilla portfolio (HTML + CSS + JS, no build step). Hosted on GitHub Pages.
+Single-page vanilla portfolio (HTML + CSS + JS, no build step). Hosted on GitHub Pages, which serves `main`: a push to `origin/main` is a deploy to production at https://roccella.github.io/portfolio/, with no other step and no staging in between. Pages takes about a minute to rebuild, so `curl` the live `styles.css` rather than trusting the push's exit code.
 
 ## Estructura
 
@@ -48,7 +48,7 @@ All values are defined as CSS variables in `:root` at the top of `styles.css`. N
 
 **Font family:** `var(--font-sans)`, which is `"Geist"` plus a system sans fallback. Body weight `400` (Geist `300` is too thin on dark bg).
 
-Geist is **self-hosted** since 2026-08-31: `fonts/geist-latin-var.woff2`, the latin subset of the variable face, 29.288 bytes, declared in the `@font-face` at the top of `styles.css` and preloaded from `index.html`. Google Fonts is no longer requested, and the only third-party origin left on the page is Google Analytics. Every non-ASCII character both pages use sits inside the latin subset, so do not add `latin-ext` without checking first.
+Geist is **self-hosted** since 2026-08-31: `fonts/geist-latin-var.woff2`, the latin subset of the variable face, 29.288 bytes, declared in the `@font-face` at the top of `styles.css` and preloaded from `index.html`. `index.html` no longer requests Google Fonts, and the only third-party origin left on that page is Google Analytics. `resume.html` is the exception and still loads Inter and Source Serif from `fonts.googleapis.com`: it carries its own `<style>` block and shares neither `styles.css` nor this face. That is item **745** in `../hub-career/PENDING.md`. Every non-ASCII character both pages use sits inside the latin subset, so do not add `latin-ext` without checking first.
 
 **Color tokens:** `--bg` | `--text` | `--text-secondary` | `--text-muted` | `--border` | `--border-hover` | `--accent` | `--accent-hover` | `--accent-active` | `--link` | `--on-accent`
 
