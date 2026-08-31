@@ -70,6 +70,10 @@ New allowed set, replacing `{1.2, 1.3, 1.4, 1.6}`:
 
 8. **Item 318**: the 9 PNGs are gone. `media/` went from 8,6 MB to 2,4 MB. The page reloaded with 15 images and 0 broken, all WebP.
 
+9. **After Pablo's review** (`8e942d0`). He approved the grid and the button sizes, and asked for one LinkedIn button instead of two: out of the About view, into `.mobile-header` under the headline, which is the shape the sidebar already had. `.sidebar-link` serves desktop, `.cta` serves mobile, and neither breakpoint shows both.
+
+10. **`.headline` was the fifth rule with the same defect** and the first pass missed it. `.content-view p` had been rendering it at 28px `--text-secondary` against the 24px `--text-muted` it declares, so the mobile header is 8px shorter now and still a multiple of 4. Measured after the change: `.mobile-identity` 248, `.cta` 56, `hr` 4, 32px gaps on both sides of the button, `.mobile-header` 372. Desktop re-measured at 52 block boxes, 0 off grid, and `.cta` does not render there at all.
+
 ## Findings not acted on
 
 - `resume.html` carries its own `<style>` block and still loads Inter and Source Serif from `fonts.googleapis.com`. The previous session removed that origin from `index.html` and this one did not touch `resume.html`, so the site still has a page that reaches Google for fonts.
@@ -79,10 +83,10 @@ New allowed set, replacing `{1.2, 1.3, 1.4, 1.6}`:
 
 Achieved: both halves of **204** and all of **318**. 53 block-level text boxes were re-measured across the sidebar, the About view and an article, and 0 are off the 4px grid, in both the desktop and the mobile layout. `.sidebar-link` 34px → 44px, `.cta` 44,5px → 56px. Two commits, `b41c07c` and `1707eff`, on `main`.
 
-Pending, and it is Pablo's to run: looking at the rendered pages. Three things changed visually and none of them is a measurement — the reading rhythm of every paragraph (25,6px → 28px), the size of the two buttons, and the card descriptions and article context lines, which drop to the 14px muted they were always declared as. `python3 -m http.server 8765` from this repo, then `http://localhost:8765/index.html`.
+Pablo reviewed the rendered pages and approved them, then asked for the single LinkedIn button, which is `8e942d0`. That closes item **204**.
 
-Nothing is pushed. `main` is 16 commits ahead of `origin/main` and GitHub Pages still serves `03eb102`.
+Nothing is pushed, and the push waits on his OK. `main` is 18 commits ahead of `origin/main` and GitHub Pages still serves `03eb102`.
 
-Next: `resume.html` still loads Google Fonts, which is the last third-party origin on the site and has no item yet.
+Next: push once Pablo gives the OK. After that, item **745**, `resume.html` still loading Inter and Source Serif from Google Fonts.
 
 Agent: Claude Code (Opus 5, 1M) | 2026-08-31
