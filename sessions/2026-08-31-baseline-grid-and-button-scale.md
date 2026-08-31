@@ -81,7 +81,7 @@ Achieved: both halves of **204** and all of **318**. 53 block-level text boxes w
 
 Pending, and it is Pablo's to run: looking at the rendered pages. Three things changed visually and none of them is a measurement — the reading rhythm of every paragraph (25,6px → 28px), the size of the two buttons, and the card descriptions and article context lines, which drop to the 14px muted they were always declared as. `python3 -m http.server 8765` from this repo, then `http://localhost:8765/index.html`.
 
-Nothing is pushed. `main` is 6 commits ahead of `origin/main` and GitHub Pages still serves `03eb102`.
+Nothing is pushed. `main` is 16 commits ahead of `origin/main` and GitHub Pages still serves `03eb102`.
 
 Next: `resume.html` still loads Google Fonts, which is the last third-party origin on the site and has no item yet.
 
