@@ -85,7 +85,7 @@ Achieved: both halves of **204** and all of **318**. 53 block-level text boxes w
 
 Pablo reviewed the rendered pages and approved them, then asked for the single LinkedIn button, which is `8e942d0`. That closes item **204**.
 
-Nothing is pushed, and the push waits on his OK. `main` is 18 commits ahead of `origin/main` and GitHub Pages still serves `03eb102`.
+Nothing is pushed, and the push waits on his OK. GitHub Pages still serves `03eb102`; `git rev-list --count origin/main..main` says how far `main` has run past it, and a number written here goes stale on the next commit.
 
 Next: push once Pablo gives the OK. After that, item **745**, `resume.html` still loading Inter and Source Serif from Google Fonts.
 
