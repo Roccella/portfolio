@@ -74,6 +74,8 @@ New allowed set, replacing `{1.2, 1.3, 1.4, 1.6}`:
 
 10. **`.headline` was the fifth rule with the same defect** and the first pass missed it. `.content-view p` had been rendering it at 28px `--text-secondary` against the 24px `--text-muted` it declares, so the mobile header is 8px shorter now and still a multiple of 4. Measured after the change: `.mobile-identity` 248, `.cta` 56, `hr` 4, 32px gaps on both sides of the button, `.mobile-header` 372. Desktop re-measured at 52 block boxes, 0 off grid, and `.cta` does not render there at all.
 
+11. **The gap above the mobile button, in two passes.** Pablo read 32px as too much, and the first correction to 24px was still too much; it sits at 16px, the value `.sidebar-headline` already used, so the two breakpoints space the identity block identically. The gap belonged to the headline's `margin-bottom` and not to the button's `margin-top`, because adjacent margins collapse and the larger one wins: lowering only the button would have changed nothing. Each gap now has one owner — the headline owns the 16px down to the button, `.cta` owns the 32px down to the rule. `.mobile-header` went 372px to 356px and stayed on the grid.
+
 ## Findings not acted on
 
 - `resume.html` carries its own `<style>` block and still loads Inter and Source Serif from `fonts.googleapis.com`. The previous session removed that origin from `index.html` and this one did not touch `resume.html`, so the site still has a page that reaches Google for fonts.
@@ -83,10 +85,10 @@ New allowed set, replacing `{1.2, 1.3, 1.4, 1.6}`:
 
 Achieved: both halves of **204** and all of **318**. 53 block-level text boxes were re-measured across the sidebar, the About view and an article, and 0 are off the 4px grid, in both the desktop and the mobile layout. `.sidebar-link` 34px → 44px, `.cta` 44,5px → 56px. Two commits, `b41c07c` and `1707eff`, on `main`.
 
-Pablo reviewed the rendered pages and approved them, then asked for the single LinkedIn button, which is `8e942d0`. That closes item **204**.
+Pablo reviewed the rendered pages at every step and approved them: the grid and the button sizes first, then the single LinkedIn button, then the 16px above it. Item **204** and item **318** both close.
 
-Nothing is pushed, and the push waits on his OK. GitHub Pages still serves `03eb102`; `git rev-list --count origin/main..main` says how far `main` has run past it, and a number written here goes stale on the next commit.
+Pushed to `origin/main` on his OK, which is the branch GitHub Pages serves. Everything in this session is live, including the WebP conversion and the self-hosted Geist from `2026-08-31-markup-and-performance-pass.md`, which had been sitting unpushed.
 
-Next: push once Pablo gives the OK. After that, item **745**, `resume.html` still loading Inter and Source Serif from Google Fonts.
+Next: item **745**, `resume.html` still loading Inter and Source Serif from `fonts.googleapis.com`, the last third-party origin on the site. Its open question first: whether that page should share `styles.css` and the Geist face at all, or stay a separate document with its own serif.
 
 Agent: Claude Code (Opus 5, 1M) | 2026-08-31
