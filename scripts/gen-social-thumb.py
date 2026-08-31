@@ -19,7 +19,7 @@ from PIL import Image, ImageDraw, ImageFont
 
 NAME = "Pablo Roccella"
 HEADLINE = "Design Engineer & Product Builder"
-AVATAR = "/Users/iwa/repos/portfolio/media/2026-avatar.png"
+AVATAR = "/Users/iwa/repos/portfolio/media/2026-avatar.webp"
 OUT = "/Users/iwa/repos/portfolio/media/social-thumb.png"
 
 W, H = 1200, 630
