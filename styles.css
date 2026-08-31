@@ -218,7 +218,7 @@ body {
 	font-weight: 400;
 	line-height: 24px;
 	color: var(--text-muted);
-	margin-bottom: 32px;
+	margin-bottom: 16px;
 }
 
 hr {
@@ -241,7 +241,7 @@ hr {
 	font-family: var(--font-sans);
 	display: block;
 	width: fit-content;
-	margin: 32px 0;
+	margin: 0 0 32px;
 	padding: 16px 32px;
 	background-color: var(--accent);
 	color: var(--on-accent);
