@@ -289,7 +289,7 @@ hr {
 }
 
 .article-card:focus-visible {
-	outline: 2px solid var(--accent);
+	outline: 2px solid var(--text);
 	outline-offset: 2px;
 }
 
@@ -404,11 +404,13 @@ hr {
 	align-items: baseline;
 	gap: 24px;
 	margin-top: 48px;
-	padding-top: 24px;
+	padding-top: 16px;
 	border-top: 1px solid var(--border);
 }
 
 .prev-next a {
+	display: block;
+	padding: 8px 0;
 	font-family: var(--font-sans);
 	font-size: 0.875rem;
 	color: var(--text-muted);
@@ -464,4 +466,19 @@ hr {
 		transition-duration: 0.01ms !important;
 		animation-duration: 0.01ms !important;
 	}
+}
+
+/* Foco: un solo anillo para todo lo enfocable */
+
+.sidebar-identity:focus,
+.nav-item:focus,
+.prev-next a:focus {
+	outline: none;
+}
+
+.sidebar-identity:focus-visible,
+.nav-item:focus-visible,
+.prev-next a:focus-visible {
+	outline: 2px solid var(--text);
+	outline-offset: 2px;
 }

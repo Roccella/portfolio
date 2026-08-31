@@ -127,6 +127,8 @@ Measured in the browser, not read off the CSS.
 
 Clean: tab order follows visual order, every image has real `alt`, no hand-rolled ARIA, exactly one visible `<h1>` at both desktop and mobile widths with an `H1 H2 H3` outline, and vertical rhythm unchanged from the May audit.
 
+A second one was introduced by the harness rather than by the code, and it is the one worth remembering. The `css-lint.py` executor's acceptance test snapshotted `styles.css` with `cp`, appended a probe, then restored the snapshot. Its snapshot was taken while this session had the target-size and focus edits uncommitted in that same file, so the restore silently reverted them. The tell was `git status` listing four files and not `styles.css`, right after a commit that was supposed to include it, and `git diff --stat styles.css` reporting empty is exactly what the revert produces. `rules/model-routing.md` forbids a dispatched worker from running a command that discards or shelves the tree, but a `cp` restore is not a git command and passes that rule untouched. Re-applied and re-verified: 55,2px, a 24px gap, four `:focus-visible` rules all on `--text`.
+
 One bug was introduced and caught in the same pass: wrapping the nav anchors in `<li>` un-blockified them, since they had been flex items, and the padding broke the text wrap. `.nav-item { display: block }` restored it.
 
 ## Result
