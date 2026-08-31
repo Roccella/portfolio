@@ -54,4 +54,35 @@ New allowed set, replacing `{1.2, 1.3, 1.4, 1.6}`:
 
 ## Execution
 
+1. **Measured first, in the browser.** The extension's tab renders at 461px and `resize_window` does not move it, so the desktop layout was forced with an injected stylesheet that pins `.layout` to 880px and `.content` to 560px — the real desktop widths, so text wraps identically. Every block in both columns came back fractional: `.sidebar-identity` 150,09, `.sidebar-link` 34, `.nav-item` 35,59, `h2` 31,2, `.bio` in multiples of 25,6, `.cta` 44,5.
+
+2. **A third cause the plan did not have.** The sidebar avatar is an `img` with no `display`, so it sits on a line box and the strut adds its descender below the baseline: 64 + 4,49. Every inline image, video and inline-block button in the file does the same. So the fractional offsets had three sources, not two — the ratio line-heights, the undeclared button line-heights, and the line-box strut under every inline media box.
+
+3. **The px scale landed** across 24 rules, plus `line-height: 24px` on `body` so nothing falls through to `normal` again.
+
+4. **`.sidebar-link` is 44px and `.cta` is 56px**, from `line-height` plus vertical padding. Both moved to `display: block; width: fit-content`, which takes them off the line box entirely.
+
+5. **Two rules had been dead since February.** `.content-view p` at specificity (0,1,1) beat `.card-desc` and `.article-context` at (0,1,0), rendering both at 16px `--text-secondary` instead of the declared 14px `--text-muted`. `git log -S` puts `.card-desc` in `5e71908` and `.content-view p` in the later `2cee7b4`, both 2026-02-19, so this is a regression in the redesign and not a decision. Scoped the four affected classes under `.content-view` so the declarations win. The card descriptions and the article context lines are visibly smaller and greyer than before.
+
+6. **`hr` and `.prev-next` each contributed a stray 1px.** `hr` is now `height: 4px` and keeps its 1px `border-top`, which under the global `box-sizing: border-box` occupies exactly 4px. `.prev-next` draws its rule with `box-shadow: inset 0 1px 0 var(--border)` instead of a border, so the box is padding plus content.
+
+7. **`scripts/css-lint.py`** took the px scale, and the value extraction now keeps the unit. It also gained the check that was missing: a rule that sets `font-size` must set `line-height`. Both halves were proved against a fixture with two deliberate violations — the ratio was caught at its line, the undeclared one was reported by selector name.
+
+8. **Item 318**: the 9 PNGs are gone. `media/` went from 8,6 MB to 2,4 MB. The page reloaded with 15 images and 0 broken, all WebP.
+
+## Findings not acted on
+
+- `resume.html` carries its own `<style>` block and still loads Inter and Source Serif from `fonts.googleapis.com`. The previous session removed that origin from `index.html` and this one did not touch `resume.html`, so the site still has a page that reaches Google for fonts.
+- A strict baseline grid across the whole page is unreachable and was not attempted. An image with `aspect-ratio: 16 / 9` at fluid width has a fractional height by construction, and so does any box containing one, which is why the card list is exempt. What landed is a 4px lattice of block-box edges, not baseline-to-baseline alignment across type sizes: two blocks at different font sizes have different half-leading, so their box edges share the lattice while their baselines do not.
+
 ## Result
+
+Achieved: both halves of **204** and all of **318**. 53 block-level text boxes were re-measured across the sidebar, the About view and an article, and 0 are off the 4px grid, in both the desktop and the mobile layout. `.sidebar-link` 34px → 44px, `.cta` 44,5px → 56px. Two commits, `b41c07c` and `1707eff`, on `main`.
+
+Pending, and it is Pablo's to run: looking at the rendered pages. Three things changed visually and none of them is a measurement — the reading rhythm of every paragraph (25,6px → 28px), the size of the two buttons, and the card descriptions and article context lines, which drop to the 14px muted they were always declared as. `python3 -m http.server 8765` from this repo, then `http://localhost:8765/index.html`.
+
+Nothing is pushed. `main` is 6 commits ahead of `origin/main` and GitHub Pages still serves `03eb102`.
+
+Next: `resume.html` still loads Google Fonts, which is the last third-party origin on the site and has no item yet.
+
+Agent: Claude Code (Opus 5, 1M) | 2026-08-31
