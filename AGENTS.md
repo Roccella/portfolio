@@ -15,7 +15,7 @@ Single-page vanilla portfolio (HTML + CSS + JS, no build step). Hosted on GitHub
 - `index.html` — sidebar layout with identity/nav + content area. About is the default view, articles are content-views with prev/next navigation
 - `styles.css` — dark theme, grid layout (sidebar 240px + content 560px), collapses to single column at 900px
 - `fonts/` — the self-hosted Geist woff2
-- `scripts/css-lint.py` — default-deny check over `styles.css`, wired into `githooks/pre-commit`. Fails on a colour literal outside `:root`, a spacing, type, line-height or radius value off the scales above, and a token that is declared without being used or used without being declared
+- `scripts/css-lint.py` — default-deny check over `styles.css`, wired into `githooks/pre-commit`. Fails on a colour literal outside `:root`, a spacing, type, line-height or radius value off the scales above, a rule that sets `font-size` without `line-height`, and a token that is declared without being used or used without being declared
 - `media/` — images and videos referenced by articles
 
 ## Este repo no lleva pendientes propios
@@ -60,11 +60,17 @@ Geist is **self-hosted** since 2026-08-31: `fonts/geist-latin-var.woff2`, the la
 
 **Type scale:** `0.875rem` (nav, small labels, secondary text) | `1rem` (body) | `1.125rem` (h3 in articles) | `1.5rem` (h2, card titles) | `2rem` (h1)
 
-**Line-height scale:** `1.2` (display, h1) | `1.3` (heading, h2/h3) | `1.4` (UI text, labels) | `1.6` (reading, paragraphs)
+**Line-height scale:** `20px` (14px text: nav, labels, card and article descriptions) | `24px` (16px sidebar name and button labels, 18px h3) | `28px` (16px reading text) | `32px` (24px h2 and card titles) | `40px` (32px h1)
+
+In pixels on a 4px grid, never a ratio: no ratio times a size in the type scale lands on the spacing scale, so the two could not both hold. Every rule that sets `font-size` must set `line-height`, or it falls through to `normal`, which is a font metric. `css-lint.py` enforces both halves.
+
+**Vertical grid:** every block-level text box and both buttons are a multiple of 4px. Media is exempt: an image sized by `aspect-ratio` at fluid width has a fractional height by construction, and so does any box that contains one. This is a 4px rhythm lattice of box edges, not baseline-to-baseline alignment across type sizes.
 
 **Spacing scale:** 4 | 8 | 12 | 16 | 24 | 32 | 48 | 64px
 
 **Border radius:** `4px` (media/images) | `8px` (cards, buttons) | `9999px` (avatars)
+
+**Button heights:** `.sidebar-link` 44px | `.cta` 56px. Set by `line-height` plus vertical padding, never by `height`, and both are `display: block; width: fit-content` so no line box adds leading the height does not account for.
 
 ## Router
 

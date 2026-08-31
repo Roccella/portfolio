@@ -6,6 +6,8 @@ Enforces design system scales across CSS files:
 - Color literals must use tokens (declared in :root)
 - Spacing values must use the defined scale
 - Font size, line height, and border radius must use defined scales
+- line-height is declared in px on the 4px grid, and any rule that sets
+  font-size must set it, so nothing falls through to `normal`
 - All CSS variables must be declared and used (token hygiene)
 """
 
@@ -187,8 +189,13 @@ def check_font_size_scale(lines, errors):
 
 
 def check_line_height_scale(lines, errors):
-    """Check line-height values against the scale."""
-    line_height_scale = {'1.2', '1.3', '1.4', '1.6'}
+    """Check line-height values against the scale.
+
+    The scale is in pixels, not ratios. A ratio times any size in the font-size
+    scale never lands on the 4px spacing grid, so the two scales could not both
+    hold at once (session 2026-08-31-baseline-grid-and-button-scale).
+    """
+    line_height_scale = {'20px', '24px', '28px', '32px', '40px'}
 
     # Regex to find property: value pairs
     prop_pattern = r'(\w+(?:-\w+)*)\s*:\s*([^;}\n]+)'
@@ -207,12 +214,49 @@ def check_line_height_scale(lines, errors):
             if value.strip().startswith('var('):
                 continue
 
-            # Extract line-height value
-            match = re.search(r'([\d.]+)', value)
-            if match:
-                val = match.group(1)
-                if val not in line_height_scale:
-                    errors.append((i + 1, f'line-height {val} no está en la escala'))
+            # Extract line-height value, unit included
+            val = value.strip().rstrip(';').strip()
+            if val not in line_height_scale:
+                errors.append((i + 1, f'line-height {val} no está en la escala'))
+
+
+def check_line_height_declared(lines, errors):
+    """Every rule that sets font-size must also set line-height.
+
+    An undeclared line-height falls through to `normal`, which is a font metric
+    and not a scale value: that is where the 34px and 44,5px buttons came from,
+    and the scale check above never saw them because there was nothing to check.
+    """
+    source = ''.join(lines)
+    offsets = []
+    pos = 0
+    for line in lines:
+        offsets.append(pos)
+        pos += len(line)
+
+    def line_of(offset):
+        lo, hi = 0, len(offsets) - 1
+        while lo < hi:
+            mid = (lo + hi + 1) // 2
+            if offsets[mid] <= offset:
+                lo = mid
+            else:
+                hi = mid - 1
+        return lo + 1
+
+    # Innermost blocks only: a rule body never contains braces.
+    for match in re.finditer(r'\{([^{}]*)\}', source):
+        body = match.group(1)
+        fs = re.search(r'(^|[;\s])font-size\s*:', body)
+        if not fs:
+            continue
+        if re.search(r'(^|[;\s])line-height\s*:', body):
+            continue
+        selector = source[:match.start()].rsplit('}', 1)[-1].rsplit('{', 1)[-1]
+        selector = re.sub(r'/\*.*?\*/', '', selector, flags=re.S)
+        selector = ' '.join(selector.split()) or '?'
+        errors.append((line_of(match.start() + fs.start()),
+                       f'{selector} declara font-size sin line-height'))
 
 
 def check_border_radius_scale(lines, errors):
@@ -288,6 +332,7 @@ def lint_css_file(path):
     check_spacing_scale(lines, errors)
     check_font_size_scale(lines, errors)
     check_line_height_scale(lines, errors)
+    check_line_height_declared(lines, errors)
     check_border_radius_scale(lines, errors)
     check_token_hygiene(lines, root_ranges, errors)
 
