@@ -42,6 +42,12 @@ Articles come from `../hub-career/articles/` drafts. The repo was `blog-articles
 
 When adding or updating an article in the portfolio, follow the two sources above.
 
+## `media/social-thumb.png` lo genera Pablo
+
+`media/social-thumb.png` is the Open Graph and Twitter card image for `index.html` (`index.html:20` and `index.html:27`), 1200x630. Pablo builds it by hand in Figma and exports it. It is the one asset in this repo an agent does not produce.
+
+If it has to change, because the role name in it changed or for any other reason, say so and ask him for a new export. Do not generate, redraw, resize or regenerate it, and do not substitute a rendered HTML page for it.
+
 ## Design System
 
 All values are defined as CSS variables in `:root` at the top of `styles.css`. Never hardcode colors - always use the tokens.
