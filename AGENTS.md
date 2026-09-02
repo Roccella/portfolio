@@ -48,13 +48,19 @@ When adding or updating an article in the portfolio, follow the two sources abov
 
 If it has to change, because the role name in it changed or for any other reason, say so and ask him for a new export. Do not generate, redraw, resize or regenerate it, and do not substitute a rendered HTML page for it.
 
+## The CV never gets committed, under any name
+
+`resume.html` carries Pablo's phone and email, so it and the PDF it prints to are gitignored. On 2026-09-01 an export named `Pablo Roccella - Resume.pdf` landed in the repo, and the plain `resume.pdf` line did not catch it. Pablo decided it stays out, and `.gitignore` now holds `*[Rr]esume*.pdf`.
+
+Nothing carrying that header goes into a commit. This repo publishes to GitHub Pages, so a commit here is a phone number on the open web, and a push cannot be taken back by deleting the file afterwards.
+
 ## Design System
 
 All values are defined as CSS variables in `:root` at the top of `styles.css`. Never hardcode colors - always use the tokens.
 
 **Font family:** `var(--font-sans)`, which is `"Geist"` plus a system sans fallback. Body weight `400` (Geist `300` is too thin on dark bg).
 
-Geist is **self-hosted** since 2026-08-31: `fonts/geist-latin-var.woff2`, the latin subset of the variable face, 29.288 bytes, declared in the `@font-face` at the top of `styles.css` and preloaded from `index.html`. `index.html` no longer requests Google Fonts, and the only third-party origin left on that page is Google Analytics. `resume.html` is the exception and still loads Inter and Source Serif from `fonts.googleapis.com`: it carries its own `<style>` block and shares neither `styles.css` nor this face. That is item **745** in `../hub-career/PENDING.md`. Every non-ASCII character both pages use sits inside the latin subset, so do not add `latin-ext` without checking first.
+Geist is **self-hosted** since 2026-08-31: `fonts/geist-latin-var.woff2`, the latin subset of the variable face, 29.288 bytes, declared in the `@font-face` at the top of `styles.css` and preloaded from `index.html`. `index.html` no longer requests Google Fonts, and the only third-party origin left on that page is Google Analytics. `resume.html` moved onto the same face on 2026-09-01, which closed item 745. It carries its own `<style>` block and shares neither `styles.css` nor the `@font-face`, so it declares Geist a second time against the same file. Every non-ASCII character both pages use sits inside the latin subset, so do not add `latin-ext` without checking first.
 
 **Color tokens:** `--bg` | `--text` | `--text-secondary` | `--text-muted` | `--border` | `--border-hover` | `--accent` | `--accent-hover` | `--accent-active` | `--link` | `--on-accent`
 
