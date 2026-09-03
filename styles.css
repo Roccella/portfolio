@@ -36,7 +36,7 @@
 	--accent-3: #00639a;
 	--accent-sheen: #2a7dab;
 	--accent-speed: 12s;
-	--link: #4293c2;
+	--link: #28a2e0;
 /* gg:tokens:end */
 
 	--on-accent: #fff;
@@ -473,15 +473,11 @@ hr {
 
 .content-view p a {
 	color: var(--link);
-	text-decoration: none;
+	text-decoration: underline;
 }
 
 .content-view p a:visited {
 	color: var(--link);
-}
-
-.content-view p a:hover {
-	text-decoration: underline;
 }
 
 /* Prev / Next */
