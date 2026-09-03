@@ -31,12 +31,12 @@
 	/* Reescritos por gradient-gen/serve.py en cada "Aplicar al portfolio". No editar a mano:
 	   el próximo apply pisa este bloque entero. */
 	/* gg:tokens:start */
-	--accent-1: #003456;
-	--accent-2: #162b83;
-	--accent-3: #292f8d;
-	--accent-sheen: #444a9c;
+	--accent-1: #254ea6;
+	--accent-2: #0058a8;
+	--accent-3: #00639a;
+	--accent-sheen: #2a7dab;
 	--accent-speed: 12s;
-	--link: #7985dc;
+	--link: #4293c2;
 /* gg:tokens:end */
 
 	--on-accent: #fff;
@@ -194,36 +194,29 @@ body {
 /* Reescrito por gradient-gen/serve.py en cada "Aplicar al portfolio". No editar a mano: el
    próximo apply pisa este bloque entero. */
 /* gg:fx:start */
-/* blobsOrbit: Los mismos cuatro círculos girando cada uno alrededor de su lugar, en un octógono de radio fijo. Se cruzan sin repetir posición porque las duraciones no son múltiplos enteros, y cada uno cierra su vuelta exacto. */
+/* meshPulse: Los mismos cuatro radiales sin moverse de lugar: lo que cambia es el tamaño, entre el 72% y el 132%. Con las manchas grandes el botón entero late; con las chicas se leen como cuatro luces separadas. */
 
 .accent-fx > span {
 	position: absolute;
-	height: 170%;
-	aspect-ratio: 1;
-	border-radius: 9999px;
-	filter: blur(17px);
-	animation-name: accent-blob;
+	inset: -60% -20%;
+	background-size: 64% 64%;
+	background-repeat: no-repeat;
+	background-position: 50% 50%;
+	animation-name: accent-mesh;
 	animation-duration: var(--accent-speed);
-	animation-timing-function: linear;
-	animation-direction: normal;
+	animation-timing-function: ease-in-out;
+	animation-direction: alternate;
 	animation-iteration-count: infinite;
 }
 
-.accent-fx > span:nth-child(1) { left: -15%; top: -55%; background-color: var(--accent-2); animation-duration: calc(var(--accent-speed) * 0.83); }
-.accent-fx > span:nth-child(2) { left: 25%; top: -20%; background-color: var(--accent-3); animation-duration: calc(var(--accent-speed) * 1.29); animation-delay: calc(var(--accent-speed) * -0.47); }
-.accent-fx > span:nth-child(3) { left: 55%; top: -60%; background-color: var(--accent-sheen); animation-duration: calc(var(--accent-speed) * 1.71); animation-delay: calc(var(--accent-speed) * -0.91); }
-.accent-fx > span:nth-child(4) { left: 80%; top: -25%; background-color: var(--accent-2); animation-duration: calc(var(--accent-speed) * 2.11); animation-delay: calc(var(--accent-speed) * -1.39); }
+.accent-fx > span:nth-child(1) { background-image: radial-gradient(circle at 20% 30%, color-mix(in srgb, var(--accent-1) 88%, transparent) 0%, transparent 70%); animation-duration: calc(var(--accent-speed) * 0.77); }
+.accent-fx > span:nth-child(2) { background-image: radial-gradient(circle at 75% 25%, color-mix(in srgb, var(--accent-2) 88%, transparent) 0%, transparent 70%); animation-duration: calc(var(--accent-speed) * 1.31); animation-delay: calc(var(--accent-speed) * -0.41); }
+.accent-fx > span:nth-child(3) { background-image: radial-gradient(circle at 40% 80%, color-mix(in srgb, var(--accent-3) 88%, transparent) 0%, transparent 70%); animation-duration: calc(var(--accent-speed) * 1.79); animation-delay: calc(var(--accent-speed) * -0.83); }
+.accent-fx > span:nth-child(4) { background-image: radial-gradient(circle at 85% 70%, color-mix(in srgb, var(--accent-sheen) 88%, transparent) 0%, transparent 70%); animation-duration: calc(var(--accent-speed) * 2.23); animation-delay: calc(var(--accent-speed) * -1.27); }
 
-@keyframes accent-blob {
-	0%    { transform: translate(30%, 0%) scale(1.05); }
-	12.5% { transform: translate(21%, 21%) scale(1.05); }
-	25%   { transform: translate(0%, 30%) scale(1.05); }
-	37.5% { transform: translate(-21%, 21%) scale(1.05); }
-	50%   { transform: translate(-30%, 0%) scale(1.05); }
-	62.5% { transform: translate(-21%, -21%) scale(1.05); }
-	75%   { transform: translate(0%, -30%) scale(1.05); }
-	87.5% { transform: translate(21%, -21%) scale(1.05); }
-	100%  { transform: translate(30%, 0%) scale(1.05); }
+@keyframes accent-mesh {
+	from { transform: scale(0.72); }
+	to   { transform: scale(1.32); }
 }
 
 /* gg:fx:end */
