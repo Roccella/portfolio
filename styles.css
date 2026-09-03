@@ -31,12 +31,12 @@
 	/* Reescritos por gradient-gen/serve.py en cada "Aplicar al portfolio". No editar a mano:
 	   el próximo apply pisa este bloque entero. */
 	/* gg:tokens:start */
-	--accent-1: #004882;
-	--accent-2: #005f5f;
-	--accent-3: #006e5a;
-	--accent-sheen: #268473;
-	--accent-speed: 8s;
-	--link: #409a88;
+	--accent-1: #003c68;
+	--accent-2: #253aa9;
+	--accent-3: #4f4ea9;
+	--accent-sheen: #6969b6;
+	--accent-speed: 12s;
+	--link: #8284d3;
 /* gg:tokens:end */
 
 	--on-accent: #fff;
