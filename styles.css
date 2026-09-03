@@ -35,7 +35,7 @@
 	--accent-2: #0058a8;
 	--accent-3: #00639a;
 	--accent-sheen: #2a7dab;
-	--accent-speed: 12s;
+	--accent-speed: 6s;
 	--link: #4293c2;
 /* gg:tokens:end */
 
@@ -194,29 +194,36 @@ body {
 /* Reescrito por gradient-gen/serve.py en cada "Aplicar al portfolio". No editar a mano: el
    próximo apply pisa este bloque entero. */
 /* gg:fx:start */
-/* meshPulse: Los mismos cuatro radiales sin moverse de lugar: lo que cambia es el tamaño, entre el 72% y el 132%. Con las manchas grandes el botón entero late; con las chicas se leen como cuatro luces separadas. */
+/* svgStretch: El arte se achata en un eje mientras crece en el otro, con un giro chico encima, y también por dentro del filtro. Estira la deformación además de moverla, que es el que más cambia de forma de los cuatro. */
 
-.accent-fx > span {
+.accent-fx > svg {
 	position: absolute;
-	inset: -60% -20%;
-	background-size: 64% 64%;
-	background-repeat: no-repeat;
-	background-position: 50% 50%;
-	animation-name: accent-mesh;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	display: block;
+}
+
+.accent-fx stop:nth-child(1) { stop-color: var(--accent-1); }
+.accent-fx stop:nth-child(2) { stop-color: var(--accent-2); }
+.accent-fx stop:nth-child(3) { stop-color: var(--accent-3); }
+.accent-fx stop:nth-child(4) { stop-color: var(--accent-sheen); }
+.accent-fx circle:nth-of-type(1) { fill: var(--accent-2); }
+.accent-fx circle:nth-of-type(2) { fill: var(--accent-sheen); }
+.accent-fx circle:nth-of-type(3) { fill: var(--accent-1); }
+
+.accent-svg-g {
+	transform-origin: 50px 50px;
+	animation-name: accent-stretch;
 	animation-duration: var(--accent-speed);
 	animation-timing-function: ease-in-out;
 	animation-direction: alternate;
 	animation-iteration-count: infinite;
 }
 
-.accent-fx > span:nth-child(1) { background-image: radial-gradient(circle at 20% 30%, color-mix(in srgb, var(--accent-1) 88%, transparent) 0%, transparent 70%); animation-duration: calc(var(--accent-speed) * 0.77); }
-.accent-fx > span:nth-child(2) { background-image: radial-gradient(circle at 75% 25%, color-mix(in srgb, var(--accent-2) 88%, transparent) 0%, transparent 70%); animation-duration: calc(var(--accent-speed) * 1.31); animation-delay: calc(var(--accent-speed) * -0.41); }
-.accent-fx > span:nth-child(3) { background-image: radial-gradient(circle at 40% 80%, color-mix(in srgb, var(--accent-3) 88%, transparent) 0%, transparent 70%); animation-duration: calc(var(--accent-speed) * 1.79); animation-delay: calc(var(--accent-speed) * -0.83); }
-.accent-fx > span:nth-child(4) { background-image: radial-gradient(circle at 85% 70%, color-mix(in srgb, var(--accent-sheen) 88%, transparent) 0%, transparent 70%); animation-duration: calc(var(--accent-speed) * 2.23); animation-delay: calc(var(--accent-speed) * -1.27); }
-
-@keyframes accent-mesh {
-	from { transform: scale(0.72); }
-	to   { transform: scale(1.32); }
+@keyframes accent-stretch {
+	from { transform: scale(0.82, 1.28) rotate(-9deg); }
+	to   { transform: scale(1.3, 0.84) rotate(9deg); }
 }
 
 /* gg:fx:end */
