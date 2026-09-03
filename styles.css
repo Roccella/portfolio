@@ -31,12 +31,12 @@
 	/* Reescritos por gradient-gen/serve.py en cada "Aplicar al portfolio". No editar a mano:
 	   el próximo apply pisa este bloque entero. */
 	/* gg:tokens:start */
-	--accent-1: #003c68;
-	--accent-2: #253aa9;
-	--accent-3: #4f4ea9;
-	--accent-sheen: #6969b6;
+	--accent-1: #003456;
+	--accent-2: #162b83;
+	--accent-3: #292f8d;
+	--accent-sheen: #444a9c;
 	--accent-speed: 12s;
-	--link: #8284d3;
+	--link: #7985dc;
 /* gg:tokens:end */
 
 	--on-accent: #fff;
@@ -194,18 +194,18 @@ body {
 /* Reescrito por gradient-gen/serve.py en cada "Aplicar al portfolio". No editar a mano: el
    próximo apply pisa este bloque entero. */
 /* gg:fx:start */
-/* blobs: Cuatro círculos sólidos desenfocados, recortados por el botón. El radio del blur no se anima, que es lo que el equipo de Chrome marca como muy lento; lo que se mueve es la posición. Sigue siendo el más caro de los diez que son solo CSS. */
+/* blobsOrbit: Los mismos cuatro círculos girando cada uno alrededor de su lugar, en un octógono de radio fijo. Se cruzan sin repetir posición porque las duraciones no son múltiplos enteros, y cada uno cierra su vuelta exacto. */
 
 .accent-fx > span {
 	position: absolute;
 	height: 170%;
 	aspect-ratio: 1;
 	border-radius: 9999px;
-	filter: blur(13px);
+	filter: blur(17px);
 	animation-name: accent-blob;
 	animation-duration: var(--accent-speed);
-	animation-timing-function: ease-in-out;
-	animation-direction: alternate;
+	animation-timing-function: linear;
+	animation-direction: normal;
 	animation-iteration-count: infinite;
 }
 
@@ -215,8 +215,15 @@ body {
 .accent-fx > span:nth-child(4) { left: 80%; top: -25%; background-color: var(--accent-2); animation-duration: calc(var(--accent-speed) * 2.11); animation-delay: calc(var(--accent-speed) * -1.39); }
 
 @keyframes accent-blob {
-	from { transform: translate(-45%, -15%) scale(0.9); }
-	to   { transform: translate(45%, 15%) scale(1.3); }
+	0%    { transform: translate(30%, 0%) scale(1.05); }
+	12.5% { transform: translate(21%, 21%) scale(1.05); }
+	25%   { transform: translate(0%, 30%) scale(1.05); }
+	37.5% { transform: translate(-21%, 21%) scale(1.05); }
+	50%   { transform: translate(-30%, 0%) scale(1.05); }
+	62.5% { transform: translate(-21%, -21%) scale(1.05); }
+	75%   { transform: translate(0%, -30%) scale(1.05); }
+	87.5% { transform: translate(21%, -21%) scale(1.05); }
+	100%  { transform: translate(30%, 0%) scale(1.05); }
 }
 
 /* gg:fx:end */
