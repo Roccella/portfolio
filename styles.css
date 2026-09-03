@@ -27,19 +27,17 @@
 	--text-muted: #999;
 	--border: #333;
 	--border-hover: #555;
-	/* Las cuatro paradas del botón, generadas en OKLCH por ../gradient-gen/ y medidas contra
-	   el blanco que va encima: 9,92:1 | 7,94:1 | 6,46:1 | 4,50:1. --accent-1 es el relleno y
-	   las otras tres son los blobs que se mueven arriba. --accent-sheen es la más clara de las
-	   cuatro y la única que llega a 3:1 contra --bg, así que es la que marca el nav activo. */
+
+	/* Reescritos por gradient-gen/serve.py en cada "Aplicar al portfolio". No editar a mano:
+	   el próximo apply pisa este bloque entero. */
+	/* gg:tokens:start */
 	--accent-1: #21417d;
 	--accent-2: #005a64;
 	--accent-3: #006c4c;
 	--accent-sheen: #2b856a;
 	--accent-speed: 14s;
-	/* La misma luminosidad y el mismo croma que tenía, corrido al hue de --accent-1: es la
-	   parada de base del botón subida hasta 6,16:1 contra --bg, que es lo que un texto necesita
-	   y ninguna de las cuatro paradas alcanza. */
-	--link: #5791ff;
+	--link: #439a7e;
+	/* gg:tokens:end */
 
 	--on-accent: #fff;
 
@@ -124,7 +122,6 @@ body {
 	padding: 12px 24px;
 	position: relative;
 	overflow: hidden;
-	background-color: var(--accent-1);
 	color: var(--on-accent);
 	border-radius: 8px;
 	font-size: 0.875rem;
@@ -133,13 +130,15 @@ body {
 	text-decoration: none;
 }
 
-/* El relleno se anima, así que hover y active no pueden seguir cambiando background-color:
-   quedarían debajo de los blobs y no se verían. */
-.sidebar-link:hover {
+/* El relleno y las capas que se mueven viven en .accent-fx: hover y active sólo oscurecen
+   eso, así que el texto y el ícono siguen blancos en vez de atenuarse con todo el botón. */
+.sidebar-link:hover .accent-fx,
+.cta:hover .accent-fx {
 	filter: brightness(0.9);
 }
 
-.sidebar-link:active {
+.sidebar-link:active .accent-fx,
+.cta:active .accent-fx {
 	filter: brightness(0.8);
 }
 
@@ -180,18 +179,8 @@ body {
 
 .nav-item.active {
 	color: var(--text);
-	border-left-color: var(--accent-sheen);
+	border-left-color: var(--link);
 }
-
-/* Blobs del botón
-
-   Cuatro círculos sólidos desenfocados que orbitan debajo del texto, recortados por el botón.
-   El radio del blur nunca se anima, que es lo que el equipo de Chrome marca como muy lento: lo
-   que se mueve es un transform. Las cuatro duraciones no son múltiplos enteros entre sí, así que
-   el conjunto no repite posición a la vista, y cada uno cierra su propia vuelta exacto.
-
-   Ningún blob mete un color de afuera de la paleta, así que nada en pantalla es más claro que
-   --accent-sheen, que es la parada ya medida contra el blanco encima. */
 
 .accent-fx {
 	position: absolute;
@@ -199,7 +188,15 @@ body {
 	overflow: hidden;
 	border-radius: inherit;
 	pointer-events: none;
+	background-color: var(--accent-1);
 }
+
+/* Reescrito por gradient-gen/serve.py en cada "Aplicar al portfolio". No editar a mano: el
+   próximo apply pisa este bloque entero. */
+/* gg:fx:start */
+/* blobsOrbit: Los mismos cuatro círculos girando cada uno alrededor de su lugar, en un octógono
+   de radio fijo. Se cruzan sin repetir posición porque las duraciones no son múltiplos
+   enteros, y cada uno cierra su vuelta exacto. */
 
 .accent-fx > span {
 	position: absolute;
@@ -207,45 +204,19 @@ body {
 	aspect-ratio: 1;
 	border-radius: 9999px;
 	filter: blur(8px);
-	animation-name: accent-orbit;
+	animation-name: accent-blob;
+	animation-duration: var(--accent-speed);
 	animation-timing-function: linear;
+	animation-direction: normal;
 	animation-iteration-count: infinite;
 }
 
-.accent-fx > span:nth-child(1) {
-	left: -15%;
-	top: -55%;
-	background-color: var(--accent-2);
-	animation-duration: calc(var(--accent-speed) * 0.83);
-}
+.accent-fx > span:nth-child(1) { left: -15%; top: -55%; background-color: var(--accent-2); animation-duration: calc(var(--accent-speed) * 0.83); }
+.accent-fx > span:nth-child(2) { left: 25%; top: -20%; background-color: var(--accent-3); animation-duration: calc(var(--accent-speed) * 1.29); animation-delay: calc(var(--accent-speed) * -0.47); }
+.accent-fx > span:nth-child(3) { left: 55%; top: -60%; background-color: var(--accent-sheen); animation-duration: calc(var(--accent-speed) * 1.71); animation-delay: calc(var(--accent-speed) * -0.91); }
+.accent-fx > span:nth-child(4) { left: 80%; top: -25%; background-color: var(--accent-2); animation-duration: calc(var(--accent-speed) * 2.11); animation-delay: calc(var(--accent-speed) * -1.39); }
 
-.accent-fx > span:nth-child(2) {
-	left: 25%;
-	top: -20%;
-	background-color: var(--accent-3);
-	animation-duration: calc(var(--accent-speed) * 1.29);
-	animation-delay: calc(var(--accent-speed) * -0.47);
-}
-
-.accent-fx > span:nth-child(3) {
-	left: 55%;
-	top: -60%;
-	background-color: var(--accent-sheen);
-	animation-duration: calc(var(--accent-speed) * 1.71);
-	animation-delay: calc(var(--accent-speed) * -0.91);
-}
-
-.accent-fx > span:nth-child(4) {
-	left: 80%;
-	top: -25%;
-	background-color: var(--accent-2);
-	animation-duration: calc(var(--accent-speed) * 2.11);
-	animation-delay: calc(var(--accent-speed) * -1.39);
-}
-
-/* Un octógono de ocho pasos, que a esta velocidad se lee como un círculo. Vuelve exacto a su
-   primer paso, así que el bucle cierra sin ir y volver. */
-@keyframes accent-orbit {
+@keyframes accent-blob {
 	0%    { transform: translate(30%, 0%) scale(1.05); }
 	12.5% { transform: translate(21%, 21%) scale(1.05); }
 	25%   { transform: translate(0%, 30%) scale(1.05); }
@@ -256,6 +227,7 @@ body {
 	87.5% { transform: translate(21%, -21%) scale(1.05); }
 	100%  { transform: translate(30%, 0%) scale(1.05); }
 }
+/* gg:fx:end */
 
 /* El ícono y la etiqueta van encima de los blobs. */
 .sidebar-link > svg,
@@ -350,21 +322,12 @@ hr {
 	padding: 16px 32px;
 	position: relative;
 	overflow: hidden;
-	background-color: var(--accent-1);
 	color: var(--on-accent);
 	text-decoration: none;
 	border-radius: 8px;
 	font-size: 1rem;
 	font-weight: 600;
 	line-height: 24px;
-}
-
-.cta:hover {
-	filter: brightness(0.9);
-}
-
-.cta:active {
-	filter: brightness(0.8);
 }
 
 .cta:focus {
