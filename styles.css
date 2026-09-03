@@ -39,6 +39,7 @@
 	--link: #28a2e0;
 /* gg:tokens:end */
 
+	--border-inner: rgba(255, 255, 255, 0.18);
 	--on-accent: #fff;
 
 	--font-sans: "Geist", -apple-system, BlinkMacSystemFont, Arial, sans-serif;
@@ -189,6 +190,18 @@ body {
 	border-radius: inherit;
 	pointer-events: none;
 	background-color: var(--accent-1);
+}
+
+/* Anillo blanco interno, en ::after para que siempre pinte encima de .accent-fx sin importar
+   el modo activo — un box-shadow en el botón mismo quedaría debajo del relleno que se mueve. */
+.sidebar-link::after,
+.cta::after {
+	content: '';
+	position: absolute;
+	inset: 0;
+	border-radius: inherit;
+	box-shadow: inset 0 0 0 1px var(--border-inner);
+	pointer-events: none;
 }
 
 /* Reescrito por gradient-gen/serve.py en cada "Aplicar al portfolio". No editar a mano: el
