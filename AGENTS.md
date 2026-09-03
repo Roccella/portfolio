@@ -62,13 +62,21 @@ All values are defined as CSS variables in `:root` at the top of `styles.css`. N
 
 Geist is **self-hosted** since 2026-08-31: `fonts/geist-latin-var.woff2`, the latin subset of the variable face, 29.288 bytes, declared in the `@font-face` at the top of `styles.css` and preloaded from `index.html`. `index.html` no longer requests Google Fonts, and the only third-party origin left on that page is Google Analytics. `resume.html` moved onto the same face on 2026-09-01, which closed item 745. It carries its own `<style>` block and shares neither `styles.css` nor the `@font-face`, so it declares Geist a second time against the same file. Every non-ASCII character both pages use sits inside the latin subset, so do not add `latin-ext` without checking first.
 
-**Color tokens:** `--bg` | `--text` | `--text-secondary` | `--text-muted` | `--border` | `--border-hover` | `--accent` | `--accent-hover` | `--accent-active` | `--link` | `--on-accent`
+**Color tokens:** `--bg` | `--text` | `--text-secondary` | `--text-muted` | `--border` | `--border-hover` | `--accent-1` | `--accent-2` | `--accent-3` | `--accent-sheen` | `--accent-speed` | `--link` | `--on-accent`
 
-**Color usage:** `--accent` for fills (button bg, decorative left-border on active nav). `--link` for text-as-link (inline links in article paragraphs). Never use `--accent` as text color, fails AA contrast on dark bg.
+**Color usage:** the four `--accent-*` are the button's palette and nothing else uses them as a fill. `--link` for text-as-link (inline links in article paragraphs). Never use an `--accent-*` as text colour: the brightest of the four is 4,17:1 against `--bg` and the other three are under 3:1.
 
-`--on-accent` is the text colour **on** an `--accent` fill, and it is pure white for a measured reason: `--text` is an oklch off-white and gives 4.438:1 against `--accent`, under AA's 4.5:1, while white gives 4.847:1. Do not swap it back to `--text`.
+The palette replaced `#4169e1` on 2026-09-03 and was generated in OKLCH by `../gradient-gen/`, which is also where a new one comes from. It is deliberately dark: the four stops carry white text at 9,92:1 | 7,94:1 | 6,46:1 | 4,50:1, and that ceiling on luminance is what makes them unusable as text on `--bg`.
 
-**Focus:** one ring for everything focusable, `2px solid var(--text)` at `2px` offset, always paired with a `:focus { outline: none }`. `--text` is 17:1 against `--bg`; `--accent` is 3,87:1 and is not used for this.
+**The decorative left-border on the active nav item is `--accent-sheen`**, the brightest of the four, because it is the only one that clears 3:1 against `--bg` (4,17:1). It is solid and never a gradient: it is 2px wide, and a ramp inside 2px reads as one averaged colour anyway.
+
+**`--link` is `#5791ff`**, `--accent-1`'s hue at the lightness a text colour needs: `oklch(67.1% 0.174 262)`, 6,16:1 against `--bg`. No stop of the palette reaches 4,5:1 on the dark background, so the link cannot be one of them; taking the base fill's hue is what keeps it in the same system. It replaced `#6b8cff`, which was the same lightness and chroma at hue 269,3, tuned to the old accent.
+
+**`resume.html` still carries `#4169e1` hardcoded twice** (the contact links and the download button). That page is on a white background and shares neither `styles.css` nor the tokens, so nothing broke; it is simply the one surface still on the old accent. `--accent-1` gives 9,92:1 there against 4,85:1 today.
+
+`--on-accent` is the text colour **on** the button, and it is pure white for a measured reason. The gate is the brightest stop the text can pass over, `--accent-sheen`: white gives 4,501:1 there and `--text`, an oklch off-white, gives 4,121:1. Do not swap it back to `--text`. The margin over AA is three thousandths, so any new palette has to be measured on that stop before it goes in; `../gradient-gen/` rejects a palette that fails it.
+
+**Focus:** one ring for everything focusable, `2px solid var(--text)` at `2px` offset, always paired with a `:focus { outline: none }`. `--text` is 17:1 against `--bg`; the brightest accent stop is 4,17:1 and is not used for this.
 
 **Type scale:** `0.875rem` (nav, small labels, secondary text) | `1rem` (body) | `1.125rem` (h3 in articles) | `1.5rem` (h2, card titles) | `2rem` (h1)
 
@@ -82,7 +90,21 @@ In pixels on a 4px grid, never a ratio: no ratio times a size in the type scale 
 
 **Border radius:** `4px` (media/images) | `8px` (cards, buttons) | `9999px` (avatars)
 
-**Button heights:** `.sidebar-link` 44px in the sidebar, on desktop | `.cta` 56px in `.mobile-header`, under the headline, on mobile. One LinkedIn button per breakpoint and never both: the About view had a second one until 2026-08-31. Set by `line-height` plus vertical padding, never by `height`, and both are `display: block; width: fit-content` so no line box adds leading the height does not account for.
+**Button heights:** `.sidebar-link` 44px in the sidebar, on desktop | `.cta` 56px in `.mobile-header`, under the headline, on mobile. One LinkedIn button per breakpoint and never both: the About view had a second one until 2026-08-31. Set by `line-height` plus vertical padding, never by `height`. Both were `display: block` until the glyph went in on 2026-09-03 and are `display: flex; align-items: center; gap: 8px; width: fit-content` now, which keeps both heights to the pixel because the 16px icon is shorter than the 20px and 24px line boxes.
+
+## El botón animado
+
+Both LinkedIn buttons carry four blurred circles orbiting under the text, plus a 16px hand-written SVG glyph at `stroke-width="1.5"`, the first icon in the repo: the prev/next arrows are the entities `&larr;` and `&rarr;`, text and not icons. No icon library enters for one glyph.
+
+The markup is one `.accent-fx` span with four empty spans inside, then the `<svg>`, then `<span class="lb">`. `.accent-fx` is `position: absolute; inset: 0; overflow: hidden; border-radius: inherit`, and the glyph and the label get `position: relative` so they sit above it.
+
+`--accent-1` is the button's `background-color` and shows between the circles; the other three are the circles. **hover and active are a `filter: brightness()`**, not `background-color`: a background colour under an animated fill is invisible.
+
+The blur radius never animates, only a `transform` does, and the four durations are non-integer multiples of `--accent-speed` so the set does not visibly repeat. Each circle walks an eight-step octagon that returns exactly to its first step, so every loop closes.
+
+`prefers-reduced-motion: reduce` sets `animation-iteration-count: 1` alongside the 0,01ms duration. Without that half, an infinite animation at 0,01ms is a flicker rather than a stop.
+
+`../gradient-gen/` is the tool the palette and the mode came from, and it holds the other ten modes that were not chosen.
 
 ## Router
 

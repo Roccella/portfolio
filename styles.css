@@ -1,7 +1,7 @@
 /* === Design tokens ===
    Colors:     --bg | --text | --text-secondary | --text-muted | --border | --border-hover
-               --on-accent (texto sobre --accent; el blanco puro es lo que pasa AA)
-               --accent | --accent-hover | --accent-active | --link
+               --on-accent (texto sobre el relleno del botón; el blanco puro es lo que pasa AA)
+               --accent-1 | --accent-2 | --accent-3 | --accent-sheen | --link
    Type scale: 0.875rem | 1rem | 1.125rem | 1.5rem | 2rem
    Line-height: 20px | 24px | 28px | 32px | 40px (px on a 4px grid, never a ratio)
    Spacing:    4 | 8 | 12 | 16 | 24 | 32 | 48 | 64px
@@ -27,10 +27,19 @@
 	--text-muted: #999;
 	--border: #333;
 	--border-hover: #555;
-	--accent: #4169e1;
-	--accent-hover: #3357c2;
-	--accent-active: #24429d;
-	--link: #6b8cff;
+	/* Las cuatro paradas del botón, generadas en OKLCH por ../gradient-gen/ y medidas contra
+	   el blanco que va encima: 9,92:1 | 7,94:1 | 6,46:1 | 4,50:1. --accent-1 es el relleno y
+	   las otras tres son los blobs que se mueven arriba. --accent-sheen es la más clara de las
+	   cuatro y la única que llega a 3:1 contra --bg, así que es la que marca el nav activo. */
+	--accent-1: #21417d;
+	--accent-2: #005a64;
+	--accent-3: #006c4c;
+	--accent-sheen: #2b856a;
+	--accent-speed: 14s;
+	/* La misma luminosidad y el mismo croma que tenía, corrido al hue de --accent-1: es la
+	   parada de base del botón subida hasta 6,16:1 contra --bg, que es lo que un texto necesita
+	   y ninguna de las cuatro paradas alcanza. */
+	--link: #5791ff;
 
 	--on-accent: #fff;
 
@@ -108,10 +117,14 @@ body {
 
 .sidebar-link {
 	font-family: var(--font-sans);
-	display: block;
+	display: flex;
+	align-items: center;
+	gap: 8px;
 	width: fit-content;
 	padding: 12px 24px;
-	background-color: var(--accent);
+	position: relative;
+	overflow: hidden;
+	background-color: var(--accent-1);
 	color: var(--on-accent);
 	border-radius: 8px;
 	font-size: 0.875rem;
@@ -120,12 +133,14 @@ body {
 	text-decoration: none;
 }
 
+/* El relleno se anima, así que hover y active no pueden seguir cambiando background-color:
+   quedarían debajo de los blobs y no se verían. */
 .sidebar-link:hover {
-	background-color: var(--accent-hover);
+	filter: brightness(0.9);
 }
 
 .sidebar-link:active {
-	background-color: var(--accent-active);
+	filter: brightness(0.8);
 }
 
 .sidebar-link:focus {
@@ -165,7 +180,95 @@ body {
 
 .nav-item.active {
 	color: var(--text);
-	border-left-color: var(--accent);
+	border-left-color: var(--accent-sheen);
+}
+
+/* Blobs del botón
+
+   Cuatro círculos sólidos desenfocados que orbitan debajo del texto, recortados por el botón.
+   El radio del blur nunca se anima, que es lo que el equipo de Chrome marca como muy lento: lo
+   que se mueve es un transform. Las cuatro duraciones no son múltiplos enteros entre sí, así que
+   el conjunto no repite posición a la vista, y cada uno cierra su propia vuelta exacto.
+
+   Ningún blob mete un color de afuera de la paleta, así que nada en pantalla es más claro que
+   --accent-sheen, que es la parada ya medida contra el blanco encima. */
+
+.accent-fx {
+	position: absolute;
+	inset: 0;
+	overflow: hidden;
+	border-radius: inherit;
+	pointer-events: none;
+}
+
+.accent-fx > span {
+	position: absolute;
+	height: 170%;
+	aspect-ratio: 1;
+	border-radius: 9999px;
+	filter: blur(8px);
+	animation-name: accent-orbit;
+	animation-timing-function: linear;
+	animation-iteration-count: infinite;
+}
+
+.accent-fx > span:nth-child(1) {
+	left: -15%;
+	top: -55%;
+	background-color: var(--accent-2);
+	animation-duration: calc(var(--accent-speed) * 0.83);
+}
+
+.accent-fx > span:nth-child(2) {
+	left: 25%;
+	top: -20%;
+	background-color: var(--accent-3);
+	animation-duration: calc(var(--accent-speed) * 1.29);
+	animation-delay: calc(var(--accent-speed) * -0.47);
+}
+
+.accent-fx > span:nth-child(3) {
+	left: 55%;
+	top: -60%;
+	background-color: var(--accent-sheen);
+	animation-duration: calc(var(--accent-speed) * 1.71);
+	animation-delay: calc(var(--accent-speed) * -0.91);
+}
+
+.accent-fx > span:nth-child(4) {
+	left: 80%;
+	top: -25%;
+	background-color: var(--accent-2);
+	animation-duration: calc(var(--accent-speed) * 2.11);
+	animation-delay: calc(var(--accent-speed) * -1.39);
+}
+
+/* Un octógono de ocho pasos, que a esta velocidad se lee como un círculo. Vuelve exacto a su
+   primer paso, así que el bucle cierra sin ir y volver. */
+@keyframes accent-orbit {
+	0%    { transform: translate(30%, 0%) scale(1.05); }
+	12.5% { transform: translate(21%, 21%) scale(1.05); }
+	25%   { transform: translate(0%, 30%) scale(1.05); }
+	37.5% { transform: translate(-21%, 21%) scale(1.05); }
+	50%   { transform: translate(-30%, 0%) scale(1.05); }
+	62.5% { transform: translate(-21%, -21%) scale(1.05); }
+	75%   { transform: translate(0%, -30%) scale(1.05); }
+	87.5% { transform: translate(21%, -21%) scale(1.05); }
+	100%  { transform: translate(30%, 0%) scale(1.05); }
+}
+
+/* El ícono y la etiqueta van encima de los blobs. */
+.sidebar-link > svg,
+.sidebar-link > .lb,
+.cta > svg,
+.cta > .lb {
+	position: relative;
+	flex: none;
+}
+
+.sidebar-link > svg,
+.cta > svg {
+	display: block;
 }
 
 /* Content */
@@ -239,11 +342,15 @@ hr {
 
 .cta {
 	font-family: var(--font-sans);
-	display: block;
+	display: flex;
+	align-items: center;
+	gap: 8px;
 	width: fit-content;
 	margin: 0 0 32px;
 	padding: 16px 32px;
-	background-color: var(--accent);
+	position: relative;
+	overflow: hidden;
+	background-color: var(--accent-1);
 	color: var(--on-accent);
 	text-decoration: none;
 	border-radius: 8px;
@@ -253,11 +360,11 @@ hr {
 }
 
 .cta:hover {
-	background-color: var(--accent-hover);
+	filter: brightness(0.9);
 }
 
 .cta:active {
-	background-color: var(--accent-active);
+	filter: brightness(0.8);
 }
 
 .cta:focus {
@@ -479,6 +586,7 @@ hr {
 	*, *::before, *::after {
 		transition-duration: 0.01ms !important;
 		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
 	}
 }
 
