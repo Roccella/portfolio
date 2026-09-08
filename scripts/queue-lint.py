@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Schema and self-certification check for the dispatch queue.
 
-`rules/project-docs.md` § *QUEUE.md* says every row carries an `ID` and an
+`rules/queue.md` § *QUEUE.md* says every row carries an `ID` and an
 `Acceptance`, and that `Acceptance` is a command that exits 0, never prose.
 This script is the executable half of that rule.
 
@@ -32,7 +32,7 @@ becomes an `## En curso` line, which carries one clause and no paragraph to
 veto with, and the entry is cut out of `BACKLOG.md` and pasted, verbatim and
 under its own heading, into the session doc that dispatched the row. That doc
 is what `Origin` names, and a row the session decided itself names it bare
-(`rules/project-docs.md` § *QUEUE.md*).
+(`rules/queue.md` § *QUEUE.md*).
 
 The second is the self-certification floor:
 

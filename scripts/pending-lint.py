@@ -44,6 +44,14 @@ Three measurements, all mechanical:
      slug in its text, and every row's slug must be named by exactly one such
      bullet, checked both ways so the two files cannot drift apart in silence.
 
+  5. Handoff pointing, not ratcheted. When HANDOFF.md exists at the root and has
+     a `From:` line, it continues a theme, so its `Next:` line must name a
+     three-digit id that has a bullet in PENDING.md. A decision waiting on the
+     user is not a next action: it is a bullet with `Options:` in BACKLOG.md, and
+     `Next:` names it. That keeps an open decision on the one surface the user
+     scans between sessions instead of in a file the next session deletes. A
+     rollout handoff (no `From:`) continues nothing and is skipped.
+
 There is deliberately no cap on how many items PENDING.md may hold. The count of
 open items is information about the work, not a defect, and the ratchet this file
 used to keep on it turned "I opened a new theme" into a failing build.
@@ -106,6 +114,16 @@ INFLIGHT_SECTIONS = {"en curso", "in flight"}
 # `  - **ID**: some-slug`: a QUEUE.md row's own id, checked against the
 # `## En curso` bullets that are supposed to mirror it.
 QUEUE_ID_RE = re.compile(r"^\s*-\s+\*\*ID\*\*:\s*(\S.*)$", re.MULTILINE)
+
+# HANDOFF.md's `From:` line marks a session handoff; a rollout handoff has
+# none. `Next:` is the line "sigamos" reads first. Real handoffs write both
+# with and without a dash, with and without bold, and in Spanish (`Viene de`,
+# `Próximo`), so the label is matched loosely and the id strictly.
+HANDOFF_FROM_RE = re.compile(
+    r"^\s*(?:-\s+)?\*{0,2}(?:From|Comes from|Viene de)\*{0,2}:", re.MULTILINE)
+HANDOFF_NEXT_RE = re.compile(
+    r"^\s*(?:-\s+)?\*{0,2}`?(?:Next|Pr[oó]ximo):?`?\*{0,2}:?(?P<rest>.*)$", re.MULTILINE)
+THREE_DIGITS_RE = re.compile(r"(?<![0-9])[0-9]{3}(?![0-9])")
 
 
 def blocks(text):
@@ -342,12 +360,47 @@ def check_inflight(name, pending_text, backlog_text, queue_path, failures, notic
             )
 
 
+def check_handoff(name, pending_text, handoff_path, failures):
+    """A session handoff's `Next:` names an id that has a bullet in PENDING.md.
+
+    Only a handoff with a `From:` line is checked: a rollout handoff continues
+    no theme here. The ids it may name are every `**[NNN]**` bullet in
+    PENDING.md, in-flight ones included, so a number in the line that is not an
+    id (a count, a day) does not pass by accident.
+    """
+    if not os.path.exists(handoff_path):
+        return
+    text = COMMENT_RE.sub("", open(handoff_path, encoding="utf-8").read())
+    if not HANDOFF_FROM_RE.search(text):
+        return
+    known = {pid for pid, _ in pending_ids(pending_text)[0]}
+    known |= {pid for pid, _, _ in inflight_bullets(pending_text) if pid}
+    # A handoff wraps its lines, so `Next:` is read as a block: from the label
+    # to the next blank line.
+    block = next((b for b in re.split(r"\n\s*\n", text) if HANDOFF_NEXT_RE.search(b)), None)
+    if block is None:
+        failures.append(
+            f"{name}/HANDOFF.md: has a `From:` line and no `Next:` line, so it continues "
+            f"a theme and names nothing to start on"
+        )
+        return
+    rest = block[HANDOFF_NEXT_RE.search(block).end("rest") - len(HANDOFF_NEXT_RE.search(block).group("rest")):]
+    named = [d for d in THREE_DIGITS_RE.findall(rest) if d in known]
+    if not named:
+        failures.append(
+            f"{name}/HANDOFF.md: `Next:` names no PENDING.md id. A theme gets its bullet in "
+            f"the commit that writes the handoff, and a decision waiting on the user is a "
+            f"bullet with `Options:` in BACKLOG.md, not the `Next:` itself"
+        )
+
+
 def check(repo_root, failures, notices):
     name = os.path.basename(os.path.abspath(repo_root))
     path = os.path.join(repo_root, "PENDING.md")
     if not os.path.exists(path):
         return
     text = open(path, encoding="utf-8").read()
+    check_handoff(name, text, os.path.join(repo_root, "HANDOFF.md"), failures)
 
     long = long_blocks(text)
     deep = deep_blocks(text)
@@ -579,6 +632,41 @@ QUEUE_TEST_CASES = [
      True),
 ]
 
+SESSION_HANDOFF = "# Handoff\n\n- **From**: `sessions/2026-01-01-x.md`\n- **Where it stopped**: y\n"
+HANDOFF_TEST_CASES = [
+    ("a handoff whose Next names a PENDING id passes",
+     "## T\n\n- **[042]** the thing\n", "# B\n\n## 042 - a\n\nd\n",
+     SESSION_HANDOFF + "- **`Next:`** `042`: do the thing\n", False),
+    ("a handoff whose Next names no id fails",
+     "## T\n\n- **[042]** the thing\n", "# B\n\n## 042 - a\n\nd\n",
+     SESSION_HANDOFF + "- **`Next:`** pick between the three options\n", True),
+    ("a handoff whose Next names an id PENDING does not have fails",
+     "## T\n\n- **[042]** the thing\n", "# B\n\n## 042 - a\n\nd\n",
+     SESSION_HANDOFF + "- **`Next:`** `777`: do the thing\n", True),
+    ("a number that is not an id does not pass as one",
+     "## T\n\n- **[042]** the thing\n", "# B\n\n## 042 - a\n\nd\n",
+     SESSION_HANDOFF + "- **`Next:`** rerun the 250 cases\n", True),
+    ("a handoff with From and no Next line fails",
+     "## T\n\n- **[042]** the thing\n", "# B\n\n## 042 - a\n\nd\n",
+     SESSION_HANDOFF, True),
+    ("a Next naming an En curso id passes",
+     "## En curso\n\n- **[042]** doing the thing (some-slug)\n", "# B\n",
+     SESSION_HANDOFF + "- **`Next:`** `042`: land the row\n", False,
+     "# Q\n\n## P0\n\n- [ ] thing\n  - **ID**: some-slug\n  - **Origin**: x\n  - **Acceptance**: `true`\n"),
+    ("From and Next without bold or dash still count as a session handoff",
+     "## T\n\n- **[042]** the thing\n", "# B\n\n## 042 - a\n\nd\n",
+     "# Handoff\n\n- From: `sessions/x.md`\n- Next: pick one\n", True),
+    ("a Spanish handoff, Viene de and Next in bold, is read the same way",
+     "## T\n\n- **[042]** the thing\n", "# B\n\n## 042 - a\n\nd\n",
+     "# Handoff\n\n**Viene de**: `sessions/x.md`\n\n**Next**: planificar `042`\n", False),
+    ("a wrapped Next whose id sits on its second physical line passes",
+     "## T\n\n- **[042]** the thing\n", "# B\n\n## 042 - a\n\nd\n",
+     SESSION_HANDOFF + "- **Next: fix the gate**, the last one\n  traced; full trace in BACKLOG.md § 042.\n", False),
+    ("a rollout handoff, no From, is not checked",
+     "## T\n\n- **[042]** the thing\n", "# B\n\n## 042 - a\n\nd\n",
+     "# Handoff\n\nBefore the next session touches X, run Y.\n", False),
+]
+
 
 def self_test():
     import tempfile
@@ -596,7 +684,7 @@ def self_test():
         if got != expected:
             bad.append(f"  {label}: expected max depth {expected}, got {got}")
 
-    def run(pending, backlog=None, queue=None):
+    def run(pending, backlog=None, queue=None, handoff=None):
         with tempfile.TemporaryDirectory() as d:
             with open(os.path.join(d, "PENDING.md"), "w", encoding="utf-8") as fh:
                 fh.write(pending)
@@ -606,6 +694,9 @@ def self_test():
             if queue is not None:
                 with open(os.path.join(d, "QUEUE.md"), "w", encoding="utf-8") as fh:
                     fh.write(queue)
+            if handoff is not None:
+                with open(os.path.join(d, "HANDOFF.md"), "w", encoding="utf-8") as fh:
+                    fh.write(handoff)
             failures, notices = [], []
             check(d, failures, notices)
             return failures
@@ -638,9 +729,17 @@ def self_test():
         if got != should_fail:
             bad.append(f"  {label}: expected {'reject' if should_fail else 'accept'}, got the opposite")
 
+    for case in HANDOFF_TEST_CASES:
+        label, body, backlog, handoff, should_fail = case[:5]
+        queue = case[5] if len(case) > 5 else None
+        head = "# P\n\n<!-- pending-lint: over140=0 deep=0 -->\n\n"
+        got = bool(run(head + body, backlog, queue, handoff))
+        if got != should_fail:
+            bad.append(f"  {label}: expected {'reject' if should_fail else 'accept'}, got the opposite")
+
     total = (len(SELF_TEST_CASES) + len(COMMENT_TEST_CASES) + len(DEPTH_TEST_CASES)
              + len(MARKER_TEST_CASES) + len(RATCHET_TEST_CASES) + len(PAIRING_TEST_CASES)
-             + len(QUEUE_TEST_CASES))
+             + len(QUEUE_TEST_CASES) + len(HANDOFF_TEST_CASES))
     if bad:
         print("pending-lint self-test FAILED:")
         print("\n".join(bad))
