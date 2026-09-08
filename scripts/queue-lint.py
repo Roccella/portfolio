@@ -45,6 +45,22 @@ file was created by the same session that promised to create it, which is the
 one thing nobody needed proved. The same predicate against a path the row does
 not write — `test -L ~/.claude/skills/x/SKILL.md`, created by `install.sh` —
 is a real assertion about a real side effect, and passes.
+
+The third is the reach floor, and it is the one with a test file in it:
+
+    When the acceptance runs a test file in this repo and the row names
+    `Files`, that test has to reach one of them: an import, a `require`, a
+    Python `from x import`, or a string literal naming the path.
+
+The case it was written for is a `dadatien` acceptance that rebuilt the
+component's label logic inside the test file and passed it to a primitive:
+the test failed before the fix, failed for the defect's string, and could not
+be moved by any edit to the file the row named, so the run spent its attempts
+on a file it could not reach. Reach is a floor too: a test that imports the
+artifact and still asserts on its own copy passes it, and a case that pins
+the broken state alongside the fixed one is invisible here. Both stay with
+`skills/prose-to-spec/playbook.md` § *2. Write the acceptance command, then
+run it*.
 """
 
 import os
@@ -89,6 +105,115 @@ def inside_repo(path, root):
         resolved = root / resolved
     return root == resolved or root in resolved.parents
 
+
+SOURCE_EXT = {".ts", ".tsx", ".mts", ".cts", ".js", ".jsx", ".mjs", ".cjs", ".py", ".sh"}
+TEST_PATH = re.compile(r"(?:^|/)(?:tests?|__tests__|spec)(?:/|$)|\.(?:test|spec|acceptance)\.")
+JS_IMPORT = re.compile(r"""(?:\bfrom\s+|\bimport\s+|\brequire\(\s*|\bimport\(\s*)['"]([^'"]+)['"]""")
+PY_IMPORT = re.compile(r"^\s*(?:from\s+([\w.]+)\s+import\b|import\s+([\w.]+))", re.M)
+STRING_PATH = re.compile(r"""['"]([^'"\s]+/[^'"\s]+)['"]""")
+ALIAS = re.compile(r"^[@~#]/")
+
+def segments(path):
+    """A path as a tuple of segments, extension stripped, `/index` dropped.
+
+    `components/admin-items-table.tsx`, `@/components/admin-items-table` and
+    `../../components/admin-items-table` all reduce to the same tuple once the
+    alias is stripped and the relative part resolved, which is what lets a
+    `Files` entry and an import be compared at all.
+    """
+    parts = [p for p in path.replace("\\", "/").split("/") if p and p != "."]
+    if parts and parts[-1] == "index":
+        parts.pop()
+    if parts:
+        parts[-1] = re.sub(r"\.[A-Za-z0-9]+$", "", parts[-1])
+    return tuple(parts)
+
+def row_files(fields):
+    """The paths a row's `Files` names, backticked or bare, comma-separated."""
+    value = fields.get("Files", "")
+    ticked = re.findall(r"`([^`]+)`", value)
+    return [f.strip() for f in (ticked or value.split(",")) if f.strip()]
+
+def acceptance_tests(command, root):
+    """Repo-relative test files the acceptance command runs, read from disk."""
+    found = []
+    for token in command.split():
+        token = token.strip("\"'")
+        if not token or token.startswith("-"):
+            continue
+        candidate = Path(os.path.expanduser(token))
+        if not candidate.is_absolute():
+            candidate = root / candidate
+        if candidate.suffix not in SOURCE_EXT or not candidate.is_file():
+            continue
+        if not inside_repo(token, root):
+            continue
+        rel = str(candidate.resolve().relative_to(root.resolve()))
+        if TEST_PATH.search(rel):
+            found.append(rel)
+    return found
+
+def reaches(test_rel, root):
+    """Every path a test file reaches, as segment tuples.
+
+    Imports and requires in JS/TS, `import` and `from` in Python, and any
+    string literal with a slash in it, so a test that reads the artifact as
+    data (`readFileSync("migrations/0007.sql")`) counts as reaching it.
+    A relative specifier resolves against the test's own directory; an alias
+    prefix (`@/`, `~/`, `#/`) is dropped, since the comparison is by suffix.
+    """
+    text = (root / test_rel).read_text(encoding="utf-8", errors="replace")
+    specs = JS_IMPORT.findall(text) + STRING_PATH.findall(text)
+    specs += [a or b for a, b in PY_IMPORT.findall(text)]
+    base = Path(test_rel).parent
+    out = set()
+    for spec in specs:
+        if spec.startswith("."):
+            spec = os.path.normpath(str(base / spec))
+        elif ALIAS.match(spec):
+            spec = ALIAS.sub("", spec)
+        elif "/" not in spec and "." in spec and not spec.startswith("node:"):
+            spec = spec.replace(".", "/")  # a dotted Python module
+        out.add(segments(spec))
+    return out
+
+def touched(entry, is_dir, refs):
+    """True when any reached path is the entry, or lands inside it.
+
+    A file entry matches by suffix in either direction, because an alias
+    hides the leading directories of one side or the other. A directory
+    entry matches when its segments appear contiguously in the reference.
+    """
+    if not entry:
+        return True
+    n = len(entry)
+    for ref in refs:
+        if not ref:
+            continue
+        if is_dir:
+            if any(ref[i:i + n] == entry for i in range(len(ref) - n + 1)):
+                return True
+        else:
+            m = min(n, len(ref))
+            if entry[-m:] == ref[-m:]:
+                return True
+    return False
+
+def unreached(fields, command, root):
+    """(test, files) when the acceptance runs a test reaching none of `Files`."""
+    tests = acceptance_tests(command, root)
+    if not tests:
+        return None
+    files = [f for f in row_files(fields) if segments(f) not in {segments(t) for t in tests}]
+    if not files:
+        return None
+    for test in tests:
+        refs = reaches(test, root)
+        for entry in files:
+            is_dir = entry.endswith("/") or (root / entry).is_dir()
+            if touched(segments(entry), is_dir, refs):
+                return None
+    return tests[0], files
 
 def parse(text):
     """Yield (line number, title, {field: value}) for each row."""
@@ -196,6 +321,15 @@ def lint(text, origins=None, root=None):
             errors.append(
                 f"{where}\n    acceptance only checks that files exist, and {', '.join(inside)} "
                 f"is written by this row. Test what the row claims, not that it ran"
+            )
+
+        miss = unreached(fields, command.group(1), root)
+        if miss:
+            test, files = miss
+            errors.append(
+                f"{where}\n    acceptance runs {test}, and nothing in it reaches a path in Files "
+                f"({', '.join(files)}). A test that rebuilds the artifact fails for its own "
+                f"reasons and no fix to the artifact moves it; import what the row names"
             )
 
     known = set(ids)
@@ -336,8 +470,104 @@ CLEAN = (
 )
 
 
-def self_test():
+# (name, {relative path: content}, Files field, Acceptance command, rejected?)
+# Each runs against a temporary tree, since the reach floor reads the test file.
+MOCKED = (
+    'import { render } from "react-dom/server";\n'
+    'import { PillSwitch } from "@/components/ui/pill-switch";\n'
+    'function renderCell(item) { return item.isPublished ? "Publicado" : "No publicado"; }\n'
+)
+REACH_FIXTURES = [
+    (
+        "test rebuilds the artifact and imports only a primitive",
+        {"tests/acceptance/944.acceptance.ts": MOCKED, "components/admin-items-table.tsx": ""},
+        "`components/admin-items-table.tsx`",
+        "node --import tsx --test tests/acceptance/944.acceptance.ts",
+        True,
+    ),
+    (
+        "test imports the artifact through an alias",
+        {"tests/acceptance/944.acceptance.ts": MOCKED + 'import { T } from "@/components/admin-items-table";\n',
+         "components/admin-items-table.tsx": ""},
+        "`components/admin-items-table.tsx`",
+        "node --import tsx --test tests/acceptance/944.acceptance.ts",
+        False,
+    ),
+    (
+        "test imports the artifact relatively",
+        {"tests/acceptance/944.acceptance.ts": 'import { T } from "../../components/admin-items-table";\n',
+         "components/admin-items-table.tsx": ""},
+        "`components/admin-items-table.tsx`",
+        "node --import tsx --test tests/acceptance/944.acceptance.ts",
+        False,
+    ),
+    (
+        "test reads the artifact as data",
+        {"tests/acceptance/653.acceptance.ts": 'const sql = readFileSync("migrations/0007.sql", "utf8");\n',
+         "migrations/0007.sql": ""},
+        "`migrations/0007.sql`",
+        "node --test tests/acceptance/653.acceptance.ts",
+        False,
+    ),
+    (
+        "test imports a module inside a directory the row names",
+        {"tests/test_thing.py": "from lib.things.thing import f\n", "lib/things/thing.py": ""},
+        "`lib/things/`",
+        "python3 -m pytest tests/test_thing.py",
+        False,
+    ),
+    (
+        "python test imports nothing the row names",
+        {"tests/test_thing.py": "import json\n\ndef f(): return 1\n", "lib/thing.py": ""},
+        "`lib/thing.py`",
+        "python3 -m pytest tests/test_thing.py",
+        True,
+    ),
+    (
+        "acceptance runs no test file the lint can read",
+        {"components/admin-items-table.tsx": ""},
+        "`components/admin-items-table.tsx`",
+        "npm test",
+        False,
+    ),
+    (
+        "Files names only the acceptance itself",
+        {"tests/acceptance/944.acceptance.ts": MOCKED},
+        "`tests/acceptance/944.acceptance.ts`",
+        "node --test tests/acceptance/944.acceptance.ts",
+        False,
+    ),
+    (
+        "acceptance is a check script, not a test",
+        {"scripts/english-audit.py": "import sys\n", "AGENTS.md": ""},
+        "`AGENTS.md`",
+        "python3 scripts/english-audit.py",
+        False,
+    ),
+]
+
+def reach_failures():
+    import tempfile
     failures = []
+    for name, tree, files, command, rejected in REACH_FIXTURES:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            for rel, content in tree.items():
+                (root / rel).parent.mkdir(parents=True, exist_ok=True)
+                (root / rel).write_text(content, encoding="utf-8")
+            queue = (
+                "- [ ] A row\n  - **ID**: a-row\n" + ORIGIN_LINE +
+                f"  - **Files**: {files}\n  - **Acceptance**: `{command}`\n"
+            )
+            errors = [e for e in lint(queue, None, root) if "reaches" in e]
+            if rejected and not errors:
+                failures.append(f"reach fixture '{name}': expected a rejection, got nothing")
+            if not rejected and errors:
+                failures.append(f"reach fixture '{name}': expected clean, got {errors}")
+    return failures
+
+def self_test():
+    failures = reach_failures()
     for name, fixture, expected, origins in FIXTURES:
         errors = lint(fixture, origins)
         if not any(expected in e for e in errors):
@@ -356,7 +586,10 @@ def self_test():
     if failures:
         print(f"\n{len(failures)} self-test failure(s).")
         return 1
-    print(f"queue-lint self-test: {len(FIXTURES)} rejections and 1 clean queue, all as expected.")
+    print(
+        f"queue-lint self-test: {len(FIXTURES)} rejections, 1 clean queue and "
+        f"{len(REACH_FIXTURES)} reach trees, all as expected."
+    )
     return 0
 
 
