@@ -4,7 +4,7 @@
 
 Put the two columns of the portfolio on one vertical grid, make the two filled buttons visually larger, and delete the 9 orphan PNGs left by the previous session.
 
-Items **204** and **318** of `../hub-career/PENDING.md`. Continues `2026-08-31-markup-and-performance-pass.md`, which is closed; this is its `Next:`.
+Items **204** and **318** of `../my-career/PENDING.md`. Continues `2026-08-31-markup-and-performance-pass.md`, which is closed; this is its `Next:`.
 
 ## The obstacle, found before planning
 

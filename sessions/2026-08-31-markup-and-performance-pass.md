@@ -2,7 +2,7 @@
 
 ## Objective
 
-Make `index.html` a page that is worth pointing at as an example of correct markup, and cut what the visitor actually downloads. Triggered by `hub-career` item **519**, which turned out to be misdirected: the session's first output is a rewritten 519.
+Make `index.html` a page that is worth pointing at as an example of correct markup, and cut what the visitor actually downloads. Triggered by `my-career` item **519**, which turned out to be misdirected: the session's first output is a rewritten 519.
 
 ## Origin: why 519 was wrong
 
@@ -10,7 +10,7 @@ Make `index.html` a page that is worth pointing at as an example of correct mark
 
 Two facts kill the first half:
 
-- `resume.html` is in `.gitignore` and is not tracked. `https://roccella.github.io/portfolio/resume.html` returns **404** (verified with `curl` on 2026-08-31). `../hub-career/CONVENTIONS.md:87` records the reason: the page carries Pablo's phone and email, so it is updated locally and never pushed.
+- `resume.html` is in `.gitignore` and is not tracked. `https://roccella.github.io/portfolio/resume.html` returns **404** (verified with `curl` on 2026-08-31). `../my-career/CONVENTIONS.md:87` records the reason: the page carries Pablo's phone and email, so it is updated locally and never pushed.
 - The two pages share no scale to centralise. `index.html` is Geist on a dark theme; `resume.html` is Inter plus Source Serif 4 on a light theme, and its `@media print` block is the whole point of the file.
 
 So moving that CSS into `styles.css` would add light-theme tokens to the stylesheet every visitor downloads, in order to tidy a file that never crosses a network. Inline CSS on a single-purpose local file is the correct architecture here, not a defect.
@@ -88,7 +88,7 @@ Converted every PNG to WebP in a scratch directory at `-q 82`, resized to 1200px
    The shared-cache argument that used to justify Google Fonts no longer applies, because browsers partition the HTTP cache by top-level site. Separately, `fonts.googleapis.com` is blocked in China, where a render-blocking stylesheet stalls the page until the request times out.
 3. **`index.html` markup.** Fix the desktop `<h1>`, wrap both navs in `<ul>`, add `width`/`height`/`decoding` to images, add `preload` and fallback content to the videos.
 4. **`styles.css` tokens.** Add `--font-sans` and replace the 13 literal stacks. This is what is left of 519.
-5. **Rewrite 519** in `../hub-career/PENDING.md` and `BACKLOG.md` to match what is actually true, or delete it if steps 1-4 close it.
+5. **Rewrite 519** in `../my-career/PENDING.md` and `BACKLOG.md` to match what is actually true, or delete it if steps 1-4 close it.
 6. **`/review-ui`** at the end, scoped to accessibility. Rhythm and hierarchy were already audited in `2026-05-16-typography-and-rhythm-audit.md`.
 
 ## Risks
@@ -101,7 +101,7 @@ Converted every PNG to WebP in a scratch directory at `-q 82`, resized to 1200px
 
 All five planned steps landed, plus a sixth the review added.
 
-**1. Media** (`a0a61a6`). Nine PNGs converted to WebP with `cwebp -q 82`, content images resized to 1200px and the avatar to 256px. 6.513.375 down to 393.896 bytes. `index.html` and the local `resume.html` repointed; the PNGs stay in the tree until Pablo checks the rendered pages, tracked as item **318** in `../hub-career/PENDING.md`. `social-thumb.png` stays PNG because it is the Open Graph image and scrapers are unreliable with WebP.
+**1. Media** (`a0a61a6`). Nine PNGs converted to WebP with `cwebp -q 82`, content images resized to 1200px and the avatar to 256px. 6.513.375 down to 393.896 bytes. `index.html` and the local `resume.html` repointed; the PNGs stay in the tree until Pablo checks the rendered pages, tracked as item **318** in `../my-career/PENDING.md`. `social-thumb.png` stays PNG because it is the Open Graph image and scrapers are unreliable with WebP.
 
 **2. Geist self-hosted** (`a0a61a6`). `fonts/geist-latin-var.woff2`, 29.288 bytes, declared with `font-display: swap` and preloaded. The two `preconnect` and the render-blocking Google Fonts stylesheet came out. Verified in Chrome: the woff2 is now the second request, ahead of `styles.css`. All five non-ASCII characters across both pages (`·`, `á`, `é`, `ñ`, `ó`) sit inside the latin subset, so no `latin-ext` is needed.
 
@@ -109,7 +109,7 @@ All five planned steps landed, plus a sixth the review added.
 
 **4. `--font-sans`** (`a0a61a6`). Replaces 13 literal copies of the Geist stack. This is what was left of 519.
 
-**5. 519 rewritten** (`hub-career` `04e1dea`). Deleted, and replaced by items **204** (baseline grid plus button scale) and **318** (delete the orphan PNGs).
+**5. 519 rewritten** (`my-career` `04e1dea`). Deleted, and replaced by items **204** (baseline grid plus button scale) and **318** (delete the orphan PNGs).
 
 **6. `/review-ui`**, which the plan scheduled last and which produced two fixes of its own.
 

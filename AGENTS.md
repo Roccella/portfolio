@@ -20,15 +20,15 @@ Single-page vanilla portfolio (HTML + CSS + JS, no build step). Hosted on GitHub
 
 ## Este repo no lleva pendientes propios
 
-`portfolio` is a surface, not a source: `../hub-career/` holds the content and decides the work, the way `../arg-work/` does for `../mi-argentina-front/`. So this repo carries no `PENDING.md`, no `BACKLOG.md`, no `HANDOFF.md` and no `QUEUE.md`. Anything pending about these pages is an item in `../hub-career/PENDING.md`, tagged `(portfolio)`.
+`portfolio` is a surface, not a source: `../my-career/` holds the content and decides the work, the way `../arg-work/` does for `../mi-argentina-front/`. So this repo carries no `PENDING.md`, no `BACKLOG.md`, no `HANDOFF.md` and no `QUEUE.md`. Anything pending about these pages is an item in `../my-career/PENDING.md`, tagged `(portfolio)`.
 
 Its own `PENDING.md` and a rollout `HANDOFF.md` from 2026-08-20 were deleted on 2026-08-31. `scripts/pending-lint.py`, `scripts/queue-lint.py` and `githooks/pre-commit` stay wired and pass with no such file; they are the guard if one ever comes back, not an invitation to write one.
 
 ## Fuente de contenido
 
-Articles come from `../hub-career/articles/` drafts. The repo was `blog-articles` until it was renamed on 2026-07-16, and `article-guidelines.md` did not survive the rename; what governed articles is now split in two:
+Articles come from `../my-career/articles/` drafts. The repo was `blog-articles` until it was renamed on 2026-07-16, and `article-guidelines.md` did not survive the rename; what governed articles is now split in two:
 
-- **`../hub-career/AGENTS.md`** § *Publication format* — opening structure, image types that work, video behavior (autoplay loop muted playsinline), what to avoid
+- **`../my-career/AGENTS.md`** § *Publication format* — opening structure, image types that work, video behavior (autoplay loop muted playsinline), what to avoid
 - **Skills `/voice-core` + `/voice-writing`** — voice, register, article structure, titles, concision
 
 `resume.html` and `cover-letter-checkly.md` are not articles and do not follow those two. Pablo is not the writer in the text there, the reader is deciding something, and the register is **`/voice-core` + `/voice-deliverable`**.
