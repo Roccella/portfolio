@@ -1,11 +1,5 @@
 # Portfolio
 
-## Framework
-- Fuente canónica de contexto del proyecto: `AGENTS.md`
-- Adapter para Claude: `CLAUDE.md`
-- Auditoría: 2026-03-18
-- Estado: Clean
-
 ## Descripción
 
 Single-page vanilla portfolio (HTML + CSS + JS, no build step). Hosted on GitHub Pages, which serves `main`: a push to `origin/main` is a deploy to production at https://roccella.github.io/portfolio/, with no other step and no staging in between. Pages takes about a minute to rebuild, so `curl` the live `styles.css` rather than trusting the push's exit code.
@@ -20,9 +14,9 @@ Single-page vanilla portfolio (HTML + CSS + JS, no build step). Hosted on GitHub
 
 ## Este repo no lleva pendientes propios
 
-`portfolio` is a surface, not a source: `../my-career/` holds the content and decides the work, the way `../arg-work/` does for `../mi-argentina-front/`. So this repo carries no `PENDING.md`, no `BACKLOG.md`, no `HANDOFF.md` and no `QUEUE.md`. Anything pending about these pages is an item in `../my-career/PENDING.md`, tagged `(portfolio)`.
+`portfolio` is a surface, not a source: `../my-career/` holds the content and decides the work, the way `../arg-work/` does for `../mi-argentina-front/`. So this repo carries no `PENDING.md` and no `BACKLOG.md`. Anything pending about these pages is an item in `../my-career/PENDING.md`, tagged `(portfolio)`.
 
-Its own `PENDING.md` and a rollout `HANDOFF.md` from 2026-08-20 were deleted on 2026-08-31. `scripts/pending-lint.py`, `scripts/queue-lint.py` and `githooks/pre-commit` stay wired and pass with no such file; they are the guard if one ever comes back, not an invitation to write one.
+`scripts/pending-lint.py` and `githooks/pre-commit` stay wired and pass with no such file; they are the guard if one ever comes back, not an invitation to write one.
 
 ## Fuente de contenido
 
