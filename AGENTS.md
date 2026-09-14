@@ -29,7 +29,7 @@ Articles come from `../my-career/articles/` drafts. The repo was `blog-articles`
 
 ### Reader declaration
 
-`skills/voice-core/references/reader.md` § *Name the reader, and write down what they already have* asks for both halves before the first sentence, and gate 4 of `skills/deliverable-gates/` is briefed with this verbatim rather than assuming one.
+`~/.claude/skills/voice-core/references/reader.md` § *Name the reader, and write down what they already have* asks for both halves before the first sentence, and gate 4 of `~/.claude/skills/deliverable-gates/` is briefed with this verbatim rather than assuming one.
 
 - **Articles** (`index.html`): a developer or designer who found the piece on its own. They arrive holding nothing about the project it describes, so every term is introduced at first use and this page is where they meet it.
 - **`resume.html`, `cover-letter-checkly.md`**: a recruiter or hiring manager at one named company. They arrive holding their own job posting and their own product, and nothing about the projects listed; their vocabulary is the shared one, and each project is introduced by what it did rather than by its name.
