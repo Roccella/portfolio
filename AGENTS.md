@@ -16,8 +16,6 @@ Single-page vanilla portfolio (HTML + CSS + JS, no build step). Hosted on GitHub
 
 `portfolio` is a surface, not a source: `../my-career/` holds the content and decides the work, the way `../arg-work/` does for `../mi-argentina-front/`. So this repo carries no `PENDING.md` and no `BACKLOG.md`. Anything pending about these pages is an item in `../my-career/PENDING.md`, tagged `(portfolio)`.
 
-`scripts/pending-lint.py` and `githooks/pre-commit` stay wired and pass with no such file; they are the guard if one ever comes back, not an invitation to write one.
-
 ## Fuente de contenido
 
 Articles come from `../my-career/articles/` drafts. The repo was `blog-articles` until it was renamed on 2026-07-16, and `article-guidelines.md` did not survive the rename; what governed articles is now split in two:
