@@ -14,7 +14,7 @@ Single-page vanilla portfolio (HTML + CSS + JS, no build step). Hosted on GitHub
 
 ## Este repo no lleva pendientes propios
 
-`portfolio` is a surface, not a source: `../my-career/` holds the content and decides the work, the way `../arg-work/` does for `../mi-argentina-front/`. So this repo carries no `PENDING.md` and no `BACKLOG.md`. Anything pending about these pages is an item in `../my-career/PENDING.md`, tagged `(portfolio)`.
+`portfolio` is a surface, not a source: `../my-career/` holds the content and decides the work, the way `../work-arg/` does for `../mi-argentina-front/`. So this repo carries no `PENDING.md` and no `BACKLOG.md`. Anything pending about these pages is an item in `../my-career/PENDING.md`, tagged `(portfolio)`.
 
 ## Fuente de contenido
 
