@@ -23,11 +23,11 @@ Articles come from `../my-career/articles/` drafts. The repo was `blog-articles`
 - **`../my-career/AGENTS.md`** § *Publication format* — opening structure, image types that work, video behavior (autoplay loop muted playsinline), what to avoid
 - **Skill `/voice`** — voice, register, article structure, titles, concision
 
-`resume.html` and `cover-letter-checkly.md` are not articles and do not follow `writing.md`. Pablo is not the writer in the text there, the reader is deciding something, and the register is **`/voice` with `references/deliverable.md`**.
+`resume.html` and `cover-letter-checkly.md` are not articles and do not follow `~/.claude/skills/writing-style/article.md`. The reader is deciding something and the text describes work rather than narrating it, so the register is **`writing-style` with `describing-work.md`**. That reader is none of the skill's three, so the second declaration below is the whole of it.
 
 ### Reader declaration
 
-`~/.claude/skills/voice/references/reader.md` § *Name the reader, and write down what they already have* asks for both halves before the first sentence, and gate 4 of `~/.claude/skills/voice/references/gates.md` is briefed with this verbatim rather than assuming one.
+`~/.claude/skills/writing-style/playbook.md` § *Name the reader, and write down what they already have* asks for both halves before the first sentence, and gate 4 of `~/.claude/skills/writing-style/gates.md` is briefed with this verbatim rather than assuming one.
 
 - **Articles** (`index.html`): a developer or designer who found the piece on its own. They arrive holding nothing about the project it describes, so every term is introduced at first use and this page is where they meet it.
 - **`resume.html`, `cover-letter-checkly.md`**: a recruiter or hiring manager at one named company. They arrive holding their own job posting and their own product, and nothing about the projects listed; their vocabulary is the shared one, and each project is introduced by what it did rather than by its name.
