@@ -23,14 +23,14 @@ Articles come from `../my-career/articles/` drafts. The repo was `blog-articles`
 - **`../my-career/AGENTS.md`** § *Publication format* — opening structure, image types that work, video behavior (autoplay loop muted playsinline), what to avoid
 - **Skill `/voice`** — voice, register, article structure, titles, concision
 
-`resume.html` and `cover-letter-checkly.md` are not articles and do not follow `~/.claude/skills/writing-style/article.md`. The reader is deciding something and the text describes work rather than narrating it, so the register is **`writing-style` with `describing-work.md`**. That reader is none of the skill's three, so the second declaration below is the whole of it.
+`cover-letter-checkly.md` is not an article and does not follow `~/.claude/skills/writing-style/article.md`. The reader is deciding something and the text describes work rather than narrating it, so the register is **`writing-style` with `describing-work.md`**. That reader is none of the skill's three, so the second declaration below is the whole of it.
 
 ### Reader declaration
 
 `~/.claude/skills/writing-style/playbook.md` § *Name the reader, and write down what they already have* asks for both halves before the first sentence, and gate 4 of `~/.claude/skills/writing-style/gates.md` is briefed with this verbatim rather than assuming one.
 
 - **Articles** (`index.html`): a developer or designer who found the piece on its own. They arrive holding nothing about the project it describes, so every term is introduced at first use and this page is where they meet it.
-- **`resume.html`, `cover-letter-checkly.md`**: a recruiter or hiring manager at one named company. They arrive holding their own job posting and their own product, and nothing about the projects listed; their vocabulary is the shared one, and each project is introduced by what it did rather than by its name.
+- **`cover-letter-checkly.md`**: a recruiter or hiring manager at one named company. They arrive holding their own job posting and their own product, and nothing about the projects listed; their vocabulary is the shared one, and each project is introduced by what it did rather than by its name.
 
 When adding or updating an article in the portfolio, follow the two sources above.
 
@@ -42,9 +42,9 @@ If it has to change, because the role name in it changed or for any other reason
 
 ## The CV never gets committed, under any name
 
-`resume.html` carries Pablo's phone and email, so it and the PDF it prints to are gitignored. On 2026-09-01 an export named `Pablo Roccella - Resume.pdf` landed in the repo, and the plain `resume.pdf` line did not catch it. Pablo decided it stays out, and `.gitignore` now holds `*[Rr]esume*.pdf`.
+The CV lives in `../my-career/resume/` since 2026-10-07, in English and in Spanish. It was here, gitignored, until then, and `.gitignore` still holds `resume.html`, `resume.pdf`, `*[Rr]esume*.pdf` and `*CV*.pdf` so that a copy dropped back in stays out, in either language.
 
-Nothing carrying that header goes into a commit. This repo publishes to GitHub Pages, so a commit here is a phone number on the open web, and a push cannot be taken back by deleting the file afterwards.
+Nothing carrying Pablo's phone and email goes into a commit. This repo publishes to GitHub Pages, so a commit here is a phone number on the open web, and a push cannot be taken back by deleting the file afterwards.
 
 ## Design System
 
@@ -52,7 +52,7 @@ All values are defined as CSS variables in `:root` at the top of `styles.css`. N
 
 **Font family:** `var(--font-sans)`, which is `"Geist"` plus a system sans fallback. Body weight `400` (Geist `300` is too thin on dark bg).
 
-Geist is **self-hosted** since 2026-08-31: `fonts/geist-latin-var.woff2`, the latin subset of the variable face, 29.288 bytes, declared in the `@font-face` at the top of `styles.css` and preloaded from `index.html`. `index.html` no longer requests Google Fonts, and the only third-party origin left on that page is Google Analytics. `resume.html` moved onto the same face on 2026-09-01, which closed item 745. It carries its own `<style>` block and shares neither `styles.css` nor the `@font-face`, so it declares Geist a second time against the same file. Every non-ASCII character both pages use sits inside the latin subset, so do not add `latin-ext` without checking first.
+Geist is **self-hosted** since 2026-08-31: `fonts/geist-latin-var.woff2`, the latin subset of the variable face, 29.288 bytes, declared in the `@font-face` at the top of `styles.css` and preloaded from `index.html`. `index.html` no longer requests Google Fonts, and the only third-party origin left on that page is Google Analytics. The CV in `../my-career/resume/` loads a copy of the same file. Every non-ASCII character `index.html` and the CV use sits inside the latin subset, so do not add `latin-ext` without checking first.
 
 **Color tokens:** `--bg` | `--text` | `--text-secondary` | `--text-muted` | `--border` | `--border-hover` | `--accent-1` | `--accent-2` | `--accent-3` | `--accent-sheen` | `--accent-speed` | `--link` | `--on-accent`
 
@@ -63,8 +63,6 @@ The palette replaced `#4169e1` on 2026-09-03 and was generated in OKLCH by `../g
 **The decorative left-border on the active nav item is `--accent-sheen`**, the brightest of the four, because it is the only one that clears 3:1 against `--bg` (4,17:1). It is solid and never a gradient: it is 2px wide, and a ramp inside 2px reads as one averaged colour anyway.
 
 **`--link` is `#5791ff`**, `--accent-1`'s hue at the lightness a text colour needs: `oklch(67.1% 0.174 262)`, 6,16:1 against `--bg`. No stop of the palette reaches 4,5:1 on the dark background, so the link cannot be one of them; taking the base fill's hue is what keeps it in the same system. It replaced `#6b8cff`, which was the same lightness and chroma at hue 269,3, tuned to the old accent.
-
-**`resume.html` still carries `#4169e1` hardcoded twice** (the contact links and the download button). That page is on a white background and shares neither `styles.css` nor the tokens, so nothing broke; it is simply the one surface still on the old accent. `--accent-1` gives 9,92:1 there against 4,85:1 today.
 
 `--on-accent` is the text colour **on** the button, and it is pure white for a measured reason. The gate is the brightest stop the text can pass over, `--accent-sheen`: white gives 4,501:1 there and `--text`, an oklch off-white, gives 4,121:1. Do not swap it back to `--text`. The margin over AA is three thousandths, so any new palette has to be measured on that stop before it goes in; `../gradient-gen/` rejects a palette that fails it.
 
