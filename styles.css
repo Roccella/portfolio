@@ -360,6 +360,14 @@ hr {
 
 /* Article cards */
 
+.content-view .section-title {
+	margin-top: 32px;
+}
+
+.section-title + .article-list {
+	margin-top: 24px;
+}
+
 .article-list {
 	list-style: none;
 	display: flex;
